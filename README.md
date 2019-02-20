@@ -3,9 +3,9 @@
 Project main repository (work only).
 
 Group:
-	-> João Azevedo;
-	-> Paulo Araújo;
-	-> Pedro Machado.
+	João Azevedo;
+	Paulo Araújo;
+	Pedro Machado.
 
 Project description:
 	--empty
