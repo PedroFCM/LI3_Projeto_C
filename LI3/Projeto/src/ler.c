@@ -1,33 +1,69 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+
 #include "ler.h"
 
-void print_struct (TableProd t, int counter) {
+int verify_product (char *product) {
 
-	int i=0;
-	while (i<counter) {
-		printf("%s", t[i].products);
-		i++;
-	}
+	char *aux = strdup(product);
 
+	int numb = atoi (aux+2);
+	if (strlen(aux) == 8)
+		if (numb >= 1000 && numb <= 9999)
+			if (isupper(aux[0]) && isupper(aux[1]) &&
+				isdigit(aux[2]) && isdigit(aux[3]) &&
+				isdigit(aux[4]) && isdigit(aux[5]))
+					return 1;
+				else return 0;
+		else return 0;
+	else return 0;
 }
 
-int read_products (char *filename, TableProd t) {
+void readNvalidate_products (char* filename, char *produtos[], FILE_SETTINGS *set) {
 
 	FILE *fp = fopen(filename, "r");
-	int counter = 0;
-	char *buffer = (char*) malloc(sizeof(char)*SIZE);
-	int i=0;
-	while (!feof(fp)) {
-		fgets(buffer, SIZE, fp);
-		t[i].products = strdup(buffer);
+	char *buffer = (char*) malloc(sizeof(char)*64);
+	int validos = 0, i=0;
+
+	while (fgets(buffer, 64, fp)) {
+		if (verify_product(buffer)) {
+			produtos[validos] = strdup(buffer);
+			validos++;
+		} else set->nulo = i+1;
 		i++;
-		counter++;
+	}
+	
+	free(buffer);
+
+	set->num_prods = i;
+	set->prods_val = validos;
+}
+
+void print_products (char *produtos[], FILE_SETTINGS *set) {
+
+	int i=0, size = set->prods_val;
+	
+	while (i < size) {
+		printf("%s", produtos[i]);
+		i++;
 	}
 
-	free(buffer);
-	fclose(fp);
+	printf("\nNº de readed lines: %d\n",        set->num_prods);
+	printf("Nº of valid products (printed): %d\n", set->prods_val);
+	printf("Linha invalida: %d\n", set->nulo);
+	
+}
 
-	return counter;
+void write_products_on_file (char *produtos[], FILE_SETTINGS *set) {
+
+	FILE *fp = fopen("validData/Produtos(validados).txt", "w");
+	int i = 0, size = set->prods_val;
+
+	while (i<size) {
+		fprintf(fp, "%s", produtos[i]);
+		i++;
+	}
+
 }
