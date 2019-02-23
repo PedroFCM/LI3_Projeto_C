@@ -10,11 +10,11 @@ C project.
 
 Usefull git commands:
 
-git status
-git add .
-git push
-git pull
-git branch <branchname>
-git checkout <branchname>
-git branch -d <branchname>
-git merge <branchname>
+git status <br />
+git add . <br />
+git push <br />
+git pull <br />
+git branch <branchname> <br />
+git checkout <branchname> <br />
+git branch -d <branchname> <br />
+git merge <branchname> <br />
