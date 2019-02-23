@@ -14,7 +14,7 @@ git status <br />
 git add . <br />
 git push <br />
 git pull <br />
-git branch <branchname> <br />
-git checkout <branchname> <br />
-git branch -d <branchname> <br />
-git merge <branchname> <br />
+git branch branchname <br />
+git checkout branchname <br />
+git branch -d branchname <br />
+git merge branchname <br />
