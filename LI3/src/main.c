@@ -5,47 +5,44 @@
 #include "produtos_read_write.h"
 #include "clientes_read_write.h"
 #include "vendas_read_write.h"
+#include "avlstruct.h"
 
 int main () {
-	
-	printf("_STARTING_\n");
 	
 	//_______________________________________________________//
 
 	GLOBAL *set = malloc(sizeof(struct settings)); 
 
-	char **products = (char**) malloc(sizeof(char*) * 200000);
-	char **clients = (char**) malloc(sizeof(char*) *  20000);
-	char **sells;
+	AVL *products = NULL;
 
-	printf("_variables alocated_\n");
-	
 	//_______________________________________________________//
 
-	readNvalidate_products(PROD_PATH, products, set);
-	write_products_on_file(products, set);
+	products = readNvalidate_products(PROD_PATH, products, set);
+	preorder_avl(products);
 
-	printf("_PRODs_DONE_\n");
+	// write_products_on_file(products, set);
 
-	readNvalidate_clients(CLIE_PATH, clients, set);
-	write_clients_on_file(clients, set);
+	// printf("_PRODs_DONE_\n");
 
-	printf("_CLIENTs_DONE_\n");
+	// readNvalidate_clients(CLIE_PATH, clients, set);
+	// write_clients_on_file(clients, set);
+
+	// printf("_CLIENTs_DONE_\n");
 	
-	sells = readNvalidate_sells(SELL_PATH, sells, set, products, clients);
-	write_sells_on_file(sells, set);
+	// sells = readNvalidate_sells(SELL_PATH, sells, set, products, clients);
+	// write_sells_on_file(sells, set);
 	
-	printf("_SELLs_DONE_\n");
+	// printf("_SELLs_DONE_\n");
 	
-	//_______________________________________________________//
+	// //_______________________________________________________//
 
-	free(set);
+	// free(set);
 	free(products);
-	free(clients);
+	// free(clients);
 
-	//_______________________________________________________//
+	// //_______________________________________________________//
 	
-	printf("_END_\n");
+	// printf("_END_\n");
 
 	return 0;
 }

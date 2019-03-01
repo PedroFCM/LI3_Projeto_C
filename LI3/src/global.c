@@ -14,6 +14,7 @@ TODO:...
 ---------------------------------------------------------*/
 //_______________________________________________________//
 
+//ficheiros windows \r + \n
 int biggest_line_in_file (char *filename) {
 
 	FILE *fp = fopen(filename, "r");
@@ -23,7 +24,7 @@ int biggest_line_in_file (char *filename) {
 
 	while (fgets(buffer, 64, fp)) {
 
-		current = strlen(buffer);
+		current = 1 + strlen(buffer);
 
 		if (current > biggest) biggest = current;
 	}

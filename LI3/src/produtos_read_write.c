@@ -5,8 +5,7 @@
 
 #include "produtos_read_write.h"
 #include "global.h"
-
-//_______________________________________________________//
+#include "avlstruct.h"
 
 int verify_product (char *product) {
 
@@ -22,30 +21,35 @@ int verify_product (char *product) {
 	return r;
 }
 
-void readNvalidate_products (char* filename, char **produtos, GLOBAL *set) {
+AVL* readNvalidate_products (char* filename, AVL *prod, GLOBAL *set) {
 
 	FILE *fp = fopen(filename, "r");
 
 	int max_size_line = biggest_line_in_file(filename);
+	int validos = 0, i = 0;
+
 
 	char *buffer = (char*) malloc(sizeof(char) * max_size_line);
-	int validos = 0, i=0;
-
+			
 	while (fgets(buffer, max_size_line, fp)) {
 		
 		if (verify_product(buffer)) {
-			produtos[validos] = strdup(buffer);
+			
+			prod = updateAVL(prod, buffer);
+			
 			validos++;
 		}
-
+	
 		i++;
 	}
-	
+
 	free(buffer);
 
 	set -> num_prods      = i;
 	set -> val_prods      = validos;
-	set -> max_line_prods = max_size_line; 
+	set -> max_line_prods = max_size_line;
+
+	return prod;
 }
 
 void write_products_on_file (char **produtos, GLOBAL *set) {
@@ -55,22 +59,24 @@ void write_products_on_file (char **produtos, GLOBAL *set) {
 	int i = 0, size = set -> val_prods;
 
 	while (i<size) {
+	
 		fprintf(fp, "%s", produtos[i]);
+	
 		i++;
 	}
-
 }
 
+int preorder_avl (AVL *a) {
 
-//_______________________________________________________//
+	int i = 0;
 
-
-void print_products (char **produtos, GLOBAL *set) {
-
-	int i=0, size = set -> val_prods;
-	
-	while (i < size) {
-		printf("%s", produtos[i]);
+	if (a != NULL) {
 		i++;
+		printf("%s", a -> tag);
+		
+		i+=preorder_avl(a -> left);
+		i+=preorder_avl(a -> right);
 	}
+
+	return i;
 }
