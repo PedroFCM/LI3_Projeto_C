@@ -5,13 +5,10 @@
 
 //_______________________________________________________//
 
+char** tokenizeSELL_LINE (char *sell, char** campos);
 
-int verify_sell (char *sell, char **prod, char **client, GLOBAL *set);
+int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set);
 
-char** readNvalidate_sells (char* filename, char **sells, GLOBAL *set, char **prod, char **cli);
-
-void print_sells (char **sells, GLOBAL *set);
-
-void write_sells_on_file (char **sells, GLOBAL *set);
+AVL* readNvalidate_sells (char* filename, AVL* sells, GLOBAL *set, AVL* prod, AVL* cli);
 
 #endif

@@ -1,6 +1,8 @@
 #ifndef _LER_
 #define _LER_
 
+#include "avlstruct.h"
+
 //_______________________________________________________//
 
 #define PROD_PATH "datafiles/Produtos.txt"
@@ -14,6 +16,8 @@
 #define VAL_SELL_PATH "validData/Vendas(validadas).txt"
 
 //_______________________________________________________//
+
+#define CAMPOS_SELLS 7
 
 typedef struct settings {
 
@@ -31,6 +35,12 @@ int biggest_line_in_file (char *filename);
 
 int numb_spaces_in_string (char *str);
 
-int exist_element (int flag, char *element, char **prod, char **cli, GLOBAL *set);
+int exist_element (AVL *a, char *element);
+
+void inorder_avl (AVL *a);
+
+void write_recursive (AVL *a, FILE *fp);
+
+void write_inorder_avl_on_file (char *filepath, AVL *a, GLOBAL *set);
 
 #endif

@@ -4,6 +4,7 @@
 #include <ctype.h>
 
 #include "global.h"
+#include "avlstruct.h"
 
 /* -------------------ANOTACOES--------------------------
 
@@ -44,27 +45,45 @@ int numb_spaces_in_string (char *str) {
 	return spaces;
 }
 
-int exist_element (int flag, char *element, char **prod, char **cli, GLOBAL *set) {
+int exist_element (AVL *a, char *element) {
+ 
+	int len = 0, r = 0;
 
-	int i, size;
-
-	switch (flag) {
-		case 0: size = set -> val_prods;	
-			for (i = 0; i < size; i++) {
-				if (!strcmp(prod[i], element))
-					return 1;
-			}
-			break;
-	
-		case 1: size = set -> val_clients;
-			for (i = 0; i < size; i++) {
-				if (!strcmp(cli[i], element))
-					return 1;
-			}
-			break;
-	
-		default: break;
+	while (a != NULL) {
+		if (!strcmp(a->tag, element)) return 1;
+		else if (strcmp(a->tag, element) > 0) a = a -> left;
+		else if (strcmp(a->tag, element) < 0) a = a -> right;
 	}
 
 	return 0;
+}
+
+void write_recursive (AVL *a, FILE *fp) {
+
+	if (a != NULL) {
+		write_recursive (a -> left , fp);
+		fprintf(fp, "%s", a -> tag);
+		write_recursive (a -> right, fp);
+	}
+}
+
+void write_inorder_avl_on_file (char *filepath, AVL *a, GLOBAL *set) {
+
+	FILE *fp = fopen(filepath, "w");
+
+	write_recursive (a, fp);
+
+	fclose(fp);
+
+}
+
+void inorder_avl (AVL *a) {
+
+	int i = 0;
+
+	if (a != NULL) {
+		inorder_avl(a -> left);
+		printf("%s", a -> tag);
+		inorder_avl(a -> right);
+	}
 }

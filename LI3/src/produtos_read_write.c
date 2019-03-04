@@ -51,32 +51,3 @@ AVL* readNvalidate_products (char* filename, AVL *prod, GLOBAL *set) {
 
 	return prod;
 }
-
-void write_products_on_file (char **produtos, GLOBAL *set) {
-
-	FILE *fp = fopen(VAL_PROD_PATH, "w");
-
-	int i = 0, size = set -> val_prods;
-
-	while (i<size) {
-	
-		fprintf(fp, "%s", produtos[i]);
-	
-		i++;
-	}
-}
-
-int preorder_avl (AVL *a) {
-
-	int i = 0;
-
-	if (a != NULL) {
-		i++;
-		printf("%s", a -> tag);
-		
-		i+=preorder_avl(a -> left);
-		i+=preorder_avl(a -> right);
-	}
-
-	return i;
-}

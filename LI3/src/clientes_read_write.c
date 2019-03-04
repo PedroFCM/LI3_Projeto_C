@@ -5,6 +5,7 @@
 
 #include "global.h"
 #include "clientes_read_write.h"
+#include "avlstruct.h"
 
 //_______________________________________________________//
 
@@ -21,19 +22,21 @@ int verify_client (char *client) {
 	return r;
 }
 
-void readNvalidate_clients (char *filename, char **clients, GLOBAL *set) {
+AVL* readNvalidate_clients (char *filename, AVL *clients, GLOBAL *set) {
 
 	FILE *fp = fopen(filename, "r");
 
 	int max_size_line = biggest_line_in_file(filename);
+	int validos = 0, i=0;			
 
 	char *buffer = (char*) malloc(sizeof(char) * max_size_line);
-	int validos = 0, i=0;			
 
 	while (fgets(buffer, max_size_line, fp)) {
 		
 		if (verify_client(buffer)) {
-			clients[validos] = strdup(buffer);
+
+			clients = updateAVL(clients, buffer);
+			
 			validos++;
 		}
 		
@@ -45,32 +48,6 @@ void readNvalidate_clients (char *filename, char **clients, GLOBAL *set) {
 	set -> num_clients      = i;
 	set -> val_clients      = validos;
 	set -> max_line_clients = max_size_line; 
-}
 
-void write_clients_on_file (char **clients, GLOBAL *set) {
-
-	FILE *fp = fopen(VAL_PROD_PATH, "w");
-
-	int i = 0, size = set->val_clients;
-
-	while (i<size) {
-		fprintf(fp, "%s", clients[i]);
-		i++;
-	}
-}
-
-
-
-//_______________________________________________________//
-
-
-
-void print_clients (char **clients, GLOBAL *set) {
-
-	int i=0, size = set -> val_clients;
-	
-	while (i < size) {
-		printf("%s", clients[i]);
-		i++;
-	}	
+	return clients;
 }

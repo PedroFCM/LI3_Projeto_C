@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "global.h"
 #include "produtos_read_write.h"
@@ -14,35 +15,30 @@ int main () {
 	GLOBAL *set = malloc(sizeof(struct settings)); 
 
 	AVL *products = NULL;
+	AVL *clients  = NULL;
+	AVL *sells    = NULL;
 
 	//_______________________________________________________//
 
 	products = readNvalidate_products(PROD_PATH, products, set);
-	preorder_avl(products);
-
-	// write_products_on_file(products, set);
-
-	// printf("_PRODs_DONE_\n");
-
-	// readNvalidate_clients(CLIE_PATH, clients, set);
-	// write_clients_on_file(clients, set);
-
-	// printf("_CLIENTs_DONE_\n");
+	write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
+	//inorder_avl(products);
 	
-	// sells = readNvalidate_sells(SELL_PATH, sells, set, products, clients);
-	// write_sells_on_file(sells, set);
+	clients = readNvalidate_clients(CLIE_PATH, clients, set);
+	write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
+	//inorder_avl(clients);
 	
-	// printf("_SELLs_DONE_\n");
-	
+	sells = readNvalidate_sells(SELL_PATH, sells, set, products, clients);
+	write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
+	//inorder_avl(sells);
+
 	// //_______________________________________________________//
 
-	// free(set);
 	free(products);
-	// free(clients);
-
-	// //_______________________________________________________//
+	free(clients);
+	free(sells);
 	
-	// printf("_END_\n");
-
+	free(set);
+		
 	return 0;
 }
