@@ -49,5 +49,7 @@ AVL* readNvalidate_clients (char *filename, AVL *clients, GLOBAL *set) {
 	set -> val_clients      = validos;
 	set -> max_line_clients = max_size_line; 
 
+	fclose(fp);
+
 	return clients;
 }

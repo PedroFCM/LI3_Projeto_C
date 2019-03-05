@@ -38,8 +38,7 @@ int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
 		char **campos = malloc(sizeof(char*) * CAMPOS_SELLS);
 		campos = tokenizeSELL_LINE(aux, campos);
 
-		valid = verify_product(campos[1]);
-		//valid = valid && exist_element(prod, campos[1]);
+		valid = verify_product(campos[1]) && exist_element(prod, campos[1]);
 
 		float price; sscanf(campos[2], "%f", &price);
 		valid = valid && (price >= 0.0 && price <= 999.99);
@@ -49,9 +48,8 @@ int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
 		
 		valid = valid && (!strcmp(campos[4], "P") || !strcmp(campos[4], "N")); 
 	
-		valid = valid && verify_client(campos[5]); 
-		//valid = valid && exist_element(client, campos[5]);		
-
+		valid = valid && verify_client(campos[5]) && exist_element(client, campos[5]);
+		
 		int month = atoi(campos[6]);
 		valid = valid && (month >= 1 && month <= 12); 
 
@@ -90,6 +88,8 @@ AVL* readNvalidate_sells (char* filename, AVL* sells, GLOBAL *set, AVL* prod, AV
 	set -> num_sells      = i;
 	set -> val_sells      = validos;
 	set -> max_line_sells = max;
+
+	fclose(fp);
 
 	return sells;
 }

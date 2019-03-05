@@ -49,5 +49,7 @@ AVL* readNvalidate_products (char* filename, AVL *prod, GLOBAL *set) {
 	set -> val_prods      = validos;
 	set -> max_line_prods = max_size_line;
 
+	fclose(fp);
+
 	return prod;
 }

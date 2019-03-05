@@ -11,9 +11,7 @@
 cat datafiles/Produtos.txt | uniq -u | wc -l
 
 TODO:...
-
----------------------------------------------------------*/
-//_______________________________________________________//
+*/
 
 //ficheiros windows \r + \n
 int biggest_line_in_file (char *filename) {
@@ -47,13 +45,24 @@ int numb_spaces_in_string (char *str) {
 
 int exist_element (AVL *a, char *element) {
  
+	AVL *b = a;
 	int len = 0, r = 0;
+	
+	char *aux = (char*) malloc(sizeof(char)*20);
 
-	while (a != NULL) {
-		if (!strcmp(a->tag, element)) return 1;
-		else if (strcmp(a->tag, element) > 0) a = a -> left;
-		else if (strcmp(a->tag, element) < 0) a = a -> right;
+	while (b != NULL) {
+		
+		aux = strncpy(aux, b->tag, strlen(b->tag)-2);
+		
+		r = strcmp(aux, element);
+				
+		if (!r) return 1;
+		else if (r > 0) b = b -> left;
+		else b = b -> right;
+
 	}
+
+	free(aux);
 
 	return 0;
 }
@@ -86,4 +95,17 @@ void inorder_avl (AVL *a) {
 		printf("%s", a -> tag);
 		inorder_avl(a -> right);
 	}
+}
+
+void show_stats_vendas (GLOBAL *set) {
+	printf("Linha mais longa venda : %d\n", set->max_line_sells);
+	printf("Produtos envolvidos : %d\n", set->val_prods);
+	printf("Clientes envolvidos : %d\n", set->val_clients);
+	printf("Vendas efectivas (válidas) : %d\n", set->val_sells);
+	printf("Ultimo cliente : %s\n", "TODO");
+	printf("Numero de vendas para este cliente: %d\n", 0);
+	printf("Numero de vendas na Filial 1 : %d\n", 0);
+	printf("Numero de vendas na Filial 2 : %d\n", 0);
+	printf("Numero de clientes c/ cod. começado por A, B,...\n");
+	printf("Faturação total : %d\n", 0);
 }

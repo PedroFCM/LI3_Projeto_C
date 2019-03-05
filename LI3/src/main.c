@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "global.h"
 #include "produtos_read_write.h"
@@ -10,35 +11,37 @@
 
 int main () {
 	
-	//_______________________________________________________//
+	clock_t start, end;
+	double cpu_time_used;
+	start = clock();
 
-	GLOBAL *set = malloc(sizeof(struct settings)); 
+	GLOBAL *set = (GLOBAL*) malloc(sizeof(struct settings)); 
 
 	AVL *products = NULL;
 	AVL *clients  = NULL;
 	AVL *sells    = NULL;
 
-	//_______________________________________________________//
 
 	products = readNvalidate_products(PROD_PATH, products, set);
 	write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
-	//inorder_avl(products);
 	
 	clients = readNvalidate_clients(CLIE_PATH, clients, set);
 	write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
-	//inorder_avl(clients);
 	
 	sells = readNvalidate_sells(SELL_PATH, sells, set, products, clients);
 	write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
-	//inorder_avl(sells);
-
-	// //_______________________________________________________//
-
+	
+	show_stats_vendas(set);
+	
 	free(products);
 	free(clients);
 	free(sells);
 	
 	free(set);
 		
+	end = clock();
+	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	printf("\nCPU Time = %f\n", cpu_time_used );
+	
 	return 0;
 }
