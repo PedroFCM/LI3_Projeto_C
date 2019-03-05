@@ -57,13 +57,14 @@ int exist_element (AVL *a, char *element) {
 		
 		r = strcmp(aux, element);
 				
-		if (!r) return 1;
+		if (r == 0) return 1;
 		else if (r > 0) b = b -> left;
-		else b = b -> right;
+		else if (r < 0) b = b -> right;
 
 	}
 
 	free(aux);
+	free(b);
 
 	return 0;
 }
@@ -103,8 +104,8 @@ void show_stats_vendas (GLOBAL *set) {
 	printf("Produtos envolvidos : %d\n", set->val_prods);
 	printf("Clientes envolvidos : %d\n", set->val_clients);
 	printf("Vendas efectivas (válidas) : %d\n", set->val_sells);
-	printf("Ultimo cliente : %s\n", "TODO");
-	printf("Numero de vendas para este cliente: %d\n", 0);
+	// printf("Ultimo cliente : %s\n", "TODO");
+	// printf("Numero de vendas para este cliente: %d\n", 0);
 	// printf("Numero de vendas na Filial 1 : %d\n", 0);
 	// printf("Numero de vendas na Filial 2 : %d\n", 0);
 	// printf("Numero de clientes c/ cod. começado por A, B,...\n");

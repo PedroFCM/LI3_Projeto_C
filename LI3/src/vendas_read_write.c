@@ -42,7 +42,7 @@ int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
 		int sold = atoi (campos[3]);
 		r = r && (sold >= 1 && sold <= 200); 
 		
-		r = r && (campos[4][0] = 'P' || campos[4][0]== 'N'); 
+		r = r && (campos[4][0] == 'P' || campos[4][0] == 'N'); 
 	
 		int month = atoi(campos[6]);
 		r = r && (month >= 1 && month <= 12); 
