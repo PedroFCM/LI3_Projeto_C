@@ -12,11 +12,14 @@ int verify_product (char *product) {
 	char *aux = strdup(product);
 
 	int r = 0, num_prod = atoi(aux+2);
+
+	strncpy(aux, aux, 6);
+
 	if (num_prod >= 1000 && num_prod <= 9999)
 		if (isupper(aux[0]) && isupper(aux[1]) &&
 				isdigit(aux[2]) && isdigit(aux[3]) &&
 				isdigit(aux[4]) && isdigit(aux[5]) &&
-				!isdigit(aux[6])) r = 1;
+				!isdigit(aux[6]) && !isupper(aux[6])) r = 1;
 	
 	return r;
 }

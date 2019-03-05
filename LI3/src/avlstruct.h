@@ -8,6 +8,15 @@
 typedef struct avl {
 	int bal;
 	char *tag;
+
+	char *codProd;
+	char *codClient;
+	double precoUnit;
+	int quantidade;
+	char *tipo;
+	int mes;
+	int filial;
+
 	struct avl *left, *right; 
 } AVL;
 

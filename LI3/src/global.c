@@ -45,14 +45,15 @@ int numb_spaces_in_string (char *str) {
 
 int exist_element (AVL *a, char *element) {
  
-	AVL *b = a;
+ 	AVL *b = (AVL*) malloc(sizeof(struct avl));
+	b = a;
 	int len = 0, r = 0;
 	
 	char *aux = (char*) malloc(sizeof(char)*20);
 
 	while (b != NULL) {
 		
-		aux = strncpy(aux, b->tag, strlen(b->tag)-2);
+		strncpy(aux, b->tag, strlen(b->tag)-2);
 		
 		r = strcmp(aux, element);
 				
@@ -98,14 +99,14 @@ void inorder_avl (AVL *a) {
 }
 
 void show_stats_vendas (GLOBAL *set) {
-	printf("Linha mais longa venda : %d\n", set->max_line_sells);
+	printf("\nLinha mais longa venda : %d\n", set->max_line_sells);
 	printf("Produtos envolvidos : %d\n", set->val_prods);
 	printf("Clientes envolvidos : %d\n", set->val_clients);
 	printf("Vendas efectivas (válidas) : %d\n", set->val_sells);
 	printf("Ultimo cliente : %s\n", "TODO");
 	printf("Numero de vendas para este cliente: %d\n", 0);
-	printf("Numero de vendas na Filial 1 : %d\n", 0);
-	printf("Numero de vendas na Filial 2 : %d\n", 0);
-	printf("Numero de clientes c/ cod. começado por A, B,...\n");
-	printf("Faturação total : %d\n", 0);
+	// printf("Numero de vendas na Filial 1 : %d\n", 0);
+	// printf("Numero de vendas na Filial 2 : %d\n", 0);
+	// printf("Numero de clientes c/ cod. começado por A, B,...\n");
+	// printf("Faturação total : %d\n", 0);
 }

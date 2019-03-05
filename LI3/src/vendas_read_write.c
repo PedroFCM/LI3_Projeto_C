@@ -16,12 +16,9 @@ char** tokenizeSELL_LINE (char *sell, char** campos) {
 
 	char *token = strtok(sell, " ");
 	
-	while (!(token==NULL)) {
-	
-		campos[ind] = strdup(token);
+	while (token) {	
+		campos[ind++] = strdup(token);
 		token = strtok(NULL, " ");
-		ind++;
-
 	}
 
 	return campos;
@@ -29,7 +26,7 @@ char** tokenizeSELL_LINE (char *sell, char** campos) {
 
 int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
 	
-	int valid = 1;
+	int r = 1;
 
 	char *aux = strdup(sell);
 
@@ -37,39 +34,41 @@ int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
 
 		char **campos = malloc(sizeof(char*) * CAMPOS_SELLS);
 		campos = tokenizeSELL_LINE(aux, campos);
-
-		valid = verify_product(campos[1]) && exist_element(prod, campos[1]);
-
-		float price; sscanf(campos[2], "%f", &price);
-		valid = valid && (price >= 0.0 && price <= 999.99);
+	
+		double price; 
+		sscanf(campos[2], "%lf", &price);
+		r = r && price >= 0.0 && price <= 999.99;
 
 		int sold = atoi (campos[3]);
-		valid = valid && (sold >= 1 && sold <= 200); 
+		r = r && (sold >= 1 && sold <= 200); 
 		
-		valid = valid && (!strcmp(campos[4], "P") || !strcmp(campos[4], "N")); 
+		r = r && (campos[4][0] = 'P' || campos[4][0]== 'N'); 
 	
-		valid = valid && verify_client(campos[5]) && exist_element(client, campos[5]);
-		
 		int month = atoi(campos[6]);
-		valid = valid && (month >= 1 && month <= 12); 
+		r = r && (month >= 1 && month <= 12); 
 
 		int filial = atoi(campos[7]);
-		valid = valid && (filial >= 1 && filial <= 3); 
+		r = r && (filial >= 1 && filial <= 3); 
 
+		r = r && 
+			(exist_element(prod, campos[1]) && 
+			exist_element(client, campos[5]));
+		
 		free(campos);
 	}
 
-	return valid;
+	return r;
 }
 
 AVL* readNvalidate_sells (char* filename, AVL* sells, GLOBAL *set, AVL* prod, AVL* cli) {
-	
+
+	int inv = 0;
 	FILE *fp = fopen(filename, "r");
 	
 	int max = biggest_line_in_file(filename);
 	int validos = 0, i = 0;
 
-	char *buffer = (char*) malloc(sizeof(char)*max);
+	char* buffer = (char*) malloc(sizeof(char)*max);
 
 	while (fgets(buffer, max, fp)) {
 
@@ -90,6 +89,6 @@ AVL* readNvalidate_sells (char* filename, AVL* sells, GLOBAL *set, AVL* prod, AV
 	set -> max_line_sells = max;
 
 	fclose(fp);
-
+	
 	return sells;
 }
