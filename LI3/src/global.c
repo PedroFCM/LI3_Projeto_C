@@ -45,26 +45,22 @@ int numb_spaces_in_string (char *str) {
 
 int exist_element (AVL *a, char *element) {
  
- 	AVL *b = (AVL*) malloc(sizeof(struct avl));
-	b = a;
 	int len = 0, r = 0;
 	
-	char *aux = (char*) malloc(sizeof(char)*20);
+	char *aux;
 
-	while (b != NULL) {
+	while (a != NULL) {
 		
-		strncpy(aux, b->tag, strlen(b->tag)-2);
+		aux = strndup(a->tag, strlen(a->tag)-2);
 		
 		r = strcmp(aux, element);
 				
 		if (r == 0) return 1;
-		else if (r > 0) b = b -> left;
-		else if (r < 0) b = b -> right;
-
+		else if (r > 0) a = a -> left;
+		else if (r < 0) a = a -> right;
+		
+		free(aux);
 	}
-
-	free(aux);
-	free(b);
 
 	return 0;
 }

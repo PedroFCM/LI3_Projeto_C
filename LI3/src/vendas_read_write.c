@@ -9,32 +9,26 @@
 
 //_______________________________________________________//
 
-char** tokenizeSELL_LINE (char *sell, char** campos) {
-
-	int ind = 1;
-	campos[0] = NULL;
-
-	char *token = strtok(sell, " ");
-	
-	while (token) {	
-		campos[ind++] = strdup(token);
-		token = strtok(NULL, " ");
-	}
-
-	return campos;
-}
-
 int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
 	
 	int r = 1;
 
 	char *aux = strdup(sell);
-
+	
 	if (numb_spaces_in_string(aux) == 6) {
 
-		char **campos = malloc(sizeof(char*) * CAMPOS_SELLS);
-		campos = tokenizeSELL_LINE(aux, campos);
-	
+		char **campos = (char**) malloc(sizeof(char*) * CAMPOS_SELLS);
+		
+		int ind = 1;
+		campos[0] = NULL;
+
+		char *token = strtok(aux, " ");
+		
+		while (token) {	
+			campos[ind++] = strdup(token);
+			token = strtok(NULL, " ");
+		}
+
 		double price; 
 		sscanf(campos[2], "%lf", &price);
 		r = r && price >= 0.0 && price <= 999.99;
@@ -50,30 +44,31 @@ int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
 		int filial = atoi(campos[7]);
 		r = r && (filial >= 1 && filial <= 3); 
 
-		r = r && 
-			(exist_element(prod, campos[1]) && 
-			exist_element(client, campos[5]));
+		r = r && exist_element(prod, campos[1]) && 
+		    	  exist_element(client, campos[5]);
 		
 		free(campos);
 	}
+
+	free(aux);
 
 	return r;
 }
 
 AVL* readNvalidate_sells (char* filename, AVL* sells, GLOBAL *set, AVL* prod, AVL* cli) {
 
-	int inv = 0;
 	FILE *fp = fopen(filename, "r");
 	
 	int max = biggest_line_in_file(filename);
+	
 	int validos = 0, i = 0;
 
-	char* buffer = (char*) malloc(sizeof(char)*max);
+	char *buffer = (char*) malloc(sizeof(char)*(max+10));
 
 	while (fgets(buffer, max, fp)) {
-
+		
 		if (verify_sell(buffer, prod, cli, set)) {
-
+			
 			sells = updateAVL(sells, buffer);
 
 			validos++;

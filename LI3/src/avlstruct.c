@@ -82,7 +82,7 @@ AVL* fixLeft (AVL *a){
 }
 
 
-AVL* updateAVLRec (AVL *a, char *tag_arg, int *g, int *u) {
+AVL* updateAVLRec (AVL *a, char *tag_arg, int *g) {
 	
 	if (a == NULL) {
 	
@@ -90,33 +90,36 @@ AVL* updateAVLRec (AVL *a, char *tag_arg, int *g, int *u) {
 		a -> tag = strdup(tag_arg);
 		a -> left = a -> right = NULL;
 		a -> bal = BAL;
-		*g = 1; *u = 0;
+		*g = 1;
 	
-	} else if (strcmp(a -> tag, tag_arg)==0) {
-	
-		*g = 0; *u = 1;  
-	
-	} else if (strcmp(a -> tag, tag_arg) > 0) {
-	
-		a->left = updateAVLRec (a -> left, tag_arg, g, u);
-	
-		if (*g == 1)
-			switch (a->bal) {
-				case LEFT: a = fixLeft(a); 
-					 *g = 0; 
-					 break;
-	
-				case BAL: 
-					 a -> bal = LEFT; 
-					 break;
-	
-				case RIGHT: a -> bal = BAL; 
-					 *g = 0; 
-					 break;
-			}
 	} else {
 		
-		a->right = updateAVLRec (a->right, tag_arg, g, u);
+		int r = strcmp(a -> tag, tag_arg);
+		
+		if (r >= 0) {
+	
+			a->left = updateAVLRec (a -> left, tag_arg, g);
+		
+			if (*g == 1)
+				switch (a->bal) {
+					case LEFT: a = fixLeft(a); 
+						 *g = 0; 
+						 break;
+		
+					case BAL: 
+						 a -> bal = LEFT; 
+						 break;
+		
+					case RIGHT: a -> bal = BAL; 
+						 *g = 0; 
+						 break;
+				}
+			
+			} 
+
+		else {
+		
+		a->right = updateAVLRec (a->right, tag_arg, g);
 		
 		if (*g == 1)
 	
@@ -134,16 +137,17 @@ AVL* updateAVLRec (AVL *a, char *tag_arg, int *g, int *u) {
 					 *g = 0; 
 					 break;
 			}
-	}
+		}
+	} 
 
 	return a;
 }
 
 AVL* updateAVL (AVL *a, char *tag_arg) {
 	
-	int g, u;
+	int g;
 	
-	a = updateAVLRec(a, tag_arg, &g, &u);
+	a = updateAVLRec(a, tag_arg, &g);
 	
 	return a;
 }

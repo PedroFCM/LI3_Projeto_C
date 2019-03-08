@@ -28,7 +28,7 @@ AVL* fixRight (AVL *a);
 
 AVL* fixLeft (AVL *a);
 
-AVL* updateAVLRec (AVL *a, char *tag_arg, int *g, int *u);
+AVL* updateAVLRec (AVL *a, char *tag_arg, int *g);
 
 AVL* updateAVL (AVL *a, char *tag_arg);
 
