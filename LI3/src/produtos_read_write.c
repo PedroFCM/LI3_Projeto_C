@@ -9,17 +9,15 @@
 
 int verify_product (char *product) {
 
-	char *aux = strdup(product);
+	char *aux = strndup(product, 6);
 
 	int r = 0, num_prod = atoi(aux+2);
-
-	strncpy(aux, aux, 6);
 
 	if (num_prod >= 1000 && num_prod <= 9999)
 		if (isupper(aux[0]) && isupper(aux[1]) &&
 				isdigit(aux[2]) && isdigit(aux[3]) &&
 				isdigit(aux[4]) && isdigit(aux[5]) &&
-				!isdigit(aux[6]) && !isupper(aux[6])) r = 1;
+				!isdigit(aux[7]) && !isupper(aux[7])) r = 1;
 	
 	return r;
 }
@@ -28,13 +26,12 @@ AVL* readNvalidate_products (char* filename, AVL *prod, GLOBAL *set) {
 
 	FILE *fp = fopen(filename, "r");
 
-	int max_size_line = biggest_line_in_file(filename);
+	int max = biggest_line_in_file(filename);
 	int validos = 0, i = 0;
 
-
-	char *buffer = (char*) malloc(sizeof(char) * max_size_line);
+	char *buffer = (char*) malloc(sizeof(char) * (max+10));
 			
-	while (fgets(buffer, max_size_line, fp)) {
+	while (fgets(buffer, max, fp)) {
 		
 		if (verify_product(buffer)) {
 			
@@ -50,7 +47,7 @@ AVL* readNvalidate_products (char* filename, AVL *prod, GLOBAL *set) {
 
 	set -> num_prods      = i;
 	set -> val_prods      = validos;
-	set -> max_line_prods = max_size_line;
+	set -> max_line_prods = max;
 
 	fclose(fp);
 

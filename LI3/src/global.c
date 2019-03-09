@@ -51,7 +51,7 @@ int exist_element (AVL *a, char *element) {
 
 	while (a != NULL) {
 		
-		aux = strndup(a->tag, strlen(a->tag)-2);
+		aux = strndup(a->tag, strlen(element));
 		
 		r = strcmp(aux, element);
 				
