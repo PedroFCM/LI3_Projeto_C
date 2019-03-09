@@ -3,19 +3,13 @@
 
 #include "avlstruct.h"
 
-//_______________________________________________________//
-
 #define PROD_PATH "datafiles/Produtos.txt"
 #define CLIE_PATH "datafiles/Clientes.txt"
 #define SELL_PATH "datafiles/Vendas_1M.txt"
 
-//_______________________________________________________//
-
 #define VAL_PROD_PATH "validData/Produtos(validados).txt"
 #define VAL_CLIE_PATH "validData/Clientes(validados).txt"
 #define VAL_SELL_PATH "validData/Vendas(validadas).txt"
-
-//_______________________________________________________//
 
 #define CAMPOS_SELLS 7
 
@@ -28,8 +22,6 @@ typedef struct settings {
 	int max_line_prods, max_line_clients, max_line_sells;
 
 } GLOBAL;
-
-//_______________________________________________________//
 
 int biggest_line_in_file (char *filename);
 

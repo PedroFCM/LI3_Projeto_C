@@ -3,8 +3,6 @@
 
 #include "global.h"
 
-//_______________________________________________________//
-
 char** tokenizeSELL_LINE (char *sell, char** campos);
 
 int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set);

@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,8 +8,6 @@
 #include "global.h"
 #include "produtos_read_write.h"
 #include "clientes_read_write.h"
-
-//_______________________________________________________//
 
 int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
 	

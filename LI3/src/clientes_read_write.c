@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,8 +8,6 @@
 #include "global.h"
 #include "clientes_read_write.h"
 #include "avlstruct.h"
-
-//_______________________________________________________//
 
 int verify_client (char *client) {
 	

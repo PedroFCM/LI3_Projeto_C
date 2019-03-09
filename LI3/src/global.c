@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,9 +13,10 @@
 cat datafiles/Produtos.txt | uniq -u | wc -l
 
 TODO:...
+
+ficheiros windows \r + \n
 */
 
-//ficheiros windows \r + \n
 int biggest_line_in_file (char *filename) {
 
 	FILE *fp = fopen(filename, "r");
@@ -100,10 +103,4 @@ void show_stats_vendas (GLOBAL *set) {
 	printf("Produtos envolvidos : %d\n", set->val_prods);
 	printf("Clientes envolvidos : %d\n", set->val_clients);
 	printf("Vendas efectivas (válidas) : %d\n", set->val_sells);
-	// printf("Ultimo cliente : %s\n", "TODO");
-	// printf("Numero de vendas para este cliente: %d\n", 0);
-	// printf("Numero de vendas na Filial 1 : %d\n", 0);
-	// printf("Numero de vendas na Filial 2 : %d\n", 0);
-	// printf("Numero de clientes c/ cod. começado por A, B,...\n");
-	// printf("Faturação total : %d\n", 0);
 }
