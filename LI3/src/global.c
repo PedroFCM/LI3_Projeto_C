@@ -103,4 +103,5 @@ void show_stats_vendas (GLOBAL *set) {
 	printf("Produtos envolvidos : %d\n", set->val_prods);
 	printf("Clientes envolvidos : %d\n", set->val_clients);
 	printf("Vendas efectivas (válidas) : %d\n", set->val_sells);
+	printf("Vendas inválidas : %d\n", set->num_sells - set->val_sells);
 }
