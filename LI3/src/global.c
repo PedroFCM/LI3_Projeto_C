@@ -7,6 +7,7 @@
 
 #include "global.h"
 #include "avlstruct.h"
+#include "hashtables.h"
 
 /* -------------------ANOTACOES--------------------------
 
@@ -46,29 +47,12 @@ int numb_spaces_in_string (char *str) {
 	return spaces;
 }
 
-int exist_element (AVL *a, char *element) {
- 
-	int len = 0, r = 0;
-	
-	char *aux;
-
-	while (a != NULL) {
-		
-		aux = strndup(a->tag, strlen(element));
-		
-		r = strcmp(aux, element);
-				
-		if (r == 0) return 1;
-		else if (r > 0) a = a -> left;
-		else if (r < 0) a = a -> right;
-		
-		free(aux);
-	}
-
-	return 0;
+int exist_element (HashTable t, char *tag, int hsize, int key_hash) 
+{ 
+	return lookup(t, tag, hsize, key_hash);
 }
 
-void write_recursive (AVL *a, FILE *fp) {
+void write_recursive (AVL a, FILE *fp) {
 
 	if (a != NULL) {
 		write_recursive (a -> left , fp);
@@ -77,7 +61,7 @@ void write_recursive (AVL *a, FILE *fp) {
 	}
 }
 
-void write_inorder_avl_on_file (char *filepath, AVL *a, GLOBAL *set) {
+void write_inorder_avl_on_file (char *filepath, AVL a, GLOBAL *set) {
 
 	FILE *fp = fopen(filepath, "w");
 
@@ -87,7 +71,24 @@ void write_inorder_avl_on_file (char *filepath, AVL *a, GLOBAL *set) {
 
 }
 
-void inorder_avl (AVL *a) {
+void write_HashTable(char* filepath, HashTable t, int hsize)
+{
+	FILE* fp = fopen(filepath,"w");
+	int i = 0;
+
+
+	while(i <  hsize)
+	{
+		if(t[i].status == USED)
+			fprintf(fp, "%s\n", t[i].element);
+		i++;
+	}
+
+	fclose(fp);
+}
+
+
+void inorder_avl (AVL a) {
 
 	int i = 0;
 
@@ -103,5 +104,4 @@ void show_stats_vendas (GLOBAL *set) {
 	printf("Produtos envolvidos : %d\n", set->val_prods);
 	printf("Clientes envolvidos : %d\n", set->val_clients);
 	printf("Vendas efectivas (válidas) : %d\n", set->val_sells);
-	printf("Vendas inválidas : %d\n", set->num_sells - set->val_sells);
 }

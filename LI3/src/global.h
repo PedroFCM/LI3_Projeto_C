@@ -2,6 +2,7 @@
 #define _LER_
 
 #include "avlstruct.h"
+#include "hashtables.h"
 
 #define PROD_PATH "datafiles/Produtos.txt"
 #define CLIE_PATH "datafiles/Clientes.txt"
@@ -27,14 +28,16 @@ int biggest_line_in_file (char *filename);
 
 int numb_spaces_in_string (char *str);
 
-int exist_element (AVL *a, char *element);
+int exist_element (HashTable t, char *tag, int hsize, int key_hash);
 
-void inorder_avl (AVL *a);
+void inorder_avl (AVL a);
 
-void write_recursive (AVL *a, FILE *fp);
+void write_recursive (AVL a, FILE *fp);
 
-void write_inorder_avl_on_file (char *filepath, AVL *a, GLOBAL *set);
+void write_inorder_avl_on_file (char *filepath, AVL a, GLOBAL *set);
 
 void show_stats_vendas (GLOBAL *set);
+
+void write_HashTable(char* filepath, HashTable t, int hsize);
 
 #endif

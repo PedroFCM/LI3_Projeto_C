@@ -6,25 +6,25 @@
 
 #include "avlstruct.h"
 
-AVL* rotateRight (AVL *a) {
-	AVL *b = a -> left;
+AVL rotateRight (AVL a) {
+	AVL b = a -> left;
 	a -> left = b -> right;
 	b -> right = a;
 	
 	return b;
 }
 
-AVL* rotateLeft (AVL *b) {
-	AVL *a = b -> right;
+AVL rotateLeft (AVL b) {
+	AVL a = b -> right;
 	b -> right = a -> left;
 	a -> left = b;
 
 	return a;
 }
 
-AVL* fixRight (AVL *a){
+AVL fixRight (AVL a){
 
-	AVL *b, *c;
+	AVL b, c;
 	b = a -> right;
 	
 	if(b -> bal == RIGHT) {
@@ -54,9 +54,9 @@ AVL* fixRight (AVL *a){
 	return a;
 }
 
-AVL* fixLeft (AVL *a){
+AVL fixLeft (AVL a){
 
-	AVL *b, *c;
+	AVL b, c;
 	b = a -> left;
 
 	if(b -> bal == LEFT) {
@@ -84,11 +84,11 @@ AVL* fixLeft (AVL *a){
 }
 
 
-AVL* updateAVLRec (AVL *a, char *tag_arg, int *g) {
+AVL updateAVLRec (AVL a, char *tag_arg, int *g) {
 	
 	if (a == NULL) {
 	
-		a = (AVL*) malloc(sizeof(struct avl));
+		a = (AVL) malloc(sizeof(struct avl));
 		a -> tag = strdup(tag_arg);
 		a -> left = a -> right = NULL;
 		a -> bal = BAL;
@@ -145,7 +145,7 @@ AVL* updateAVLRec (AVL *a, char *tag_arg, int *g) {
 	return a;
 }
 
-AVL* updateAVL (AVL *a, char *tag_arg) {
+AVL updateAVL (AVL a, char *tag_arg) {
 	
 	int g;
 	

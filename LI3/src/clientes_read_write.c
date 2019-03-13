@@ -8,6 +8,7 @@
 #include "global.h"
 #include "clientes_read_write.h"
 #include "avlstruct.h"
+#include "hashtables.h"
 
 int verify_client (char *client) {
 	
@@ -22,20 +23,20 @@ int verify_client (char *client) {
 	return r;
 }
 
-AVL* readNvalidate_clients (char *filename, AVL *clients, GLOBAL *set) {
+HashTable readNvalidate_clients (char *filename, HashTable clients, GLOBAL *set) {
 
 	FILE *fp = fopen(filename, "r");
 
-	int max_size_line = biggest_line_in_file(filename);
-	int validos = 0, i=0;			
+	int max = biggest_line_in_file(filename);
+	int validos = 0, i = 0;			
 
-	char *buffer = (char*) malloc(sizeof(char) * max_size_line);
+	char *buffer = (char*) malloc(sizeof(char) * (max + 10));
 
-	while (fgets(buffer, max_size_line, fp)) {
-		
+	while (fgets(buffer, max, fp)) {
+	
 		if (verify_client(buffer)) {
 
-			clients = updateAVL(clients, buffer);
+			clients = update(clients, buffer, HSIZE_CLIEN, 1);
 			
 			validos++;
 		}
@@ -47,7 +48,7 @@ AVL* readNvalidate_clients (char *filename, AVL *clients, GLOBAL *set) {
 
 	set -> num_clients      = i;
 	set -> val_clients      = validos;
-	set -> max_line_clients = max_size_line; 
+	set -> max_line_clients = max; 
 
 	fclose(fp);
 

@@ -8,6 +8,7 @@
 #include "produtos_read_write.h"
 #include "global.h"
 #include "avlstruct.h"
+#include "hashtables.h"
 
 int verify_product (char *product) {
 
@@ -23,6 +24,38 @@ int verify_product (char *product) {
 	
 	return r;
 }
+
+HashTable readNvalidate_products (char* filename, HashTable prod, GLOBAL *set) {
+
+	FILE *fp = fopen(filename, "r");
+
+	int max = biggest_line_in_file(filename);
+	int validos = 0, i = 0;
+
+	char *buffer = (char*) malloc(sizeof(char) * (max+10));
+	
+	while (fgets(buffer, max, fp)) {
+		
+		if (verify_product(buffer)) {
+		
+			prod = update(prod, buffer, HSIZE_PRODS, 0);
+			validos++;
+		}
+
+		i++;
+	}
+
+	free(buffer);
+
+	set -> num_prods      = i;
+	set -> val_prods      = validos;
+	set -> max_line_prods = max;
+
+	fclose(fp);
+
+	return prod;
+}
+/*
 
 AVL* readNvalidate_products (char* filename, AVL *prod, GLOBAL *set) {
 
@@ -55,3 +88,4 @@ AVL* readNvalidate_products (char* filename, AVL *prod, GLOBAL *set) {
 
 	return prod;
 }
+*/

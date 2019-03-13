@@ -18,18 +18,18 @@ typedef struct avl {
 	int filial;
 
 	struct avl *left, *right; 
-} AVL;
+} *AVL;
 
-AVL* rotateRight (AVL *a);
+AVL rotateRight (AVL a);
 
-AVL* rotateLeft (AVL *b);
+AVL rotateLeft (AVL b);
 
-AVL* fixRight (AVL *a);
+AVL fixRight (AVL a);
 
-AVL* fixLeft (AVL *a);
+AVL fixLeft (AVL a);
 
-AVL* updateAVLRec (AVL *a, char *tag_arg, int *g);
+AVL updateAVLRec (AVL a, char *tag_arg, int *g);
 
-AVL* updateAVL (AVL *a, char *tag_arg);
+AVL updateAVL (AVL a, char *tag_arg);
 
 #endif

@@ -8,8 +8,9 @@
 #include "global.h"
 #include "produtos_read_write.h"
 #include "clientes_read_write.h"
+#include "hashtables.h"
 
-int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
+int verify_sell (char *sell, HashTable prod, HashTable client, GLOBAL *set) {
 	
 	int r = 1;
 
@@ -44,8 +45,8 @@ int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
 		int filial = atoi(campos[7]);
 		r = r && (filial >= 1 && filial <= 3); 
 
-		r = r && exist_element(prod, campos[1]) && 
-		    	  exist_element(client, campos[5]);
+		r = r && exist_element(prod, campos[1], HSIZE_PRODS, 0) && 
+		   	  exist_element(client, campos[5], HSIZE_CLIEN, 1);
 		
 		free(campos);
 	}
@@ -55,7 +56,7 @@ int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
 	return r;
 }
 
-AVL* readNvalidate_sells (char* filename, AVL* sells, GLOBAL *set, AVL* prod, AVL* cli) {
+AVL readNvalidate_sells (char* filename, AVL sells, GLOBAL *set, HashTable prod, HashTable cli) {
 
 	FILE *fp = fopen(filename, "r");
 	
@@ -66,7 +67,6 @@ AVL* readNvalidate_sells (char* filename, AVL* sells, GLOBAL *set, AVL* prod, AV
 	char *buffer = (char*) malloc(sizeof(char)*(max+10));
 
 	while (fgets(buffer, max, fp)) {
-		
 		if (verify_sell(buffer, prod, cli, set)) {
 			
 			sells = updateAVL(sells, buffer);
