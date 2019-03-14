@@ -8,7 +8,6 @@ OBJ = main.o global.o produtos_read_write.o clientes_read_write.o vendas_read_wr
 
 main: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) -lm
-
 doc:
 	mkdir doc
 	doxygen Doxygen
