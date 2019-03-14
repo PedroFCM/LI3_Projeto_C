@@ -5,26 +5,38 @@
 #include <stdio.h>
 
 #include "avlstruct.h"
+#include "global.h"
 
-AVL* rotateRight (AVL *a) {
-	AVL *b = a -> left;
+void freeAVL (AVL a) {
+
+	if (a != NULL) {
+		freeAVL (a -> left);
+		freeAVL (a -> right);
+		free (a -> tag);
+		free(a);
+	}
+
+}
+
+AVL rotateRight (AVL a) {
+	AVL b = a -> left;
 	a -> left = b -> right;
 	b -> right = a;
 	
 	return b;
 }
 
-AVL* rotateLeft (AVL *b) {
-	AVL *a = b -> right;
+AVL rotateLeft (AVL b) {
+	AVL a = b -> right;
 	b -> right = a -> left;
 	a -> left = b;
 
 	return a;
 }
 
-AVL* fixRight (AVL *a){
+AVL fixRight (AVL a){
 
-	AVL *b, *c;
+	AVL b, c;
 	b = a -> right;
 	
 	if(b -> bal == RIGHT) {
@@ -54,9 +66,9 @@ AVL* fixRight (AVL *a){
 	return a;
 }
 
-AVL* fixLeft (AVL *a){
+AVL fixLeft (AVL a){
 
-	AVL *b, *c;
+	AVL b, c;
 	b = a -> left;
 
 	if(b -> bal == LEFT) {
@@ -84,23 +96,26 @@ AVL* fixLeft (AVL *a){
 }
 
 
-AVL* updateAVLRec (AVL *a, char *tag_arg, int *g) {
+AVL updateAVLRec (AVL a, char *arg, int *g) {
 	
 	if (a == NULL) {
 	
-		a = (AVL*) malloc(sizeof(struct avl));
-		a -> tag = strdup(tag_arg);
+		a = (AVL) malloc(sizeof(struct avl));
+		
+		arg  = string_cut_extra_char (arg);
+		a -> tag = strdup(arg);
+		
 		a -> left = a -> right = NULL;
-		a -> bal = BAL;
+		a -> bal  = BAL;
 		*g = 1;
 	
 	} else {
 		
-		int r = strcmp(a -> tag, tag_arg);
+		int r = strcmp(a -> tag, arg);
 		
 		if (r >= 0) {
 	
-			a->left = updateAVLRec (a -> left, tag_arg, g);
+			a->left = updateAVLRec (a -> left, arg, g);
 		
 			if (*g == 1)
 				switch (a->bal) {
@@ -121,7 +136,7 @@ AVL* updateAVLRec (AVL *a, char *tag_arg, int *g) {
 
 		else {
 		
-		a->right = updateAVLRec (a->right, tag_arg, g);
+		a->right = updateAVLRec (a->right, arg, g);
 		
 		if (*g == 1)
 	
@@ -145,11 +160,11 @@ AVL* updateAVLRec (AVL *a, char *tag_arg, int *g) {
 	return a;
 }
 
-AVL* updateAVL (AVL *a, char *tag_arg) {
+AVL updateAVL (AVL a, char *arg) {
 	
 	int g;
 	
-	a = updateAVLRec(a, tag_arg, &g);
+	a = updateAVLRec(a, arg, &g);
 	
 	return a;
 }

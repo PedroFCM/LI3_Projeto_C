@@ -6,6 +6,6 @@
 
 int verify_product (char *product);
 
-AVL* readNvalidate_products (char* filename, AVL *prod, GLOBAL *set);
+AVL readNvalidate_products (char* filename, AVL prod, GLOBAL set);
 
 #endif

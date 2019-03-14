@@ -8,28 +8,21 @@
 typedef struct avl {
 	int bal;
 	char *tag;
-
-	char *codProd;
-	char *codClient;
-	double precoUnit;
-	int quantidade;
-	char *tipo;
-	int mes;
-	int filial;
-
 	struct avl *left, *right; 
-} AVL;
+} *AVL;
 
-AVL* rotateRight (AVL *a);
+void freeAVL (AVL a);
 
-AVL* rotateLeft (AVL *b);
+AVL rotateRight (AVL a);
 
-AVL* fixRight (AVL *a);
+AVL rotateLeft (AVL b);
 
-AVL* fixLeft (AVL *a);
+AVL fixRight (AVL a);
 
-AVL* updateAVLRec (AVL *a, char *tag_arg, int *g);
+AVL fixLeft (AVL a);
 
-AVL* updateAVL (AVL *a, char *tag_arg);
+AVL updateAVLRec (AVL a, char *arg, int *g);
+
+AVL updateAVL (AVL a, char *arg);
 
 #endif

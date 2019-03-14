@@ -21,20 +21,95 @@ typedef struct settings {
 
 	int max_line_prods, max_line_clients, max_line_sells;
 
-} GLOBAL;
+} *GLOBAL;
+
+
+/** @brief Função que remove o caracter extra de uma string.
+ *         Coloca, portanto, '\0' para indicar o término da string.
+ *
+ *  @param  entry string para cortar.
+ *  @return Nova string.
+ */
+
+char* string_cut_extra_char (char *entry);
+
+
+/** @brief Função que verifica se um caracter está em uppercase.  
+ *
+ *  @param  ch caracter para verificação.
+ *  @return 1 se for uppercase.
+ */
+
+int is_uppercase (char ch);
+
+
+/** @brief Função que verifica se um caracter é um número.  
+ *
+ *  @param  ch caracter para verificação.
+ *  @return 1 se for número.
+ */
+
+int is_number (char ch);
+
+
+/** @brief Função que calcula o comprimento da 
+ *    	   maior linha de um ficheiro.  
+ *
+ *  @param  filename Ficheiro input.
+ *  @return Maior linha.
+ */
 
 int biggest_line_in_file (char *filename);
 
+
+/** @brief Função que calcula o número de espaços de uma string.  
+ *
+ *  @param  str String para análise.
+ *  @return Número de espaços que a string tem.
+ */
+
 int numb_spaces_in_string (char *str);
 
-int exist_element (AVL *a, char *element);
 
-void inorder_avl (AVL *a);
+/** @brief Função que verifica se um elemento existe numa AVL.  
+ *
+ *  @param  AVL AVL input.
+ *  @param  element elemento para procura.
+ *  @return 1 caso exista.
+ */
 
-void write_recursive (AVL *a, FILE *fp);
+int exist_element (AVL a, char *element);
 
-void write_inorder_avl_on_file (char *filepath, AVL *a, GLOBAL *set);
 
-void show_stats_vendas (GLOBAL *set);
+/** @brief Função que imprime uma AVL por ordem no ecrã.  
+ *
+ *  @param  AVL AVL input.
+ *  @return Nada (void).
+ */
+
+void inorder_avl (AVL a);
+
+
+/** @brief Função auxiliar de write_inorder_avl_on_file que
+ * 		   escreve uma AVL num ficheiro por ordem alfabetica.  
+ *
+ *  @param  AVL AVL input.
+ *  @param  element elemento para procura.
+ *  @return 1 caso exista.
+ */
+
+void write_recursive (AVL a, FILE *fp);
+
+
+/** @brief Função que escreve uma AVL num ficheiro por ordem alfabetica.  
+ *
+ *  @param  filepath Nome do ficheiro onde escrever.
+ *  @param  AVL AVL input.
+ *  @return 1 caso exista.
+ */
+
+void write_inorder_avl_on_file (char *filepath, AVL a, GLOBAL set);
+
+void show_stats_vendas (GLOBAL set);
 
 #endif

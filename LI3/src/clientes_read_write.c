@@ -11,43 +11,44 @@
 
 int verify_client (char *client) {
 	
-	char *aux = strdup(client);
-	int r = 0, num_client  = atoi (aux+1);
+	int r = 0;
+	int num_client = atoi (client+1);
 
-		if (num_client >= 1000 && num_client <= 5000)
-			if (isupper(aux[0]) &&
-				isdigit(aux[1]) && isdigit(aux[2]) &&
-				isdigit(aux[3]) && isdigit(aux[4]) &&
-				!isdigit(aux[5])) r = 1;
+	r = (num_client >= 1000 && num_client <= 5000); 
+
+	r = r && is_uppercase(client[0]) && is_number(client[1]) && 
+			 is_number(client[2]) 	 && is_number(client[3]) && 
+			 is_number(client[4])    && !is_number(client[5]) &&
+			 !is_uppercase(client[5]);
+	
 	return r;
 }
 
-AVL* readNvalidate_clients (char *filename, AVL *clients, GLOBAL *set) {
+AVL readNvalidate_clients (char *filename, AVL clients, GLOBAL set) {
 
 	FILE *fp = fopen(filename, "r");
 
-	int max_size_line = biggest_line_in_file(filename);
-	int validos = 0, i=0;			
+	int max = biggest_line_in_file(filename);
+	
+	set -> num_clients      =   0;
+	set -> max_line_clients = max; 
+	set -> val_clients      =   0;
 
-	char *buffer = (char*) malloc(sizeof(char) * max_size_line);
+	char *buffer = (char*) malloc(sizeof(char) * (2 * max));
 
-	while (fgets(buffer, max_size_line, fp)) {
+	while (fgets(buffer, max, fp)) {
 		
 		if (verify_client(buffer)) {
 
 			clients = updateAVL(clients, buffer);
 			
-			validos++;
+			set -> val_clients++;
 		}
 		
-		i++;
+		set -> num_clients++;
 	}
 	
 	free(buffer);
-
-	set -> num_clients      = i;
-	set -> val_clients      = validos;
-	set -> max_line_clients = max_size_line; 
 
 	fclose(fp);
 

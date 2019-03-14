@@ -2,8 +2,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 
 #include "produtos_read_write.h"
 #include "global.h"
@@ -11,27 +9,30 @@
 
 int verify_product (char *product) {
 
-	char *aux = strndup(product, 6);
+	int r = 0;
+	int num_prod = atoi(product+2);
 
-	int r = 0, num_prod = atoi(aux+2);
+	r = (num_prod >= 1000) && (num_prod <= 9999); 
 
-	if (num_prod >= 1000 && num_prod <= 9999)
-		if (isupper(aux[0]) && isupper(aux[1]) &&
-				isdigit(aux[2]) && isdigit(aux[3]) &&
-				isdigit(aux[4]) && isdigit(aux[5]) &&
-				!isdigit(aux[7]) && !isupper(aux[7])) r = 1;
+	r = r && (is_uppercase(product[0]) && is_uppercase(product[1]) &&
+			  is_number(product[2])    && is_number(product[3]) &&
+			  is_number(product[4])    && is_number(product[5]) &&
+		     !is_number(product[6])    && !is_uppercase(product[6]));
 	
 	return r;
 }
 
-AVL* readNvalidate_products (char* filename, AVL *prod, GLOBAL *set) {
+AVL readNvalidate_products (char* filename, AVL prod, GLOBAL set) {
 
 	FILE *fp = fopen(filename, "r");
 
 	int max = biggest_line_in_file(filename);
-	int validos = 0, i = 0;
+	
+	set -> num_prods = 0;
+	set -> val_prods = 0;
+	set -> max_line_prods = max;
 
-	char *buffer = (char*) malloc(sizeof(char) * (max+10));
+	char *buffer = (char*) malloc(sizeof(char) * (2 * max));
 			
 	while (fgets(buffer, max, fp)) {
 		
@@ -39,17 +40,13 @@ AVL* readNvalidate_products (char* filename, AVL *prod, GLOBAL *set) {
 			
 			prod = updateAVL(prod, buffer);
 			
-			validos++;
+			set -> val_prods++;
 		}
 	
-		i++;
+		set -> num_prods++;
 	}
 
 	free(buffer);
-
-	set -> num_prods      = i;
-	set -> val_prods      = validos;
-	set -> max_line_prods = max;
 
 	fclose(fp);
 

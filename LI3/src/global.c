@@ -1,3 +1,14 @@
+/** @file global.c
+*	@brief Ficheiro que contém funções auxiliares ao projeto.
+*
+*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor Paulo Jorge da Silva Araújo 
+*	@autor Pedro Filipe Costa Machado 
+*
+*	@bug Nenhum que tivessemos reparado.
+*	
+*/
+
 #define _GNU_SOURCE
 
 #include <stdio.h>
@@ -8,14 +19,24 @@
 #include "global.h"
 #include "avlstruct.h"
 
-/* -------------------ANOTACOES--------------------------
+char* string_cut_extra_char (char *entry) {
 
-cat datafiles/Produtos.txt | uniq -u | wc -l
+	entry[(strlen(entry))-1] = '\0';
 
-TODO:...
+	return entry;
+}
 
-ficheiros windows \r + \n
-*/
+int is_uppercase (char ch) {
+
+	return (ch>='A' && ch <= 'Z');
+
+}
+
+int is_number (char ch) {
+
+	return (ch>='0' && ch<='9'); 
+
+}
 
 int biggest_line_in_file (char *filename) {
 
@@ -46,7 +67,7 @@ int numb_spaces_in_string (char *str) {
 	return spaces;
 }
 
-int exist_element (AVL *a, char *element) {
+int exist_element (AVL a, char *element) {
  
 	int len = 0, r = 0;
 	
@@ -68,7 +89,7 @@ int exist_element (AVL *a, char *element) {
 	return 0;
 }
 
-void write_recursive (AVL *a, FILE *fp) {
+void write_recursive (AVL a, FILE *fp) {
 
 	if (a != NULL) {
 		write_recursive (a -> left , fp);
@@ -77,7 +98,7 @@ void write_recursive (AVL *a, FILE *fp) {
 	}
 }
 
-void write_inorder_avl_on_file (char *filepath, AVL *a, GLOBAL *set) {
+void write_inorder_avl_on_file (char *filepath, AVL a, GLOBAL set) {
 
 	FILE *fp = fopen(filepath, "w");
 
@@ -87,7 +108,7 @@ void write_inorder_avl_on_file (char *filepath, AVL *a, GLOBAL *set) {
 
 }
 
-void inorder_avl (AVL *a) {
+void inorder_avl (AVL a) {
 
 	int i = 0;
 
@@ -98,10 +119,9 @@ void inorder_avl (AVL *a) {
 	}
 }
 
-void show_stats_vendas (GLOBAL *set) {
+void show_stats_vendas (GLOBAL set) {
 	printf("\nLinha mais longa venda : %d\n", set->max_line_sells);
 	printf("Produtos envolvidos : %d\n", set->val_prods);
 	printf("Clientes envolvidos : %d\n", set->val_clients);
 	printf("Vendas efectivas (válidas) : %d\n", set->val_sells);
-	printf("Vendas inválidas : %d\n", set->num_sells - set->val_sells);
 }

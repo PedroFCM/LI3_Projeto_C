@@ -9,7 +9,7 @@
 #include "produtos_read_write.h"
 #include "clientes_read_write.h"
 
-int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
+int verify_sell (char *sell, AVL prod, AVL client, GLOBAL set) {
 	
 	int r = 1;
 
@@ -31,7 +31,7 @@ int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
 
 		double price; 
 		sscanf(campos[2], "%lf", &price);
-		r = r && price >= 0.0 && price <= 999.99;
+		r = r && (price >= 0.0 && price <= 999.99);
 
 		int sold = atoi (campos[3]);
 		r = r && (sold >= 1 && sold <= 200); 
@@ -45,9 +45,9 @@ int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
 		r = r && (filial >= 1 && filial <= 3); 
 
 		r = r && exist_element(prod, campos[1]) && 
-		    	  exist_element(client, campos[5]);
+		    	 exist_element(client, campos[5]);
 		
-		free(campos);
+		free(campos);	
 	}
 
 	free(aux);
@@ -55,15 +55,17 @@ int verify_sell (char *sell, AVL* prod, AVL* client, GLOBAL *set) {
 	return r;
 }
 
-AVL* readNvalidate_sells (char* filename, AVL* sells, GLOBAL *set, AVL* prod, AVL* cli) {
+AVL readNvalidate_sells (char* filename, AVL sells, GLOBAL set, AVL prod, AVL cli) {
 
 	FILE *fp = fopen(filename, "r");
 	
-	int max = biggest_line_in_file(filename);
+	int max = biggest_line_in_file(filename);	
 	
-	int validos = 0, i = 0;
+	set -> max_line_sells = max;
+	set -> num_sells      =   0;
+	set -> val_sells      =   0;
 
-	char *buffer = (char*) malloc(sizeof(char)*(max+10));
+	char *buffer = (char*) malloc(sizeof(char) * (2* max));
 
 	while (fgets(buffer, max, fp)) {
 		
@@ -71,17 +73,13 @@ AVL* readNvalidate_sells (char* filename, AVL* sells, GLOBAL *set, AVL* prod, AV
 			
 			sells = updateAVL(sells, buffer);
 
-			validos++;
+			set -> val_sells++;
 		}
 
-		i++;
+		set -> num_sells++;
 	}
 	
 	free(buffer);
-
-	set -> num_sells      = i;
-	set -> val_sells      = validos;
-	set -> max_line_sells = max;
 
 	fclose(fp);
 	

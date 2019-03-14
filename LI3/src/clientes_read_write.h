@@ -6,6 +6,6 @@
 
 int verify_client (char *client);
 
-AVL* readNvalidate_clients (char *filename, AVL *clients, GLOBAL *set);
+AVL readNvalidate_clients (char *filename, AVL clients, GLOBAL set);
 
 #endif
