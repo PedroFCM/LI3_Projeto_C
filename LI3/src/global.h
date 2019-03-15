@@ -24,6 +24,9 @@ typedef struct settings {
 } *GLOBAL;
 
 
+char** tokenize (char** campos, char* sell);
+
+
 /** @brief Função que remove o caracter extra de uma string.
  *         Coloca, portanto, '\0' para indicar o término da string.
  *

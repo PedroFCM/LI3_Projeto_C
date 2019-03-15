@@ -19,6 +19,24 @@
 #include "global.h"
 #include "avlstruct.h"
 
+char** tokenize (char** campos, char* sell) {
+		
+		char *aux = strdup(sell);
+	
+		int ind = 1; 
+		char *token;
+
+		campos[0] = NULL;
+		token = strtok(aux, " ");
+		
+		while (token) {	
+			campos[ind++] = strdup(token);
+			token = strtok(NULL, " ");
+		}
+
+		return campos;
+}
+
 char* string_cut_extra_char (char *entry) {
 
 	entry[(strlen(entry))-1] = '\0';

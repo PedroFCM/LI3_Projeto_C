@@ -28,7 +28,7 @@
 #include "clientes_read_write.h"
 #include "vendas_read_write.h"
 #include "avlstruct.h"
-
+#include "queries.h"
 
 /**
 * @brief Função que carrega o SGV.
@@ -72,7 +72,6 @@ int main (void) {
 	/*--------------------STATS DE LEITURA---------------------------*/
 
 	show_stats_vendas(set);
-	
 	
 	/*---------------------FREE DAS ESTRUTURAS-----------------------*/
 
