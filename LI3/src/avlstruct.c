@@ -95,21 +95,24 @@ AVL fixLeft (AVL a){
 	return a;
 }
 
+AVL initAVL (AVL a, char *arg, int *g) {
+
+	a = (AVL) malloc(sizeof(struct avl));
+	
+	arg  = string_cut_extra_char (arg);
+	a -> tag = strdup(arg);
+	
+	a -> left = a -> right = NULL;
+	a -> bal  = BAL;
+	*g = 1;
+
+	return a;
+}
 
 AVL updateAVLRec (AVL a, char *arg, int *g) {
 	
-	if (a == NULL) {
-	
-		a = (AVL) malloc(sizeof(struct avl));
-		
-		arg  = string_cut_extra_char (arg);
-		a -> tag = strdup(arg);
-		
-		a -> left = a -> right = NULL;
-		a -> bal  = BAL;
-		*g = 1;
-	
-	} else {
+	if (a == NULL) a = initAVL(a, arg, g);
+	else {
 		
 		int r = strcmp(a -> tag, arg);
 		

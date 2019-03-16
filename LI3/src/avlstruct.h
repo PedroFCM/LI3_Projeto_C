@@ -21,6 +21,8 @@ AVL fixRight (AVL a);
 
 AVL fixLeft (AVL a);
 
+AVL initAVL (AVL a, char *arg, int *g);
+
 AVL updateAVLRec (AVL a, char *arg, int *g);
 
 AVL updateAVL (AVL a, char *arg);
