@@ -12,4 +12,13 @@ void query3 (AVL vendas, int mes, char *produto);
 void recursive_query3 (AVL vendas, char* prod, 
 					   int mes, int**n_vendas, 
 					   float** faturacao);
+
+void showStatGlobal_query3 (int **n_vendas, float** faturacao);
+
+void recursive_query8(int min, int max, AVL vendas, float* faturacao, int* total_vendas);
+
+void showStatPorFilial_query3 (int **n_vendas, float** faturacao);
+
+void query8(int min, int max, AVL vendas);
+
 #endif
