@@ -75,11 +75,9 @@ int main (void) {
 	
 	/*---------------------FREE DAS ESTRUTURAS-----------------------*/
 
-	query3(sells, 8, "AA1001");
-
-	// freeAVL(products);
-	// freeAVL(clients);
-	// freeAVL(sells);
+	freeAVL(products);
+	freeAVL(clients);
+	freeAVL(sells);
 	free(set);
 		
 	/*-------------------------CPU TIME------------------------------*/
