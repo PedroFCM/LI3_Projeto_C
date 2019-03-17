@@ -8,7 +8,7 @@
 typedef struct avl {
 	int bal;
 	char *tag;
-	struct avl *left, *right; 
+	struct avl *left, *right;
 } *AVL;
 
 void freeAVL (AVL a);

@@ -134,10 +134,3 @@ void inorder_avl (AVL a) {
 		inorder_avl(a -> right);
 	}
 }
-
-void show_stats_vendas (GLOBAL set) {
-	printf("\nLinha mais longa venda : %d\n", set->max_line_sells);
-	printf("Produtos envolvidos : %d\n", set->val_prods);
-	printf("Clientes envolvidos : %d\n", set->val_clients);
-	printf("Vendas efectivas (válidas) : %d\n", set->val_sells);
-}

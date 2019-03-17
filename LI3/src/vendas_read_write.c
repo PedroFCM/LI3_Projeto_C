@@ -17,37 +17,31 @@ int verify_sell (char *sell, AVL prod, AVL client, GLOBAL set) {
 	
 	if (numb_spaces_in_string(aux) == 6) {
 
-		char **campos = (char**) malloc(sizeof(char*) * CAMPOS_SELLS);
-		
-		int ind = 1;
-		campos[0] = NULL;
-
 		char *token = strtok(aux, " ");
-		
-		while (token) {	
-			campos[ind++] = strdup(token);
-			token = strtok(NULL, " ");
-		}
+		r = r && exist_element(prod, token);
 
+		token = strtok(NULL, " ");
 		double price; 
-		sscanf(campos[2], "%lf", &price);
+		sscanf(token, "%lf", &price);
 		r = r && (price >= 0.0 && price <= 999.99);
 
-		int sold = atoi (campos[3]);
+		token = strtok(NULL, " ");
+		int sold = atoi (token);
 		r = r && (sold >= 1 && sold <= 200); 
 		
-		r = r && (campos[4][0] == 'P' || campos[4][0] == 'N'); 
+		token = strtok(NULL, " ");
+		r = r && (token[0] == 'P' || token[0] == 'N'); 
+		
+		token = strtok(NULL, " ");
+		r = r && exist_element(client, token);
 	
-		int month = atoi(campos[6]);
+		token = strtok(NULL, " ");
+		int month = atoi(token);
 		r = r && (month >= 1 && month <= 12); 
 
-		int filial = atoi(campos[7]);
+		token = strtok(NULL, " ");
+		int filial = atoi(token);
 		r = r && (filial >= 1 && filial <= 3); 
-
-		r = r && exist_element(prod, campos[1]) && 
-		    	 exist_element(client, campos[5]);
-		
-		free(campos);	
 	}
 
 	free(aux);

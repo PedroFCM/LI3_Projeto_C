@@ -8,6 +8,19 @@
 #include "stack.h"
 #include "global.h"
 
+void query1 (GLOBAL set) {
+
+	printf("\nNúmero de produtos validados   : %d.\n", set->val_prods);
+	printf("Número de clientes validados   : %d.\n" , set->val_clients);
+	printf("Vendas válidas                 : %d.\n", set->val_sells);
+	
+	printf("\nOutros:\n");
+	printf("\nLinha mais longa venda         : %d\n", set->max_line_sells);
+	printf("Número de produtos inválidos   : %d\n", set->num_prods-set->val_prods);
+	printf("Número de clientes inválidos   : %d\n", set->num_clients-set->val_clients);
+	printf("Número de vendas   inválidas   : %d\n\n", set->num_sells-set->val_sells);
+}
+
 Stack* recursive_query2 (AVL produtos, Stack *s, char c) {
 
 	if (produtos != NULL) 
@@ -44,8 +57,7 @@ void query2 (AVL produtos, char c) {
 
 	printStack(s);
 
-	printf("\nNúmero total de produtos com letra %c-> %d.\n", c, s->sp);
-
+	printf("\nNúmero total de produtos com letra %c: %d.\n", c, s->sp);
 
 	freeStack(s);
 }
@@ -128,7 +140,7 @@ void showStatGlobal_query3 (int **n_vendas, float** faturacao) {
 	int globalVendas[2][1];
 	float globalFat[2][1];
 
-	printf("-> Faturação total das Filiais: \n\n");
+	printf("\n\nFaturação total das Filiais: \n\n");
 	for (l = 0; l < 2; l++) {
 		if (l == 0) printf("P: ");
 		if (l == 1) printf("N: ");
@@ -139,7 +151,7 @@ void showStatGlobal_query3 (int **n_vendas, float** faturacao) {
 		printf("\n");
 	}
 	
-	printf("\n-> Número de vendas totais das Filiais: \n\n");
+	printf("\nNúmero de vendas totais das Filiais: \n\n");
 	for (l = 0; l < 2; l++) {
 		if (l == 0) printf("P: ");
 		if (l == 1) printf("N: ");
@@ -152,7 +164,7 @@ void showStatGlobal_query3 (int **n_vendas, float** faturacao) {
 
 }
 
-void query3 (AVL vendas, int mes, char *produto) {
+void query3 (AVL vendas, int mes, char *produto, int opcao) {
 	
 	int l, c;
 	
@@ -172,7 +184,15 @@ void query3 (AVL vendas, int mes, char *produto) {
 
 	recursive_query3(vendas, produto, mes, n_vendas, faturacao);
 
-	showStatGlobal_query3(n_vendas, faturacao);
+	switch(opcao) {
+		case 1:	
+			showStatGlobal_query3(n_vendas, faturacao);
+			break;
+		case 0: 
+			showStatPorFilial_query3(n_vendas, faturacao);
+			break;
+		default: break; 
+	}
 
 	free(n_vendas);
 

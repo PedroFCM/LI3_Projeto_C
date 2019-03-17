@@ -113,6 +113,4 @@ void write_recursive (AVL a, FILE *fp);
 
 void write_inorder_avl_on_file (char *filepath, AVL a, GLOBAL set);
 
-void show_stats_vendas (GLOBAL set);
-
 #endif

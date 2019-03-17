@@ -7,6 +7,8 @@ void clear_screen();
 
 void loadOption ();
 
+void showTime (double time);
+
 void displayMenuAndOptions ();
 
 #endif

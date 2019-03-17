@@ -29,6 +29,7 @@
 #include "vendas_read_write.h"
 #include "avlstruct.h"
 #include "queries.h"
+#include "menu.h"
 
 /**
 * @brief Função que carrega o SGV.
@@ -44,13 +45,15 @@
 
 int main (void) {
 
-	/*-------------------------CPU TIME------------------------------*/
-	
+	/*Carregar menus: usar função loadOption(); do menu.c*/
+
+	/*------------------------------------------------------------*/
+
 	clock_t start, end;
 	double cpu_time_used;
 	start = clock();
 
-	/*--------------------CRIAÇÃO DE ESTRUTURAS----------------------*/
+	/*------------------------------------------------------------*/
 
 	GLOBAL set = (GLOBAL) malloc(sizeof(struct settings)); 
 
@@ -58,8 +61,8 @@ int main (void) {
 	AVL clients  = NULL;
 	AVL sells    = NULL;
 
-	/*--------------------LEITURA DE DADOS---------------------------*/
-	 
+	/*------------------------------------------------------------*/
+
 	products = readNvalidate_products(PROD_PATH, products, set);
 	write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
 	
@@ -68,22 +71,22 @@ int main (void) {
 	
 	sells = readNvalidate_sells(SELL_PATH, sells, set, products, clients);
 	write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
+
+	/*------------------------------------------------------------*/
 	
-	/*--------------------STATS DE LEITURA---------------------------*/
-
-	show_stats_vendas(set);
-
-	/*---------------------FREE DAS ESTRUTURAS-----------------------*/
+	query1(set);
 
 	freeAVL(products);
 	freeAVL(clients);
 	freeAVL(sells);
+		
 	free(set);
 
-	/*-------------------------CPU TIME------------------------------*/
-	
+	/*------------------------------------------------------------*/
+
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+
 	printf("\n\nCPU Time = %.4f seconds.\n\n", cpu_time_used );
 	
 	return 0;

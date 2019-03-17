@@ -3,11 +3,13 @@
 
 #include "stack.h"
 
+void query1 (GLOBAL set);
+
 Stack* recursive_query2 (AVL produtos, Stack *s, char c);
 
 void query2 (AVL produtos, char c);
 
-void query3 (AVL vendas, int mes, char *produto);
+void query3 (AVL vendas, int mes, char *produto, int opcao);
 
 void recursive_query3 (AVL vendas, char* prod, 
 					   int mes, int**n_vendas, 
