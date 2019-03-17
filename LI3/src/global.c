@@ -87,7 +87,7 @@ int numb_spaces_in_string (char *str) {
 
 int exist_element (AVL a, char *element) {
  
-	int len = 0, r = 0;
+	int r = 0;
 	
 	char *aux;
 
@@ -127,8 +127,6 @@ void write_inorder_avl_on_file (char *filepath, AVL a, GLOBAL set) {
 }
 
 void inorder_avl (AVL a) {
-
-	int i = 0;
 
 	if (a != NULL) {
 		inorder_avl(a -> left);

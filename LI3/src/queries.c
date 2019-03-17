@@ -42,7 +42,12 @@ void query2 (AVL produtos, char c) {
 	
 	s = recursive_query2(produtos, s, c);
 
-	printf("%d\n", s->sp);
+	printStack(s);
+
+	printf("\nNúmero total de produtos com letra %c-> %d.\n", c, s->sp);
+
+
+	freeStack(s);
 }
 
 void recursive_query3 (AVL vendas, char* prod, 
@@ -217,4 +222,73 @@ void query8(int min, int max, AVL vendas)
 	printf("\nNumero de vendas entre os meses %d e %d\n", min, max);
 	printf("%d\n", *total_vendas);
 
+}
+
+void recursive_query9 (AVL vendas, char* prod, int filial, Stack* clientesN, Stack* clientesP) {
+	int filial_prova;
+	char* prod_prova;
+	char tipo;
+	char* cliente;
+
+	if (vendas != NULL) {
+		
+		char **campos = (char**) malloc(sizeof(char*) * CAMPOS_SELLS);
+	
+		campos = tokenize (campos, vendas -> tag);
+		filial_prova = atoi(campos[7]);
+		prod_prova = campos[1];
+		tipo = campos[4][0];
+		cliente = campos[5];
+
+		if (!strcmp(prod, prod_prova) && filial_prova == filial) 
+		{
+			if (tipo == 'N'){
+
+				clientesN = push(clientesN, cliente); 
+				
+				recursive_query9(vendas -> right, prod, filial, clientesP, clientesN);
+				recursive_query9(vendas -> left, prod, filial, clientesP, clientesN); 
+			
+			}
+
+			if (tipo == 'P'){
+
+				clientesP = push(clientesP, cliente); 
+				
+				recursive_query9(vendas -> right, prod, filial, clientesP, clientesN);
+				recursive_query9(vendas -> left, prod, filial, clientesP, clientesN); 
+
+			}
+
+		}
+
+		else
+		{
+
+			if ( prod < prod_prova )
+				recursive_query9(vendas -> left, prod, filial, clientesP, clientesN);		
+		
+			else
+				recursive_query9(vendas -> right, prod, filial, clientesP, clientesN);
+		}
+	}
+}
+
+void query9 (AVL vendas, char* produto, int filial){
+
+	Stack* clientesP = NULL;
+	Stack* clientesN = NULL;
+	
+	clientesP = initStack(clientesP, 10000);
+	clientesN = initStack(clientesN, 10000);
+
+	recursive_query9(vendas, produto, filial, clientesP, clientesN);
+
+	printf("\nN: \n");
+	printStack(clientesN);
+	printf("\nP: \n");
+	printStack(clientesP);
+
+	freeStack(clientesP);
+	freeStack(clientesN);
 }

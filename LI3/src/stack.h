@@ -17,4 +17,8 @@ void pop (Stack *s);
 
 void doubleArray (Stack *s);
 
+void freeStack (Stack *s);
+
+void printStack (Stack *s);
+
 #endif

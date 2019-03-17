@@ -59,7 +59,7 @@ int main (void) {
 	AVL sells    = NULL;
 
 	/*--------------------LEITURA DE DADOS---------------------------*/
-	
+	 
 	products = readNvalidate_products(PROD_PATH, products, set);
 	write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
 	
@@ -72,19 +72,19 @@ int main (void) {
 	/*--------------------STATS DE LEITURA---------------------------*/
 
 	show_stats_vendas(set);
-	
+
 	/*---------------------FREE DAS ESTRUTURAS-----------------------*/
 
 	freeAVL(products);
 	freeAVL(clients);
 	freeAVL(sells);
 	free(set);
-		
+
 	/*-------------------------CPU TIME------------------------------*/
 	
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-	printf("\nCPU Time = %f\n\n", cpu_time_used );
+	printf("\n\nCPU Time = %.4f seconds.\n\n", cpu_time_used );
 	
 	return 0;
 }

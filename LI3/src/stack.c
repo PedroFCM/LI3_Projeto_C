@@ -20,7 +20,7 @@ int isEmpty (Stack *s) {
 }
 
 Stack* push (Stack *s, char *new) {
-	printf("%s\n", new);
+
 	if (s -> sp == s -> size)
 		doubleArray(s);
 
@@ -30,9 +30,8 @@ Stack* push (Stack *s, char *new) {
 }
 
 void pop (Stack *s) {
-	int r = 0;
-	if (s -> sp == 0) r = 1;
-	else free(s->elements[--s->sp]);
+	if (s -> sp > 0)
+		free(s->elements[--s->sp]);
 }
 
 void doubleArray (Stack *s) {
@@ -40,3 +39,16 @@ void doubleArray (Stack *s) {
 	s -> elements = realloc (s -> elements, s->size);
 }
 
+void freeStack (Stack *s) {
+	int i;
+	for (i = 0; i < s->sp; i++)
+		free(s->elements[i]);
+
+	free(s);
+}
+
+void printStack (Stack *s) {
+	int i;
+	for (i = 0; i < s->sp; i++)
+		printf("%s\n", s->elements[i]);
+}

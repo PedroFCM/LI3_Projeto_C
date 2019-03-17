@@ -21,4 +21,8 @@ void showStatPorFilial_query3 (int **n_vendas, float** faturacao);
 
 void query8(int min, int max, AVL vendas);
 
+void recursive_query9 (AVL vendas, char* prod, int filial, Stack* clientesN, Stack* clientesP);
+
+void query9 (AVL vendas, char* produto, int filial);
+
 #endif
