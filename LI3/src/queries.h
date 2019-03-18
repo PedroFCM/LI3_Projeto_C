@@ -2,6 +2,7 @@
 #define _QUERIES_
 
 #include "stack.h"
+#include "lstring.h"
 
 void query1 (GLOBAL set);
 
@@ -26,5 +27,9 @@ void query8(int min, int max, AVL vendas);
 void recursive_query9 (AVL vendas, char* prod, int filial, Stack* clientesN, Stack* clientesP);
 
 void query9 (AVL vendas, char* produto, int filial);
+
+LString recursive_query10 (AVL vendas, char* cliente, int mes, LString produtos);
+
+void query10 (AVL vendas, char* cliente, int mes);
 
 #endif

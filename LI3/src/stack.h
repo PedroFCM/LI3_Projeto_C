@@ -4,6 +4,7 @@
 typedef struct stack {
 	int size;
 	char **elements;
+	int ocurr;
 	int sp;
 } Stack;
 

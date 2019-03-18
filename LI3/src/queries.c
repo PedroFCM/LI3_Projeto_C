@@ -7,6 +7,7 @@
 
 #include "stack.h"
 #include "global.h"
+#include "lstring.h"
 
 void query1 (GLOBAL set) {
 
@@ -245,6 +246,7 @@ void query8(int min, int max, AVL vendas)
 }
 
 void recursive_query9 (AVL vendas, char* prod, int filial, Stack* clientesN, Stack* clientesP) {
+	
 	int filial_prova;
 	char* prod_prova;
 	char tipo;
@@ -262,24 +264,12 @@ void recursive_query9 (AVL vendas, char* prod, int filial, Stack* clientesN, Sta
 
 		if (!strcmp(prod, prod_prova) && filial_prova == filial) 
 		{
-			if (tipo == 'N'){
+			if (tipo == 'N') clientesN = push(clientesN, cliente); 			
 
-				clientesN = push(clientesN, cliente); 
-				
-				recursive_query9(vendas -> right, prod, filial, clientesP, clientesN);
-				recursive_query9(vendas -> left, prod, filial, clientesP, clientesN); 
+			if (tipo == 'P') clientesP = push(clientesP, cliente); 
 			
-			}
-
-			if (tipo == 'P'){
-
-				clientesP = push(clientesP, cliente); 
-				
-				recursive_query9(vendas -> right, prod, filial, clientesP, clientesN);
-				recursive_query9(vendas -> left, prod, filial, clientesP, clientesN); 
-
-			}
-
+			recursive_query9(vendas -> right, prod, filial, clientesP, clientesN);
+			recursive_query9(vendas -> left, prod, filial, clientesP, clientesN); 
 		}
 
 		else
@@ -312,3 +302,43 @@ void query9 (AVL vendas, char* produto, int filial){
 	freeStack(clientesP);
 	freeStack(clientesN);
 }
+
+LString recursive_query10 (AVL vendas, char* cliente, int mes, LString produtos) {
+
+	int mes_prova;
+	char *cliente_prova;
+	char *produto_prova;
+
+	if (vendas != NULL) {
+	
+		char **campos = (char**) malloc(sizeof(char*) * CAMPOS_SELLS);
+	
+		campos = tokenize (campos, vendas -> tag);
+		mes_prova = atoi(campos[6]);
+		cliente_prova = strdup(campos[5]);
+		produto_prova = strdup(campos[1]);
+		
+		if (strcmp(cliente_prova, cliente) == 0 && mes == mes_prova)
+			produtos = insertLString (produtos,produto_prova);
+
+		free(campos);
+
+		produtos = recursive_query10(vendas -> left, cliente, mes, produtos);		
+		produtos = recursive_query10(vendas -> right, cliente, mes, produtos);
+
+	}
+
+	return produtos;
+}
+
+void query10 (AVL vendas, char* cliente, int mes){
+
+	LString l = NULL;
+
+	l = recursive_query10(vendas, cliente, mes, l);
+
+	l = quickSortL(l);
+
+	printLString(l);
+}
+
