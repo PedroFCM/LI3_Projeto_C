@@ -8,6 +8,9 @@
 #include "stack.h"
 #include "global.h"
 #include "lstring.h"
+#include "arrayList.h"
+
+HEAD_LIST h;
 
 void query1 (GLOBAL set) {
 
@@ -342,3 +345,33 @@ void query10 (AVL vendas, char* cliente, int mes){
 	printLString(l);
 }
 
+void recursive_query11(AVL vendas, HEAD_LIST list) {
+
+	int sold, filial;
+
+	if (vendas != NULL) {
+
+		char **campos = (char**) malloc(sizeof(char*) * CAMPOS_SELLS);
+		campos = tokenize (campos, vendas -> tag);
+
+		sold = atoi (campos[3]);
+		filial = atoi(campos[7]);
+		pushArrayList(list, campos[1], filial, sold);
+		
+		recursive_query11(vendas -> left,  list);
+		recursive_query11(vendas -> right, list);
+	}
+}
+
+void query11 (AVL vendas) {
+	
+	HEAD_LIST list;
+	
+	list = (HEAD_LIST) malloc (sizeof(struct head));	
+
+	initArrayList(list, 200000);
+	
+	recursive_query11(vendas, list);
+
+	printArrayList(list);
+}

@@ -3,6 +3,7 @@
 
 #include "stack.h"
 #include "lstring.h"
+#include "arrayList.h"
 
 void query1 (GLOBAL set);
 
@@ -31,5 +32,9 @@ void query9 (AVL vendas, char* produto, int filial);
 LString recursive_query10 (AVL vendas, char* cliente, int mes, LString produtos);
 
 void query10 (AVL vendas, char* cliente, int mes);
+
+void recursive_query11(AVL vendas, HEAD_LIST h);
+
+void query11 (AVL vendas);
 
 #endif
