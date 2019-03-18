@@ -1,10 +1,30 @@
+
+/** @file stack.c
+*	@brief Ficheiro que implementa uma STACK em C.
+*
+*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor Paulo Jorge da Silva Araújo 
+*	@autor Pedro Filipe Costa Machado 
+*
+*	@bug Nenhum que tivessemos reparado.
+*	
+*/
+
+/*MACRO para suprimir warnings de strdup do <string.h>*/
+
 #define _GNU_SOURCE
+
+/*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
 
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
+/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+
 #include "stack.h"
+
+/*______________________________________________________________________*/
 
 Stack* initStack (Stack *s, int n) {
 	s = (Stack*) malloc (sizeof(struct stack));

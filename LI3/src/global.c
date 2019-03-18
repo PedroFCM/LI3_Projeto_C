@@ -1,3 +1,4 @@
+
 /** @file global.c
 *	@brief Ficheiro que contém funções auxiliares ao projeto.
 *
@@ -9,15 +10,22 @@
 *	
 */
 
+/*MACRO para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
+
+/*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
+/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+
 #include "global.h"
 #include "avlstruct.h"
+
+/*______________________________________________________________________*/
 
 char** tokenize (char** campos, char* sell) {
 		
@@ -130,7 +138,7 @@ void inorder_avl (AVL a) {
 
 	if (a != NULL) {
 		inorder_avl(a -> left);
-		printf("%s", a -> tag);
+		printf("%s\n", a -> tag);
 		inorder_avl(a -> right);
 	}
 }

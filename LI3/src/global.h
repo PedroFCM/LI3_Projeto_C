@@ -1,16 +1,33 @@
+
+/** @file global.h
+*	@brief Header file de global.c
+*
+*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor Paulo Jorge da Silva Araújo 
+*	@autor Pedro Filipe Costa Machado 
+*
+*	@bug Nenhum que tivessemos reparado.
+*	
+*/
+
 #ifndef _LER_
 #define _LER_
 
+/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+
 #include "avlstruct.h"
 
+/*MACROS que estabelecem os paths para os ficheiros de leitura*/
 #define PROD_PATH "datafiles/Produtos.txt"
 #define CLIE_PATH "datafiles/Clientes.txt"
 #define SELL_PATH "datafiles/Vendas_1M.txt"
 
+/*MACROS que estabelecem os paths para guardar os ficheiros*/
 #define VAL_PROD_PATH "validData/Produtos(validados).txt"
 #define VAL_CLIE_PATH "validData/Clientes(validados).txt"
 #define VAL_SELL_PATH "validData/Vendas(validadas).txt"
 
+/*MACRO para indicar o nº de campos que uma venda tem*/
 #define CAMPOS_SELLS 7
 
 typedef struct settings {
@@ -23,6 +40,12 @@ typedef struct settings {
 
 } *GLOBAL;
 
+/** @brief Função que divide uma string nos seus campos.
+ *
+ *  @param campos array de strings para guardar a divisao.
+ *  @param sell venda para a divisao.
+ *  @return Array de campos.
+ */
 
 char** tokenize (char** campos, char* sell);
 

@@ -4,15 +4,15 @@
 typedef struct elementos {
 
 	char *entry;
-	int *total_quant;
-	int *total_client;
+	int total_quant[3];
+	int total_client[3];
 
 } **ARRAY_LIST;
 
 typedef struct head {
 	
-	int *sp;
-	int *size;
+	int sp;
+	int size;
 
 	ARRAY_LIST content;
 

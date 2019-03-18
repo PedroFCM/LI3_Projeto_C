@@ -6,8 +6,6 @@
 #include <ctype.h>
 
 #include "global.h"
-#include "produtos_read_write.h"
-#include "clientes_read_write.h"
 
 int verify_sell (char *sell, AVL prod, AVL client, GLOBAL set) {
 	

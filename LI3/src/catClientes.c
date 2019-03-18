@@ -1,13 +1,32 @@
+
+/** @file catClientes.h
+*	@brief Ficheiro que lê e valida o ficheiro de clientes.
+*
+*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor Paulo Jorge da Silva Araújo 
+*	@autor Pedro Filipe Costa Machado 
+*
+*	@bug Nenhum que tivessemos reparado.
+*	
+*/
+
+/*MACRO para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
+
+/*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
+/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+
 #include "global.h"
-#include "clientes_read_write.h"
+#include "catClientes.h"
 #include "avlstruct.h"
+
+/*______________________________________________________________________*/
 
 int verify_client (char *client) {
 	

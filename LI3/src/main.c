@@ -24,9 +24,9 @@
 /*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
 
 #include "global.h"
-#include "produtos_read_write.h"
-#include "clientes_read_write.h"
-#include "vendas_read_write.h"
+#include "catProdutos.h"
+#include "catClientes.h"
+#include "catVendas.h"
 #include "avlstruct.h"
 #include "queries.h"
 #include "menu.h"
@@ -73,6 +73,7 @@ int main (void) {
 	write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
 
 	/*------------------------------------------------------------*/
+
 	
 	freeAVL(products);
 	freeAVL(clients);

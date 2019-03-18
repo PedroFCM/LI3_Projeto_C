@@ -1,14 +1,35 @@
+
+/** @file menu.c
+*	@brief Ficheiro que implementa o menu do SGV.
+*
+*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor Paulo Jorge da Silva Araújo 
+*	@autor Pedro Filipe Costa Machado 
+*
+*	@bug Nenhum que tivessemos reparado.
+*	
+*/
+
+/*MACRO para suprimir warnings de strdup do <string.h>*/
+#define _GNU_SOURCE
+
+/*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
+/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+
 #include "global.h"
-#include "produtos_read_write.h"
-#include "clientes_read_write.h"
-#include "vendas_read_write.h"
+#include "catProdutos.h"
+#include "catClientes.h"
+#include "catVendas.h"
 #include "avlstruct.h"
 #include "queries.h"
 #include "menu.h"
 #include "time.h"
+
+/*______________________________________________________________________*/
 
 int checkInput (int input, int selection) {
 	return (input==1 && ( 

@@ -1,9 +1,25 @@
+
+/** @file queries.h
+*	@brief Header file de queries.c
+*
+*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor Paulo Jorge da Silva Araújo 
+*	@autor Pedro Filipe Costa Machado 
+*
+*	@bug Nenhum que tivessemos reparado.
+*	
+*/
+
 #ifndef _QUERIES_
 #define _QUERIES_
+
+/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
 
 #include "stack.h"
 #include "lstring.h"
 #include "arrayList.h"
+
+/*______________________________________________________________________*/
 
 void query1 (GLOBAL set);
 

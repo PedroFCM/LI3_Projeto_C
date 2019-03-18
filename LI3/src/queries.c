@@ -1,16 +1,33 @@
+
+/** @file queries.c
+*	@brief Ficheiro que implenta as 12 querys em causa.
+*
+*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor Paulo Jorge da Silva Araújo 
+*	@autor Pedro Filipe Costa Machado 
+*
+*	@bug Nenhum que tivessemos reparado.
+*	
+*/
+
+/*MACRO para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
+
+/*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "avlstruct.h"
 
+/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+
+#include "avlstruct.h"
 #include "stack.h"
 #include "global.h"
 #include "lstring.h"
 #include "arrayList.h"
 
-HEAD_LIST h;
+/*______________________________________________________________________*/
 
 void query1 (GLOBAL set) {
 
@@ -368,8 +385,8 @@ void query11 (AVL vendas) {
 	HEAD_LIST list;
 	
 	list = (HEAD_LIST) malloc (sizeof(struct head));	
-
 	initArrayList(list, 200000);
+	list->sp = 0;
 	
 	recursive_query11(vendas, list);
 

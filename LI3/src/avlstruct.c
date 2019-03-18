@@ -1,11 +1,30 @@
+
+/** @file avlstruct.c
+*	@brief Ficheiro que implementa uma AVL.
+*
+*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor Paulo Jorge da Silva Araújo 
+*	@autor Pedro Filipe Costa Machado 
+*
+*	@bug Nenhum que tivessemos reparado.
+*	
+*/
+
+/*MACRO para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
+
+/*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
 
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
+/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+
 #include "avlstruct.h"
 #include "global.h"
+
+/*______________________________________________________________________*/
 
 void freeAVL (AVL a) {
 
