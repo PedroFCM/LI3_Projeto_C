@@ -18,6 +18,7 @@
 #include "stack.h"
 #include "lstring.h"
 #include "arrayList.h"
+#include "hashtables.h"
 
 /*______________________________________________________________________*/
 
@@ -49,7 +50,7 @@ LString recursive_query10 (AVL vendas, char* cliente, int mes, LString produtos)
 
 void query10 (AVL vendas, char* cliente, int mes);
 
-void recursive_query11(AVL vendas, HEAD_LIST h);
+void recursive_query11(AVL vendas, HEAD_TABLE h);
 
 void query11 (AVL vendas);
 

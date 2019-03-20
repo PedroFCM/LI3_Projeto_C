@@ -5,7 +5,7 @@ OBJ = $(patsubst %.c,%.o,$(wildcard *.c))
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS) -lm
-
+	
 main: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) -lm
 

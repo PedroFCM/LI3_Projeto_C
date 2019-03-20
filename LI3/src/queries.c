@@ -26,6 +26,7 @@
 #include "global.h"
 #include "lstring.h"
 #include "arrayList.h"
+#include "hashtables.h"
 
 /*______________________________________________________________________*/
 
@@ -362,7 +363,7 @@ void query10 (AVL vendas, char* cliente, int mes){
 	printLString(l);
 }
 
-void recursive_query11(AVL vendas, HEAD_LIST list) {
+void recursive_query11(AVL vendas, HEAD_TABLE h) {
 
 	int sold, filial;
 
@@ -373,22 +374,26 @@ void recursive_query11(AVL vendas, HEAD_LIST list) {
 
 		sold = atoi (campos[3]);
 		filial = atoi(campos[7]);
-		pushArrayList(list, campos[1], filial, sold);
+		update(h, campos[1], filial, sold);
 		
-		recursive_query11(vendas -> left,  list);
-		recursive_query11(vendas -> right, list);
+		recursive_query11(vendas -> left,  h);
+		recursive_query11(vendas -> right, h);
 	}
 }
 
 void query11 (AVL vendas) {
 	
-	HEAD_LIST list;
-	
-	list = (HEAD_LIST) malloc (sizeof(struct head));	
-	initArrayList(list, 200000);
-	list->sp = 0;
-	
-	recursive_query11(vendas, list);
+	HEAD_TABLE h = NULL;
 
-	printArrayList(list);
+	h = initTable(h, 200000);
+	
+	recursive_query11(vendas, h);
+
+	int filial = 2, n = 5;
+
+	quicksort(h, 0, h->hsize, filial);
+
+	printNfirstTableReverse(h, n);
+
+	free_hashtable(h);
 }

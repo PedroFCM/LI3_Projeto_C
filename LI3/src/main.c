@@ -74,11 +74,12 @@ int main (void) {
 
 	/*------------------------------------------------------------*/
 
-	
-	freeAVL(products);
+	query11(sells);
+
+/*	freeAVL(products);
 	freeAVL(clients);
 	freeAVL(sells);
-		
+*/		
 	free(set);
 
 	/*------------------------------------------------------------*/

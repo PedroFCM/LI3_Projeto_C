@@ -7,7 +7,7 @@ typedef struct elementos {
 	int total_quant[3];
 	int total_client[3];
 
-} **ARRAY_LIST;
+} *ARRAY_LIST;
 
 typedef struct head {
 	
