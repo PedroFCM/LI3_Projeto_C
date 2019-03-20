@@ -43,12 +43,12 @@ int verify_product (char *product) {
 	return r;
 }
 
-AVL readNvalidate_products (char* filename, AVL prod, GLOBAL set) {
+CAT_PRODUTOS readNvalidate_products (char* filename, CAT_PRODUTOS prod, GLOBAL set) {
 
 	FILE *fp = fopen(filename, "r");
 
 	int max = biggest_line_in_file(filename);
-	
+
 	set -> num_prods = 0;
 	set -> val_prods = 0;
 	set -> max_line_prods = max;
@@ -63,7 +63,7 @@ AVL readNvalidate_products (char* filename, AVL prod, GLOBAL set) {
 			
 			set -> val_prods++;
 		}
-	
+
 		set -> num_prods++;
 	}
 

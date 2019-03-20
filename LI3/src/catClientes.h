@@ -37,6 +37,6 @@ int verify_client (char *client);
  *  @return AVL resultado.
  */
 
-AVL readNvalidate_clients (char *filename, AVL clients, GLOBAL set);
+CAT_CLIENTES readNvalidate_clients (char *filename, CAT_CLIENTES clients, GLOBAL set);
 
 #endif

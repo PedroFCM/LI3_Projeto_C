@@ -102,13 +102,13 @@ int exist_element (AVL a, char *element) {
 
 	while (a != NULL) {
 		
-		aux = strndup(a->tag, strlen(element));
+		aux = strndup((getTag(a)), strlen(element));
 		
 		r = strcmp(aux, element);
 				
 		if (r == 0) return 1;
-		else if (r > 0) a = a -> left;
-		else if (r < 0) a = a -> right;
+		else if (r > 0) a = getEsq(a);
+		else if (r < 0) a = getDir(a);
 		
 		free(aux);
 	}
@@ -119,10 +119,11 @@ int exist_element (AVL a, char *element) {
 void write_recursive (AVL a, FILE *fp) {
 
 	if (a != NULL) {
-		write_recursive (a -> left , fp);
-		fprintf(fp, "%s", a -> tag);
-		write_recursive (a -> right, fp);
+		write_recursive (getEsq(a), fp);
+		fprintf(fp, "%s", getTag(a));
+		write_recursive (getDir(a), fp);
 	}
+
 }
 
 void write_inorder_avl_on_file (char *filepath, AVL a, GLOBAL set) {
@@ -139,15 +140,15 @@ void inorder_avl (AVL a) {
 
 	if (a != NULL) {
 	
-		inorder_avl(a -> left);
+		inorder_avl(getEsq(a));
 		
-		if (a->registo!=NULL) {
-			printf("%s | %lf | %d | %c | %s | %d | %d\n", a->registo->codProd, 
-				a->registo->preco, a->registo->quantidade, 
-				a->registo->tipo, a->registo->codCli,a->registo->mes,
-				a->registo->filial);
+		if (getRegisto(a)!=NULL) {
+			printf("%s | %lf | %d | %c | %s | %d | %d\n", 
+				getCodProd(a), getPreco(a), getQuantidade(a), 
+				getTipo(a), getCodCliente(a), getMes(a),
+				getFilial(a));
 		} else printf("REG=NULL\n");
 
-		inorder_avl(a -> right);
+		inorder_avl(getDir(a));
 	}
 }

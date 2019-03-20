@@ -13,7 +13,7 @@
 /*MACRO para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
 
-/*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
+/*_________________BIBLIOTECAS STD IMPORTADAS___________________________*/
 
 #include <stdlib.h>
 #include <string.h>
@@ -25,6 +25,96 @@
 #include "global.h"
 
 /*______________________________________________________________________*/
+
+
+/*ESTRUTURA QUE ARMAZENA O REGISTO DE UMA VENDA*/
+struct registo {
+
+	char* codProd;
+	double preco;
+	int quantidade;
+	char tipo;
+	char* codCli;
+	int mes;
+	int filial;
+
+};
+
+/*ESTRUTURA QUE DEFINE UMA AVL*/
+struct avl {
+
+	int bal;
+	
+	char* tag;
+		
+	REGISTO registo;
+
+	struct avl *left, *right;
+
+};
+
+/*______________________________________________________________________*/
+
+REGISTO initRegisto (REGISTO novo) {
+	novo = (REGISTO) malloc(sizeof(struct registo));
+	return novo;
+}
+
+void setFilial (REGISTO reg, int f) {
+	reg -> filial = f;
+}
+
+void setMes (REGISTO reg, int m) {
+	reg -> mes = m;
+}
+
+void setCodCliente (REGISTO reg, char* cliente) {
+	reg -> codCli = strdup(cliente);
+}
+
+void setTipo (REGISTO reg, char tp) {
+	reg -> tipo = tp;
+}
+
+void setQuantidade (REGISTO reg, int qt) {
+	reg -> quantidade = qt;
+}
+
+void setPreco (REGISTO reg, double price) {
+	reg->preco = price;
+}
+
+void setCodProd (REGISTO reg, char *prod) {
+	reg->codProd = strdup(prod);
+}
+
+char getFirstLetterTag (AVL a) {
+	return (a->tag[0]);
+}
+
+char getTipo (AVL a) {
+	return (a->registo->tipo);
+}
+
+char* getCodCliente (AVL a) {
+	return (a->registo->codCli);
+}
+
+int getMes (AVL a) {
+	return (a->registo->mes);
+}
+
+double getPreco (AVL a) {
+	return (a->registo->preco);
+}
+
+REGISTO getRegisto (AVL a) {
+	return (a->registo);
+}
+
+char* getTag (AVL a) {
+	return (a->tag);
+}
 
 AVL getEsq (AVL a) {
 	return (a->left);

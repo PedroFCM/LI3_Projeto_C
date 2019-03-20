@@ -22,7 +22,6 @@
 
 /*______________________________________________________________________*/
 
-
 /** @brief Função que verifica se um produto introduzido é válido.
  *
  *  @param *product produto para verificacao.
@@ -40,6 +39,6 @@ int verify_product (char *product);
  *  @return AVL de vendas válidas.
  */
 
-AVL readNvalidate_products (char* filename, AVL prod, GLOBAL set);
+CAT_PRODUTOS readNvalidate_products (char* filename, CAT_PRODUTOS prod, GLOBAL set);
 
 #endif

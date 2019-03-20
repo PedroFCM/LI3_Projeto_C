@@ -19,28 +19,155 @@
 #define LEFT -1
 #define RIGHT 1
 
-typedef struct registo {
 
-	char* codProd;
-	double preco;
-	int quantidade;
-	char tipo;
-	char* codCli;
-	int mes;
-	int filial;
+typedef struct avl* AVL;
 
-} *REGISTO;
+typedef struct avl* CAT_CLIENTES;
+typedef struct avl* CAT_PRODUTOS;
+typedef struct avl* CAT_VENDAS;
 
-typedef struct avl {
-	int bal;
-	
-	char* tag;
-	
-	REGISTO registo;
+typedef struct registo* REGISTO;
 
-	struct avl *left, *right;
+/** @brief Função que initializa um registo de venda.
+ *
+ *  @param novo Registo de venda.
+ *  @return registo alocado
+*/
 
-} *AVL;
+REGISTO initRegisto (REGISTO novo);
+
+
+/** @brief Função que insere uma filial num registo de venda.
+ *
+ *  @param reg Registo de venda.
+ *  @param f filial para inserção
+ *  @return void
+*/
+
+void setFilial (REGISTO reg, int f);
+
+
+/** @brief Função que insere o mes de compra num registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param mes mes para inserção
+ *  @return void
+*/
+
+void setMes (REGISTO reg, int m);
+
+
+/** @brief Função que insere um cliente num registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param cliente cliente para inserção
+ *  @return void
+*/
+
+void setCodCliente (REGISTO reg, char* cliente);
+
+
+/** @brief Função que insere um tipo de compra a um registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param tp tipo de compra para inserção
+ *  @return void
+*/
+
+void setTipo (REGISTO reg, char tp);
+
+
+/** @brief Função que insere uma quantidade comprada num registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param qt quantidade para inserção
+ *  @return void
+*/
+
+void setQuantidade (REGISTO reg, int qt);
+
+
+/** @brief Função que insere o preco de um produto a um registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param price preco para inserção
+ *  @return void
+*/
+
+void setPreco (REGISTO reg, double price);
+
+
+/** @brief Função que insere um produto a um registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param prod produto para inserção
+ *  @return void
+*/
+
+void setCodProd (REGISTO reg, char *prod);
+
+
+/** @brief Função que retorna a primeira letra de uma tag.
+ *
+ *  @param a AVL.
+ *  @return char primeira letra.
+*/
+
+char getFirstLetterTag (AVL a);
+
+
+/** @brief Função que retorna o tipo de uma venda.
+ *
+ *  @param a AVL.
+ *  @return o cliente de um registo venda.
+*/
+
+char getTipo (AVL a);
+
+
+/** @brief Função que retorna o código de cliente.
+ *
+ *  @param a AVL.
+ *  @return o cliente de um registo venda.
+*/
+
+char* getCodCliente (AVL a);
+
+/** @brief Função que retorna o mes de uma venda.
+ *
+ *  @param a AVL.
+ *  @return o mes de uma venda.
+*/
+
+int getMes (AVL a);
+
+
+/** @brief Função que retorna o preco de um produto numa venda.
+ *
+ *  @param a AVL.
+ *  @return o preco de um produto de uma venda.
+*/
+
+double getPreco (AVL a);
+
+
+/** @brief Função que retorna o registo de uma venda.
+ *
+ *  @param a AVL.
+ *  @return o registo da venda.
+*/
+
+REGISTO getRegisto (AVL a);
+
+
+/** @brief Função que retorna a string venda
+ *
+ *  @param a AVL.
+ *  @return string venda.
+*/
+
+char* getTag (AVL a);
+
 
 /** @brief Função que retorna o produto comprado numa venda.
  *

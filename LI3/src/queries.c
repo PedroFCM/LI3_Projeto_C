@@ -48,22 +48,22 @@ Stack* recursive_query2 (AVL produtos, Stack *s, char c) {
 	if (produtos != NULL) 
 	{
 		
-		if (c == produtos->tag[0]) 
+		if (c == getFirstLetterTag(produtos)) 
 		{
-			s = push(s, produtos->tag); 
+			s = push(s, getTag(produtos)); 
 			
-			s = recursive_query2(produtos->right, s, c);
-			s = recursive_query2(produtos->left, s, c); 
+			s = recursive_query2(getDir(produtos), s, c);
+			s = recursive_query2(getEsq(produtos), s, c); 
 			
 		}
 		
 		else
 		{
-			if ( c < produtos->tag[0] )
-				s = recursive_query2(produtos->left, s, c);			
+			if (c < getFirstLetterTag(produtos))
+				s = recursive_query2(getEsq(produtos), s, c);			
 		
 			else
-				s = recursive_query2(produtos->right, s, c);
+				s = recursive_query2(getDir(produtos), s, c);
 		}
 	}
 
@@ -87,41 +87,29 @@ void query2 (AVL produtos, char c) {
 void recursive_query3 (AVL vendas, char* prod, 
 					   int mes, int** n_vendas, 
 					   float** faturacao) {
-	int month, sold, filial;
-	char tipo;
-	double price;
-
 
 	if (vendas != NULL) {
-	
-		char **campos = (char**) malloc(sizeof(char*) * CAMPOS_SELLS);
-	
-		campos = tokenize (campos, vendas -> tag);
-		month = atoi(campos[6]);
-		
-		if (!strcmp(campos[1], prod) && mes == month) {
 			
-			sscanf(campos[2], "%lf", &price);
-			sold = atoi (campos[3]);
-			filial = atoi(campos[7]);
-			tipo = campos[4][0];
-
-			switch (tipo) {
-				case 'P': n_vendas[0][filial-1]++;
-						  faturacao[0][filial-1]+=sold*price;
+		if (!strcmp(getCodProd(vendas), prod) && mes == getMes(vendas)) {
+			
+			switch (getTipo(vendas)) {
+				case 'P': n_vendas[0][getFilial(vendas)-1]++;
+				
+				faturacao[0][getFilial(vendas)-1]+=getQuantidade(vendas)*getPreco(vendas);
+				
 						  break;
-				case 'N': n_vendas[1][filial-1]++;
-						  faturacao[1][filial-1]+=sold*price;
+				case 'N': n_vendas[1][getFilial(vendas)-1]++;
+				
+				faturacao[1][getFilial(vendas)-1]+=getQuantidade(vendas)*getPreco(vendas);
+				
 						  break;
 				default: break;
 			}
 
 		}
-	
-		free(campos);		
 
-		recursive_query3(vendas->left, prod, mes, n_vendas, faturacao);
-		recursive_query3(vendas->right, prod, mes, n_vendas, faturacao);
+		recursive_query3(getEsq(vendas), prod, mes, n_vendas, faturacao);
+		recursive_query3(getDir(vendas), prod, mes, n_vendas, faturacao);
 	}
 
 }
@@ -222,28 +210,24 @@ void query3 (AVL vendas, int mes, char *produto, int opcao) {
 
 void recursive_query8(int min, int max, AVL vendas, float* faturacao, int* total_vendas)
 {
-	if(vendas != NULL) 
-	{
-		char **campos = (char**) malloc(sizeof(char*) * CAMPOS_SELLS);
-		int month, sold;
+	if(vendas != NULL) {
+	
+		int month = getMes(vendas);
+		int sold;
 		double price;
 	
-		campos = tokenize (campos, vendas -> tag);
-		month = atoi(campos[6]);
-
 		if(month >= min && month <= max)
 		{
-			sscanf(campos[2], "%lf", &price);
-			sold = atoi (campos[3]);
+			
+			sold  = getQuantidade(vendas);
+			price = getPreco(vendas);
 
 			*faturacao += sold*price;
 			*total_vendas+=1;  
 		}
 
-		free(campos);
-
-		recursive_query8(min, max, vendas -> left, faturacao, total_vendas);
-		recursive_query8(min, max, vendas -> right, faturacao, total_vendas);
+		recursive_query8(min, max, getEsq(vendas), faturacao, total_vendas);
+		recursive_query8(min, max, getDir(vendas), faturacao, total_vendas);
 
 	}
 }
@@ -275,13 +259,10 @@ void recursive_query9 (AVL vendas, char* prod, int filial, Stack* clientesN, Sta
 
 	if (vendas != NULL) {
 		
-		char **campos = (char**) malloc(sizeof(char*) * CAMPOS_SELLS);
-	
-		campos = tokenize (campos, vendas -> tag);
-		filial_prova = atoi(campos[7]);
-		prod_prova = campos[1];
-		tipo = campos[4][0];
-		cliente = campos[5];
+		filial_prova = getFilial(vendas);
+		prod_prova = getCodProd(vendas);
+		tipo = getTipo(vendas);
+		cliente = getCodCliente(vendas);
 
 		if (!strcmp(prod, prod_prova) && filial_prova == filial) 
 		{
@@ -289,18 +270,18 @@ void recursive_query9 (AVL vendas, char* prod, int filial, Stack* clientesN, Sta
 
 			if (tipo == 'P') clientesP = push(clientesP, cliente); 
 			
-			recursive_query9(vendas -> right, prod, filial, clientesP, clientesN);
-			recursive_query9(vendas -> left, prod, filial, clientesP, clientesN); 
+			recursive_query9(getDir(vendas), prod, filial, clientesP, clientesN);
+			recursive_query9(getEsq(vendas), prod, filial, clientesP, clientesN); 
 		}
 
 		else
 		{
 
-			if ( prod < prod_prova )
-				recursive_query9(vendas -> left, prod, filial, clientesP, clientesN);		
+			if (prod < prod_prova)
+				recursive_query9(getEsq(vendas), prod, filial, clientesP, clientesN);		
 		
 			else
-				recursive_query9(vendas -> right, prod, filial, clientesP, clientesN);
+				recursive_query9(getDir(vendas), prod, filial, clientesP, clientesN);
 		}
 	}
 }
@@ -326,26 +307,13 @@ void query9 (AVL vendas, char* produto, int filial){
 
 LString recursive_query10 (AVL vendas, char* cliente, int mes, LString produtos) {
 
-	int mes_prova;
-	char *cliente_prova;
-	char *produto_prova;
-
 	if (vendas != NULL) {
-	
-		char **campos = (char**) malloc(sizeof(char*) * CAMPOS_SELLS);
-	
-		campos = tokenize (campos, vendas -> tag);
-		mes_prova = atoi(campos[6]);
-		cliente_prova = strdup(campos[5]);
-		produto_prova = strdup(campos[1]);
-		
-		if (strcmp(cliente_prova, cliente) == 0 && mes == mes_prova)
-			produtos = insertLString (produtos,produto_prova);
 
-		free(campos);
+		if (strcmp(getCodCliente(vendas), cliente) == 0 && mes == getMes(vendas))
+			produtos = insertLString (produtos, getCodProd(vendas));
 
-		produtos = recursive_query10(vendas -> left, cliente, mes, produtos);		
-		produtos = recursive_query10(vendas -> right, cliente, mes, produtos);
+		produtos = recursive_query10(getEsq(vendas), cliente, mes, produtos);		
+		produtos = recursive_query10(getDir(vendas), cliente, mes, produtos);
 
 	}
 

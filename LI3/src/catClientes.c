@@ -43,7 +43,7 @@ int verify_client (char *client) {
 	return r;
 }
 
-AVL readNvalidate_clients (char *filename, AVL clients, GLOBAL set) {
+CAT_CLIENTES readNvalidate_clients (char *filename, CAT_CLIENTES clients, GLOBAL set) {
 
 	FILE *fp = fopen(filename, "r");
 
@@ -60,10 +60,10 @@ AVL readNvalidate_clients (char *filename, AVL clients, GLOBAL set) {
 		if (verify_client(buffer)) {
 
 			clients = updateAVL(clients, NULL, buffer);
-			
+		
 			set -> val_clients++;
 		}
-		
+
 		set -> num_clients++;
 	}
 	

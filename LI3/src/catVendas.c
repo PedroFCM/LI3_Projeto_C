@@ -8,7 +8,7 @@
 #include "global.h"
 #include "avlstruct.h"
 
-int verify_sell (AVL vendas, AVL prod, AVL client, GLOBAL set, char *sell, REGISTO reg) {
+int verify_sell (CAT_VENDAS vendas, CAT_PRODUTOS prod, CAT_CLIENTES client, GLOBAL set, char *sell, REGISTO reg) {
 	
 	int r = 1;
 
@@ -46,14 +46,13 @@ int verify_sell (AVL vendas, AVL prod, AVL client, GLOBAL set, char *sell, REGIS
 		/*CRIA NOVO REGISTO CASO A VENDA SEJA VÁLIDA*/
 		if (r == 1) { 
 
-			reg -> codProd = strdup(campos[1]);
-			reg -> preco = price;
-			reg -> quantidade = sold;
-			reg -> tipo = campos[4][0];
-			reg -> codCli = strdup(campos[5]);
-			reg -> mes = month;
-			reg -> filial = filial;
-		
+			setCodProd(reg, campos[1]);
+			setPreco(reg, price);
+			setQuantidade(reg, sold);
+			setTipo(reg, campos[4][0]);
+			setCodCliente(reg, campos[5]);
+			setMes(reg, month);
+			setFilial(reg, filial);
 		}
 	}
 
@@ -62,7 +61,8 @@ int verify_sell (AVL vendas, AVL prod, AVL client, GLOBAL set, char *sell, REGIS
 	return r;
 }
 
-AVL readNvalidate_sells (char* filename, AVL sells, GLOBAL set, AVL prod, AVL cli) {
+CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells, 
+								GLOBAL set, CAT_PRODUTOS prod, CAT_CLIENTES cli) {
 
 	FILE *fp = fopen(filename, "r");
 	
@@ -76,7 +76,8 @@ AVL readNvalidate_sells (char* filename, AVL sells, GLOBAL set, AVL prod, AVL cl
 
 	while (fgets(buffer, max, fp)) {
 		
-		REGISTO novo_registo = (REGISTO) malloc(sizeof(struct registo));
+		REGISTO novo_registo = NULL;
+		novo_registo = initRegisto(novo_registo);
 
 		if (verify_sell(sells, prod, cli, set, buffer, novo_registo)) {
 			

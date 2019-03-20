@@ -30,6 +30,8 @@
 /*MACRO para indicar o nº de campos que uma venda tem*/
 #define CAMPOS_SELLS 7
 
+
+/*ESTRUTURA QUE DEFINE ESTATISTICAS GLOBAIS DE LEITURA DOS FICHEIROS*/
 typedef struct settings {
 
 	int num_prods, num_clients, num_sells;
@@ -40,13 +42,6 @@ typedef struct settings {
 
 } *GLOBAL;
 
-
-/** @brief Função que divide uma string nos seus campos.
- *
- *  @param campos array de strings para guardar a divisao.
- *  @param sell venda para a divisao.
- *  @return Array de campos.
- */
 
 char** tokenize (char** campos, char* sell);
 
