@@ -193,9 +193,9 @@ void loadOption () {
 
 	if (option_selected == 'q' || option_selected == 'Q' || option_selected == 'y') {
 		printf("A sair do programa...\n");
-		freeAVL(products);
-		freeAVL(clients);
-		freeAVL(sells);
+		freeAVL(products, 0);
+		freeAVL(clients, 0);
+		freeAVL(sells, 1);
 		free(set);
 		if (option_selected=='y') loadOption();
 	}

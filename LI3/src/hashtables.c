@@ -58,13 +58,13 @@ void update (HEAD_TABLE h, char *key, int filial, int new_quant) {
 
 	if (p < 0) return;
 	else if (h->content[p].entry!=NULL && !strcmp(h->content[p].entry, key)) {
-		h->content[p].total_quant[filial] = new_quant;
-		h->content[p].total_client[filial]++;
+		h->content[p].total_quant[filial-1] += new_quant;
+		h->content[p].total_client[filial-1]++;
 		h->content[p].status = USED;
 	} else {
 		h -> content[p].entry = strdup(key);
-		h -> content[p].total_quant[filial] = new_quant;
-		h -> content[p].total_client[filial]++;		
+		h -> content[p].total_quant[filial-1] = new_quant;
+		h -> content[p].total_client[filial-1]++;		
 		h -> content[p].status = USED;
 	}
 }
@@ -80,19 +80,6 @@ int lookup (HEAD_TABLE h, char* key, int hsize, int key_hash) {
 	return found;
 }
 
-/*int deleteKey (HashTable t, char *key, int hsize, int key_hash) {
-
-	int r = 0, p = find_quad_probe (t, key, hsize, key_hash);
-
-	if (p > 0 && !strcmp(t[p].element, key) &&
-		t[p].status == USED) {
-		t[p].status = DELETED;
-	} else r = 1;
-
-	return r;
-}
-*/
-
 void free_hashtable (HEAD_TABLE h) {
 
 	int i = 0;
@@ -100,6 +87,8 @@ void free_hashtable (HEAD_TABLE h) {
 		free(h->content[i].entry);
 		i++;
 	}
+
+	free(h);
 }
 
 void printArrayTable (int *array) {

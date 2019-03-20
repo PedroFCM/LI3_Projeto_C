@@ -59,7 +59,7 @@ AVL readNvalidate_products (char* filename, AVL prod, GLOBAL set) {
 		
 		if (verify_product(buffer)) {
 			
-			prod = updateAVL(prod, buffer);
+			prod = updateAVL(prod, NULL, buffer);
 			
 			set -> val_prods++;
 		}

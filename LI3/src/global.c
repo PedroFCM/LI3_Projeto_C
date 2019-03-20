@@ -27,6 +27,7 @@
 
 /*______________________________________________________________________*/
 
+
 char** tokenize (char** campos, char* sell) {
 		
 		char *aux = strdup(sell);
@@ -137,8 +138,16 @@ void write_inorder_avl_on_file (char *filepath, AVL a, GLOBAL set) {
 void inorder_avl (AVL a) {
 
 	if (a != NULL) {
+	
 		inorder_avl(a -> left);
-		printf("%s\n", a -> tag);
+		
+		if (a->registo!=NULL) {
+			printf("%s | %lf | %d | %c | %s | %d | %d\n", a->registo->codProd, 
+				a->registo->preco, a->registo->quantidade, 
+				a->registo->tipo, a->registo->codCli,a->registo->mes,
+				a->registo->filial);
+		} else printf("REG=NULL\n");
+
 		inorder_avl(a -> right);
 	}
 }

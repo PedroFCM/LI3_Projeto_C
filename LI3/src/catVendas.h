@@ -2,8 +2,9 @@
 #define _SELLS_
 
 #include "global.h"
+#include "avlstruct.h"
 
-int verify_sell (AVL vendas, char *sell, AVL prod, AVL client, GLOBAL set);
+int verify_sell (AVL vendas, AVL prod, AVL client, GLOBAL set, char *sell, REGISTO reg);
 
 AVL readNvalidate_sells (char* filename, AVL sells, GLOBAL set, AVL prod, AVL cli);
 

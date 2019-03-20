@@ -74,14 +74,16 @@ int main (void) {
 
 	/*------------------------------------------------------------*/
 
-	query11(sells);
-
-/*	freeAVL(products);
-	freeAVL(clients);
-	freeAVL(sells);
-*/		
+	query11(sells);	
+	
+/*	freeAVL(products, 0);
+	freeAVL(clients, 0);
+	freeAVL(sells, 1);
+*/
+	
 	free(set);
-
+	
+	
 	/*------------------------------------------------------------*/
 
 	end = clock();

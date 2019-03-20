@@ -365,19 +365,14 @@ void query10 (AVL vendas, char* cliente, int mes){
 
 void recursive_query11(AVL vendas, HEAD_TABLE h) {
 
-	int sold, filial;
-
 	if (vendas != NULL) {
 
-		char **campos = (char**) malloc(sizeof(char*) * CAMPOS_SELLS);
-		campos = tokenize (campos, vendas -> tag);
-
-		sold = atoi (campos[3]);
-		filial = atoi(campos[7]);
-		update(h, campos[1], filial, sold);
+		update(h, getCodProd(vendas), 
+				  getFilial(vendas), 
+				  getQuantidade(vendas));
 		
-		recursive_query11(vendas -> left,  h);
-		recursive_query11(vendas -> right, h);
+		recursive_query11(getEsq(vendas),  h);
+		recursive_query11(getDir(vendas), h);
 	}
 }
 
@@ -392,6 +387,8 @@ void query11 (AVL vendas) {
 	int filial = 2, n = 5;
 
 	quicksort(h, 0, h->hsize, filial);
+
+	printf("%d produtos mais comprados: \n\n", n);
 
 	printNfirstTableReverse(h, n);
 

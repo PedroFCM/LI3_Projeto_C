@@ -26,11 +26,31 @@
 
 /*______________________________________________________________________*/
 
-void freeAVL (AVL a) {
+AVL getEsq (AVL a) {
+	return (a->left);
+}
+
+AVL getDir (AVL a) {
+	return (a->right);
+}
+
+char* getCodProd (AVL a) {
+	return (a->registo->codProd);
+}
+
+int getFilial (AVL a) {
+	return (a->registo->filial);
+}
+
+int getQuantidade (AVL a) {
+	return (a->registo->quantidade);
+}
+
+void freeAVL (AVL a, int flag) {
 
 	if (a != NULL) {
-		freeAVL (a -> left);
-		freeAVL (a -> right);
+		freeAVL (a -> left, flag);
+		freeAVL (a -> right, flag);
 		free (a -> tag);
 		free(a);
 	}
@@ -114,12 +134,17 @@ AVL fixLeft (AVL a){
 	return a;
 }
 
-AVL initAVL (AVL a, char *arg, int *g) {
+AVL initAVL (AVL a, REGISTO novo, char *arg, int *g) {
 
 	a = (AVL) malloc(sizeof(struct avl));
 	
 	arg  = string_cut_extra_char (arg);
 	a -> tag = strdup(arg);
+	
+	if (novo != NULL) {
+		a -> registo = (REGISTO) malloc(sizeof(struct registo));
+		a -> registo = novo;	
+	}	
 	
 	a -> left = a -> right = NULL;
 	a -> bal  = BAL;
@@ -128,16 +153,16 @@ AVL initAVL (AVL a, char *arg, int *g) {
 	return a;
 }
 
-AVL updateAVLRec (AVL a, char *arg, int *g) {
+AVL updateAVLRec (AVL a, REGISTO novo, char *arg, int *g) {
 	
-	if (a == NULL) a = initAVL(a, arg, g);
+	if (a == NULL) a = initAVL(a, novo, arg, g);
 	else {
 		
 		int r = strcmp(a -> tag, arg);
 		
 		if (r >= 0) {
 	
-			a->left = updateAVLRec (a -> left, arg, g);
+			a->left = updateAVLRec (a -> left, novo, arg, g);
 		
 			if (*g == 1)
 				switch (a->bal) {
@@ -158,7 +183,7 @@ AVL updateAVLRec (AVL a, char *arg, int *g) {
 
 		else {
 		
-		a->right = updateAVLRec (a->right, arg, g);
+		a->right = updateAVLRec (a->right, novo, arg, g);
 		
 		if (*g == 1)
 	
@@ -182,11 +207,11 @@ AVL updateAVLRec (AVL a, char *arg, int *g) {
 	return a;
 }
 
-AVL updateAVL (AVL a, char *arg) {
+AVL updateAVL (AVL a, REGISTO novo, char *arg) {
 	
 	int g;
 	
-	a = updateAVLRec(a, arg, &g);
+	a = updateAVLRec(a, novo, arg, &g);
 	
 	return a;
 }

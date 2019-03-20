@@ -6,43 +6,58 @@
 #include <ctype.h>
 
 #include "global.h"
+#include "avlstruct.h"
 
-int verify_sell (char *sell, AVL prod, AVL client, GLOBAL set) {
+int verify_sell (AVL vendas, AVL prod, AVL client, GLOBAL set, char *sell, REGISTO reg) {
 	
 	int r = 1;
 
-	char *aux = strdup(sell);
-	
-	if (numb_spaces_in_string(aux) == 6) {
+	char **campos = (char**) malloc(sizeof(char*) * CAMPOS_SELLS);	
+	campos = tokenize(campos, sell);
 
-		char *token = strtok(aux, " ");
-		r = r && exist_element(prod, token);
+	if (numb_spaces_in_string(sell) == 6) {
 
-		token = strtok(NULL, " ");
-		double price; 
-		sscanf(token, "%lf", &price);
+		/*VERIFICAR SE O PRODUTO EXISTE NA AVL PRODUTOS*/
+		r = r && exist_element(prod, campos[1]);
+		
+		/*VERIFICAR SE O PRECO É VÁLIDO*/
+		double price;
+		sscanf(campos[2], "%lf", &price);
 		r = r && (price >= 0.0 && price <= 999.99);
 
-		token = strtok(NULL, " ");
-		int sold = atoi (token);
+		/*VERIFICAR SE A QUANTIDADE COMPRADA É VÁLIDA*/
+		int sold = atoi (campos[3]);
 		r = r && (sold >= 1 && sold <= 200); 
-		
-		token = strtok(NULL, " ");
-		r = r && (token[0] == 'P' || token[0] == 'N'); 
-		
-		token = strtok(NULL, " ");
-		r = r && exist_element(client, token);
+
+		/*VERIFICAR SE O MODO DE COMPRA É VÁLIDO*/
+		r = r && (campos[4][0] == 'P' || campos[4][0] == 'N');
+
+		/*VERIFICAR SE O CLIENTE EXISTE NA AVL CLIENTES*/
+		r = r && exist_element(client, campos[5]);
 	
-		token = strtok(NULL, " ");
-		int month = atoi(token);
+		/*VERIFICAR SE O MÊS DE COMPRA É VÁLIDO*/
+		int month = atoi(campos[6]);
 		r = r && (month >= 1 && month <= 12); 
 
-		token = strtok(NULL, " ");
-		int filial = atoi(token);
+		/*VERIFICAR SE A FILIAL É VÁLIDA*/
+		int filial = atoi(campos[7]);
 		r = r && (filial >= 1 && filial <= 3); 
+
+		/*CRIA NOVO REGISTO CASO A VENDA SEJA VÁLIDA*/
+		if (r == 1) { 
+
+			reg -> codProd = strdup(campos[1]);
+			reg -> preco = price;
+			reg -> quantidade = sold;
+			reg -> tipo = campos[4][0];
+			reg -> codCli = strdup(campos[5]);
+			reg -> mes = month;
+			reg -> filial = filial;
+		
+		}
 	}
 
-	free(aux);
+	free(campos);
 
 	return r;
 }
@@ -61,12 +76,15 @@ AVL readNvalidate_sells (char* filename, AVL sells, GLOBAL set, AVL prod, AVL cl
 
 	while (fgets(buffer, max, fp)) {
 		
-		if (verify_sell(buffer, prod, cli, set)) {
+		REGISTO novo_registo = (REGISTO) malloc(sizeof(struct registo));
+
+		if (verify_sell(sells, prod, cli, set, buffer, novo_registo)) {
 			
-			sells = updateAVL(sells, buffer);
+			sells = updateAVL(sells, novo_registo, buffer);
 
 			set -> val_sells++;
-		}
+		
+		} else free(novo_registo);
 
 		set -> num_sells++;
 	}

@@ -59,7 +59,7 @@ AVL readNvalidate_clients (char *filename, AVL clients, GLOBAL set) {
 		
 		if (verify_client(buffer)) {
 
-			clients = updateAVL(clients, buffer);
+			clients = updateAVL(clients, NULL, buffer);
 			
 			set -> val_clients++;
 		}

@@ -40,6 +40,7 @@ typedef struct settings {
 
 } *GLOBAL;
 
+
 /** @brief Função que divide uma string nos seus campos.
  *
  *  @param campos array de strings para guardar a divisao.
