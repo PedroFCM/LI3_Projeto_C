@@ -45,15 +45,22 @@
 
 int main (void) {
 
-	/*Carregar menus: usar função loadOption(); do menu.c*/
+	loadOption();
 
-	/*------------------------------------------------------------*/
+	return 0;
+
+}
+
+
+/*
+int main (void) {
+
+
 
 	clock_t start, end;
 	double cpu_time_used;
 	start = clock();
 
-	/*------------------------------------------------------------*/
 
 	GLOBAL set = (GLOBAL) malloc(sizeof(struct settings)); 
 
@@ -61,70 +68,23 @@ int main (void) {
 	CAT_CLIENTES clients  = NULL;
 	CAT_VENDAS   sells    = NULL;
 
-	/*------------------------------------------------------------*/
 
 	products = readNvalidate_products(PROD_PATH, products, set);	
 	clients = readNvalidate_clients(CLIE_PATH, clients, set);
 	sells = readNvalidate_sells(SELL_PATH, sells, set, products, clients);
 
-	/*------------------------------------------------------------*/
-
 	write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
 	write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
 	write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
 
-	/*------------------------------------------------------------*/
 
-	query11(sells);
-
-/*	freeAVL(products, 0);
+	freeAVL(products, 0);
 	freeAVL(clients, 0);
 	freeAVL(sells, 1);
-*/
+
 	
 	free(set);
 	
-	
-	/*------------------------------------------------------------*/
-
-	end = clock();
-	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-
-	printf("\n\nCPU Time = %.4f seconds.\n\n", cpu_time_used );
-	
-	return 0;
-}
-
-/*
-int main (void) {
-
-
-	clock_t start, end;
-	double cpu_time_used;
-	start = clock();
-
-	GLOBAL set = (GLOBAL) malloc(sizeof(struct settings)); 
-
-	AVL products = NULL;
-	AVL clients  = NULL;
-	AVL sells    = NULL;
-
-	products = readNvalidate_products(PROD_PATH, products, set);
-	write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
-	
-	clients = readNvalidate_clients(CLIE_PATH, clients, set);
-	write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
-	
-	sells = readNvalidate_sells(SELL_PATH, sells, set, products, clients);
-	write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
-
-	query1(set);
-
-	freeAVL(products);
-	freeAVL(clients);
-	freeAVL(sells);
-		
-	free(set);
 
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;

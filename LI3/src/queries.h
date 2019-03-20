@@ -52,6 +52,6 @@ void query10 (AVL vendas, char* cliente, int mes);
 
 void recursive_query11(AVL vendas, HEAD_TABLE h);
 
-void query11 (AVL vendas);
+void query11 (AVL vendas, int n);
 
 #endif

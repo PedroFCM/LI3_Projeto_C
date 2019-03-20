@@ -28,6 +28,9 @@
 #include "arrayList.h"
 #include "hashtables.h"
 
+typedef float** FAT_PRECO;
+typedef int** FAT_QUANT;
+
 /*______________________________________________________________________*/
 
 void query1 (GLOBAL set) {
@@ -114,11 +117,11 @@ void recursive_query3 (AVL vendas, char* prod,
 
 }
 
-void showStatPorFilial_query3 (int **n_vendas, float** faturacao) {
+void showStatPorFilial_query3 (FAT_QUANT n_vendas, FAT_PRECO faturacao) {
 
 	int l, c;
 
-	printf("-> Faturação por Filial: \n\n");
+	printf("\n\n-> Faturação por Filial: \n\n");
 	
 	printf("   1   2   3     (Filial)\n");
 	for (l = 0; l < 2; l++) {
@@ -144,7 +147,7 @@ void showStatPorFilial_query3 (int **n_vendas, float** faturacao) {
 
 }
 
-void showStatGlobal_query3 (int **n_vendas, float** faturacao) {
+void showStatGlobal_query3 (FAT_QUANT n_vendas, FAT_PRECO faturacao) {
 
 	int l, c;
 	int globalVendas[2][1];
@@ -178,8 +181,8 @@ void query3 (AVL vendas, int mes, char *produto, int opcao) {
 	
 	int l, c;
 	
-	float **faturacao = (float**) malloc(sizeof(float*) * 2);
-	int   **n_vendas  = (int**)   malloc(sizeof(int*)   * 2);
+	FAT_PRECO faturacao = (float**) malloc(sizeof(float*) * 2);
+	FAT_QUANT n_vendas  = (int**)   malloc(sizeof(int*)   * 2);
 	
 	for (l = 0; l < 2; l++) {
 	
@@ -242,47 +245,33 @@ void query8(int min, int max, AVL vendas)
 
 	recursive_query8(min, max, vendas, faturacao, total_vendas);
 
-	printf("\nFaturação entre os meses %d e %d\n", min, max);
-	printf("%f\n", *faturacao);
+	printf("\nFaturação entre os meses %d e %d: \n", min, max);
+	printf("-> %.3f euros.\n", *faturacao);
 
-	printf("\nNumero de vendas entre os meses %d e %d\n", min, max);
-	printf("%d\n", *total_vendas);
+	printf("\nNumero de vendas entre os meses %d e %d: \n", min, max);
+	printf("-> %d vendas.\n", *total_vendas);
 
 }
 
 void recursive_query9 (AVL vendas, char* prod, int filial, Stack* clientesN, Stack* clientesP) {
 	
-	int filial_prova;
-	char* prod_prova;
 	char tipo;
 	char* cliente;
 
 	if (vendas != NULL) {
 		
-		filial_prova = getFilial(vendas);
-		prod_prova = getCodProd(vendas);
 		tipo = getTipo(vendas);
 		cliente = getCodCliente(vendas);
 
-		if (!strcmp(prod, prod_prova) && filial_prova == filial) 
+		if (!strcmp(prod, getCodProd(vendas)) && getFilial(vendas) == filial) 
 		{
 			if (tipo == 'N') clientesN = push(clientesN, cliente); 			
 
 			if (tipo == 'P') clientesP = push(clientesP, cliente); 
 			
+		}
 			recursive_query9(getDir(vendas), prod, filial, clientesP, clientesN);
 			recursive_query9(getEsq(vendas), prod, filial, clientesP, clientesN); 
-		}
-
-		else
-		{
-
-			if (prod < prod_prova)
-				recursive_query9(getEsq(vendas), prod, filial, clientesP, clientesN);		
-		
-			else
-				recursive_query9(getDir(vendas), prod, filial, clientesP, clientesN);
-		}
 	}
 }
 
@@ -296,10 +285,14 @@ void query9 (AVL vendas, char* produto, int filial){
 
 	recursive_query9(vendas, produto, filial, clientesP, clientesN);
 
-	printf("\nN: \n");
-	printStack(clientesN);
-	printf("\nP: \n");
-	printStack(clientesP);
+	if (clientesP->sp > 0) {
+		printf("\nClientes do tipo P: (%d resultados)\n", clientesP->sp);
+		printStack(clientesP);
+	} else printf("\nTIPO P VAZIO\n");
+	if (clientesN->sp > 0) {
+		printf("\nClientes do tipo N: (%d resultados)\n", clientesN->sp);
+		printStack(clientesN);
+	} else printf("\nTIPO N VAZIO\n");
 
 	freeStack(clientesP);
 	freeStack(clientesN);
@@ -344,7 +337,7 @@ void recursive_query11(AVL vendas, HEAD_TABLE h) {
 	}
 }
 
-void query11 (AVL vendas) {
+void query11 (AVL vendas, int n) {
 	
 	HEAD_TABLE h = NULL;
 
@@ -352,11 +345,11 @@ void query11 (AVL vendas) {
 	
 	recursive_query11(vendas, h);
 
-	int filial = 2, n = 5;
+	int filial = 2;
 
 	quicksort(h, 0, h->hsize, filial);
 
-	printf("%d produtos mais comprados: \n\n", n);
+	printf("\nOs %d produtos mais comprados são: \n\n", n);
 
 	printNfirstTableReverse(h, n);
 

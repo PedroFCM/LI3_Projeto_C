@@ -60,9 +60,9 @@ void loadOption () {
 	
 	GLOBAL set = (GLOBAL) malloc(sizeof(struct settings)); 
 
-	AVL products = NULL;
-	AVL clients  = NULL;
-	AVL sells    = NULL;
+	CAT_PRODUTOS products = NULL;
+	CAT_CLIENTES clients  = NULL;
+	CAT_VENDAS   sells    = NULL;
 	
 	/*---------------------------------------------------------------*/
 
@@ -77,7 +77,6 @@ void loadOption () {
 	while (option_selected != 'q' && option_selected != 'Q' && option_selected != 'y') {
 
 		if (data_loaded == 1) printf("\n\t\t\t\t\t\t[DADOS CARREGADOS]\n");
-		else printf("\n\t\t\t\t\t\t[DADOS NÃO CARREGADOS]\n");
 
 		switch(option_selected) {
 
@@ -99,12 +98,11 @@ void loadOption () {
 					start = clock();
 					
 					products = readNvalidate_products(PROD_PATH, products, set);
-					write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
-					
 					clients = readNvalidate_clients(CLIE_PATH, clients, set);
-					write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
-					
 					sells = readNvalidate_sells(SELL_PATH, sells, set, products, clients);
+
+					write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
+					write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
 					write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
 
 					end = clock();
@@ -181,7 +179,113 @@ void loadOption () {
 
 			/*---------------------------------------------------------------*/
 
-			default: break;
+			case '4': 
+					if (!data_loaded)
+						printf("Carregue os dados para o programa primeiro, por favor.\n");
+					else {
+						printf("\n[error 404] query not found\n");
+					}
+					break;
+
+			case '5': 
+					if (!data_loaded)
+						printf("Carregue os dados para o programa primeiro, por favor.\n");
+					else {
+						printf("\n[error 404] query not found\n");
+					}
+
+			case '6': 
+					if (!data_loaded)
+						printf("Carregue os dados para o programa primeiro, por favor.\n");
+					else {
+						printf("\n[error 404] query not found\n");
+					}
+			case '7': 
+					if (!data_loaded)
+						printf("Carregue os dados para o programa primeiro, por favor.\n");
+					else {
+						printf("\n[error 404] query not found\n");
+					}
+
+			case '8': 
+					if (!data_loaded)
+						printf("Carregue os dados para o programa primeiro, por favor.\n");
+					else {
+				
+						printf("\nInsira um intervalo de meses:\n");
+						printf("(Exemplo o intervalo [1..3] ficaria > 1..3)\n");
+						int mes_inf, mes_sup;
+						while (1) {
+							if (scanf("%d..%d", &mes_inf, &mes_sup))
+								if ((mes_inf <= mes_sup || mes_sup <= mes_inf) &&
+									mes_inf >= 1 && mes_inf <= 12 &&
+									mes_sup >= 1 && mes_sup <= 12) {
+										query8(mes_inf, mes_sup, sells);
+										break;
+								}
+						}
+					}
+
+			case '9': 
+					if (!data_loaded)
+						printf("Carregue os dados para o programa primeiro, por favor.\n");
+					else {
+
+						char *codprod = (char*) malloc(sizeof(char)*10);
+						printf("\nInsira o código do produto:");
+						while (1) {
+							if (scanf("%s", codprod)) {
+								break;
+							}
+						}
+						int filial;
+						printf("\nInsira a FILIAL: ");
+						while (1) {
+							if (scanf("%d", &filial)) break;
+						}
+
+						if (filial >=1 && filial <=3)
+							query9(sells, codprod, filial);
+					}
+					break;
+			case 'a':
+					if (!data_loaded)
+						printf("Carregue os dados para o programa primeiro, por favor.\n");
+					else {
+						char *codcliente = (char*) malloc(sizeof(char)*10);
+						printf("\nInsira o código do cliente:");
+						while (1) {
+							if (scanf("%s", codcliente)) {
+								break;
+							}
+						}
+						int new_mes;
+						printf("\nInsira o mês: ");
+						while (1) {
+							if (scanf("%d", &new_mes)) break;
+						}
+
+						if (new_mes>=1 && new_mes <=12)
+							query10(sells, codcliente, new_mes);
+					}
+
+			case 'b': 
+					
+					if (!data_loaded)
+						printf("Carregue os dados para o programa primeiro, por favor.\n");
+					else {
+
+						printf("\nInsira o N que deseja: ");
+						int n;
+						while (1) {
+							if (scanf("%d", &n)) {
+								break;
+							}
+						}
+						query11(sells, n);
+					}
+			default: 
+				break;
 		}
 
 		input = scanf("%c", &option_selected);
@@ -212,14 +316,14 @@ void displayMenuAndOptions () {
 	printf("[1]  Leitura dos ficheiros com os Produtos, Clientes e Vendas.\n");
 	printf("[2]  Lista de Produtos que se iniciam por uma letra maiúscula.\n");
 	printf("[3]  Nº total de Vendas num mês e o total faturado (global ou por filial).\n");
-	printf("[4]  Lista de produtos que ninguém comprou (global ou por filial).\n");
+/*	printf("[4]  Lista de produtos que ninguém comprou (global ou por filial).\n");
 	printf("[5]  Lista de Clientes que realizaram compras em todas as filiais.\n");
-	printf("[6]  Nº de clientes registados que não realizaram compras e o nº de produtos que ninguém comprou\n");/*
+	printf("[6]  Nº de clientes registados que não realizaram compras e o nº de produtos que ninguém comprou\n");
 	printf("[7]  Tabela de todos os produtos comprados mês a mês, organizada por filial.\n");
-	printf("[8]  Nº total de vendas num intervalo de meses (p.ex. [1..3]) e total faturado.\n");
+*/	printf("[8]  Nº total de vendas num intervalo de meses (p.ex. [1..3]) e total faturado.\n");
 	printf("[9]  Dado um código de Produto e uma filial apresentar os códigos (e o Nº total),\n");
 	printf("     dos clientes que o compraram (distinguindo N e P)\n");
 	printf("[10] Dado um Cliente e um mês determinar a lista de códigos que mais comprou por quantidade, \nordem descendente.\n");
 	printf("[11] Lista dos N produtos mais vendidos no ano, indicando o nº total de clientes e nº de unidades vendidas, filial a filial.\n");
 	printf("[12] Dado um Cliente indica quais os códigos dos 3 produtos em que mais gastou dinheiro.\n");
-*/}
+}
