@@ -45,21 +45,10 @@
 
 int main (void) {
 
-	loadOption();
-
-	return 0;
-
-}
-
-
-/*
-int main (void) {
-
 
 
 	clock_t start, end;
 	double cpu_time_used;
-	start = clock();
 
 
 	GLOBAL set = (GLOBAL) malloc(sizeof(struct settings)); 
@@ -71,9 +60,13 @@ int main (void) {
 
 	products = readNvalidate_products(PROD_PATH, products, set);	
 	clients = readNvalidate_clients(CLIE_PATH, clients, set);
-	sells = readNvalidate_sells(SELL_PATH, sells, set, products, clients);
+	sells = readNvalidate_sells(SELL_PATH_1M, sells, set, products, clients);
 
-	write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
+	start = clock();
+
+	query12(sells, "Z5000");
+
+/*	write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
 	write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
 	write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
 
@@ -81,7 +74,7 @@ int main (void) {
 	freeAVL(products, 0);
 	freeAVL(clients, 0);
 	freeAVL(sells, 1);
-
+*/
 	
 	free(set);
 	
@@ -93,4 +86,3 @@ int main (void) {
 	
 	return 0;
 }
-*/

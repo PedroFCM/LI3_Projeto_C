@@ -303,7 +303,7 @@ LString recursive_query10 (AVL vendas, char* cliente, int mes, LString produtos)
 	if (vendas != NULL) {
 
 		if (strcmp(getCodCliente(vendas), cliente) == 0 && mes == getMes(vendas))
-			produtos = insertLString (produtos, getCodProd(vendas));
+			produtos = insertLString (produtos, getCodProd(vendas), 0, 0);
 
 		produtos = recursive_query10(getEsq(vendas), cliente, mes, produtos);		
 		produtos = recursive_query10(getDir(vendas), cliente, mes, produtos);
@@ -319,9 +319,9 @@ void query10 (AVL vendas, char* cliente, int mes){
 
 	l = recursive_query10(vendas, cliente, mes, l);
 
-	l = quickSortL(l);
+	l = quickSortL(l, 0);
 
-	printLString(l);
+	printLString(l, 0);
 }
 
 void recursive_query11(AVL vendas, HEAD_TABLE h) {
@@ -354,4 +354,34 @@ void query11 (AVL vendas, int n) {
 	printNfirstTableReverse(h, n);
 
 	free_hashtable(h);
+}
+
+LString recursive_query12 (AVL vendas, char* cliente, LString produtos) {
+
+	if (vendas != NULL) {
+
+		if (strcmp(getCodCliente(vendas), cliente) == 0) {
+
+			produtos = insertLString(produtos, getCodProd(vendas), getQuantidade(vendas), getPreco(vendas)); 
+			
+		}
+
+		produtos = recursive_query12(getEsq(vendas), cliente,produtos);		
+		produtos = recursive_query12(getDir(vendas), cliente,produtos);
+
+	}
+
+	return produtos;
+}
+
+void query12 (AVL vendas, char* cliente){
+
+	LString produtos = NULL;
+
+	produtos = recursive_query12(vendas, cliente, produtos);
+
+	produtos = quickSortL (produtos, 1);
+
+	printLString(produtos, 1);
+	
 }

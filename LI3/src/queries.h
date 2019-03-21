@@ -54,4 +54,8 @@ void recursive_query11(AVL vendas, HEAD_TABLE h);
 
 void query11 (AVL vendas, int n);
 
+LString recursive_query12 (AVL vendas, char* cliente, LString produtos);
+
+void query12 (AVL vendas, char* cliente);
+
 #endif

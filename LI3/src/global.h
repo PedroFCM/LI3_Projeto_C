@@ -20,7 +20,9 @@
 /*MACROS que estabelecem os paths para os ficheiros de leitura*/
 #define PROD_PATH "datafiles/Produtos.txt"
 #define CLIE_PATH "datafiles/Clientes.txt"
-#define SELL_PATH "datafiles/Vendas_1M.txt"
+#define SELL_PATH_1M "datafiles/Vendas_1M.txt"
+#define SELL_PATH_3M "datafiles/Vendas_3M.txt"
+#define SELL_PATH_5M "datafiles/Vendas_5M.txt"
 
 /*MACROS que estabelecem os paths para guardar os ficheiros*/
 #define VAL_PROD_PATH "validData/Produtos(validados).txt"

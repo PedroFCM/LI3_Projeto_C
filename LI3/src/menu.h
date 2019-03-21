@@ -53,6 +53,6 @@ void showTime (double time);
  *  @return void
  */
 
-void displayMenuAndOptions ();
+void displayMenuAndOptions (int loaded);
 
 #endif

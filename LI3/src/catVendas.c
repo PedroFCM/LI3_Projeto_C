@@ -66,6 +66,8 @@ CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells,
 
 	FILE *fp = fopen(filename, "r");
 	
+	if (fp==NULL) return NULL;
+
 	int max = biggest_line_in_file(filename);	
 	
 	set -> max_line_sells = max;

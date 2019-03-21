@@ -6,16 +6,28 @@
 
 #include "lstring.h"
 
-void printLString (LString l) {
+void printLString (LString l, int flag) {
 
 	LString *pt = &l;
+	
+	int i = 0;
 
-    while ((*pt) != NULL) {
+	switch(flag) {
+		case 0:
+	    	while ((*pt) != NULL) {
+		        printf("%s %d\n", (*pt)->val, (*pt)->ocurr);
+		    	pt = &((*pt) -> next);
+		    }
+		break;
 
-        printf("%s %d\n", (*pt)->val, (*pt)->ocurr);
-    	pt = &((*pt) -> next);
-    
-    }
+		case 1:
+	    	while (i < 3) {
+		        printf("%s %d %d %f\n", (*pt)->val, (*pt)->ocurr, (*pt)->vendidos, (*pt)->preco);
+		    	pt = &((*pt) -> next);
+		    	i++;
+		    }
+	}
+
 }
 
 int existLString (char* elem, LString l) {
@@ -35,7 +47,7 @@ int existLString (char* elem, LString l) {
 }
 
 
-LString insertLString (LString l, char* elem) {
+LString insertLString (LString l, char* elem, int vendidos, double preco) {
 
 	LString new = malloc (sizeof(struct node));
 	LString *pt = &l;
@@ -46,12 +58,17 @@ LString insertLString (LString l, char* elem) {
 	    	pt = &((*pt) -> next);
 
 	    (*pt) -> ocurr++;	    
+	    (*pt) -> vendidos+=vendidos;	    
+	    (*pt) -> preco += preco*vendidos;	    
+
 	} else {
 	  
 	    while (*pt != NULL) pt = &((*pt) -> next);
 	    
 	    new -> val = strdup(elem);
 	    new -> ocurr = 1;
+	    new -> vendidos = vendidos;
+	    new -> preco = vendidos * preco;
 	    new -> next = *pt;
 	    *pt = new;
 	} 
@@ -67,14 +84,27 @@ LString getTail (LString l) {
 	return l;
 }
 
-LString partitionLString (LString head, LString end, LString *newHead, LString *newEnd) {
+LString partitionLString (LString head, LString end, LString *newHead, LString *newEnd, int flag) {
 
 	LString pivot = end;
 	LString prev = NULL, curr = head, tail = pivot;
 
+	int compare = 0;
+
 	while (curr != pivot) {
 
-		if (curr -> ocurr < pivot -> ocurr) {
+		switch (flag) {
+
+			case 0: 
+				compare = curr -> ocurr > pivot -> ocurr;
+				break;
+			case 1: 
+				compare = curr -> preco > pivot -> preco;
+				break;
+
+		}
+
+		if (compare) {
 			
 			if ((*newHead) == NULL) 
 				(*newHead) = curr;
@@ -104,13 +134,13 @@ LString partitionLString (LString head, LString end, LString *newHead, LString *
 	return pivot;
 }
 
-LString qSortLStringAux (LString lhead, LString lfim) {
+LString qSortLStringAux (LString lhead, LString lfim, int flag) {
 
 	if (lhead == NULL || lhead == lfim)
 		return lhead;
 
 	LString newHead = NULL, newEnd = NULL;
-	LString pivot = partitionLString (lhead, lfim, &newHead, &newEnd);
+	LString pivot = partitionLString (lhead, lfim, &newHead, &newEnd, flag);
 
 	if (newHead != pivot) {
 
@@ -120,20 +150,20 @@ LString qSortLStringAux (LString lhead, LString lfim) {
 
 		tmp->next = NULL;
 
-		newHead = qSortLStringAux(newHead, tmp);
+		newHead = qSortLStringAux(newHead, tmp, flag);
 
 		tmp = getTail(newHead);
 		tmp -> next = pivot;
 	} 
 
-	pivot -> next = qSortLStringAux(pivot -> next, newEnd);
+	pivot -> next = qSortLStringAux(pivot -> next, newEnd, flag);
 
 	return newHead;
 }
 
-LString quickSortL (LString l) {
+LString quickSortL (LString l, int flag) {
 
-	l = qSortLStringAux (l, getTail(l));
+	l = qSortLStringAux (l, getTail(l), flag);
 
 	return l;
 }
