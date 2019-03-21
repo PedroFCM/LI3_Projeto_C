@@ -43,7 +43,15 @@
 * @returns Retorna 0 caso tudo corra bem.
 */
 
+
 int main (void) {
+
+	loadOption();
+
+	return 0;
+}
+
+/*int main (void) {
 
 
 
@@ -64,18 +72,16 @@ int main (void) {
 
 	start = clock();
 
-	query12(sells, "Z5000");
+	query5(sells);
 
-/*	write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
+ 	write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
 	write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
 	write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
-
 
 	freeAVL(products, 0);
 	freeAVL(clients, 0);
 	freeAVL(sells, 1);
-*/
-	
+
 	free(set);
 	
 
@@ -86,3 +92,4 @@ int main (void) {
 	
 	return 0;
 }
+*/

@@ -46,6 +46,8 @@ void query1 (GLOBAL set) {
 	printf("Número de vendas   inválidas   : %d\n\n", set->num_sells-set->val_sells);
 }
 
+/*______________________________________________________________________*/
+
 Stack* recursive_query2 (AVL produtos, Stack *s, char c) {
 
 	if (produtos != NULL) 
@@ -73,19 +75,14 @@ Stack* recursive_query2 (AVL produtos, Stack *s, char c) {
 	return s;
 }
 
-void query2 (AVL produtos, char c) {
-
-	Stack *s = NULL;
-	s = initStack(s, 10000);
+Stack* query2 (Stack *s, AVL produtos, char c) {
 	
 	s = recursive_query2(produtos, s, c);
 
-	printStack(s);
-
-	printf("\nNúmero total de produtos com letra %c: %d.\n", c, s->sp);
-
-	freeStack(s);
+	return s;
 }
+
+/*______________________________________________________________________*/
 
 void recursive_query3 (AVL vendas, char* prod, 
 					   int mes, int** n_vendas, 
@@ -211,6 +208,8 @@ void query3 (AVL vendas, int mes, char *produto, int opcao) {
 
 }
 
+/*______________________________________________________________________*/
+
 void recursive_query8(int min, int max, AVL vendas, float* faturacao, int* total_vendas)
 {
 	if(vendas != NULL) {
@@ -252,6 +251,8 @@ void query8(int min, int max, AVL vendas)
 	printf("-> %d vendas.\n", *total_vendas);
 
 }
+
+/*______________________________________________________________________*/
 
 void recursive_query9 (AVL vendas, char* prod, int filial, Stack* clientesN, Stack* clientesP) {
 	
@@ -298,6 +299,8 @@ void query9 (AVL vendas, char* produto, int filial){
 	freeStack(clientesN);
 }
 
+/*______________________________________________________________________*/
+
 LString recursive_query10 (AVL vendas, char* cliente, int mes, LString produtos) {
 
 	if (vendas != NULL) {
@@ -323,6 +326,8 @@ void query10 (AVL vendas, char* cliente, int mes){
 
 	printLString(l, 0);
 }
+
+/*______________________________________________________________________*/
 
 void recursive_query11(AVL vendas, HEAD_TABLE h) {
 
@@ -356,6 +361,8 @@ void query11 (AVL vendas, int n) {
 	free_hashtable(h);
 }
 
+/*______________________________________________________________________*/
+
 LString recursive_query12 (AVL vendas, char* cliente, LString produtos) {
 
 	if (vendas != NULL) {
@@ -383,5 +390,109 @@ void query12 (AVL vendas, char* cliente){
 	produtos = quickSortL (produtos, 1);
 
 	printLString(produtos, 1);
+	
+}
+
+/*______________________________________________________________________*/
+
+void search_filial(AVL vendas, int filial[], char* cliente)
+{	
+	if( (filial[0]+filial[1]+filial[2] < 3) && vendas != NULL)
+	{
+		if( !strcmp(getCodCliente(vendas), cliente) )
+			filial[getFilial(vendas) - 1] = 1;
+
+		search_filial(getEsq(vendas), filial, cliente);
+		search_filial(getDir(vendas), filial, cliente);
+	}
+}
+
+void recursive_query5(AVL vendas, AVL* clie_filiais)
+{
+	if(vendas != NULL)
+	{
+		int filial[3], i;
+
+		for(i = 0; i < 3; i++)
+			filial[i] = 0;
+
+		search_filial(vendas, filial, getCodCliente(vendas));
+		
+		getCodCliente(vendas)[( strlen(getCodCliente(vendas)) )] = ' ';  /* por causa do 'cut_extra_char' */
+
+		if(filial[0]+filial[1]+filial[2] == 3)
+			*clie_filiais = updateAVL(*clie_filiais, NULL, getCodCliente(vendas)); 
+
+
+		recursive_query5(getEsq(vendas), clie_filiais);
+		recursive_query5(getDir(vendas), clie_filiais);
+	}
+}
+
+void query5(AVL vendas) {
+
+	AVL* clie_filiais = malloc(sizeof(AVL));
+	*clie_filiais = NULL; 
+	
+	recursive_query5(vendas, clie_filiais);
+
+	printf("\nClientes que compraram em todas as filiais:\n");
+
+	inorder_avl_just_tag(*clie_filiais); 
+}
+
+/*______________________________________________________________________*/
+
+void recursive_query7 (AVL vendas, char* cliente, int** nProd) {
+
+	if (vendas != NULL) {
+
+		if (strcmp(getCodCliente(vendas), cliente) == 0) {
+
+			nProd[getMes(vendas)-1][getFilial(vendas)-1] += getQuantidade(vendas);
+		}
+
+		recursive_query7(getEsq(vendas), cliente, nProd);		
+		recursive_query7(getDir(vendas), cliente, nProd);
+
+	}
+}
+
+void query7(AVL vendas, char* cliente){
+
+	int** nProd = (int**) malloc(sizeof(int*) * 12);
+
+	int i = 0, j = 0;
+
+	for (i = 0; i < 12; i++){
+		
+		nProd[i]  = malloc(sizeof(int)*3);
+
+		for (j = 0; j < 3; j++){
+
+			nProd[i][j] = 0;
+
+		}
+	}
+
+	recursive_query7(vendas, cliente, nProd);
+
+	printf("\nO CLIENTE %s FEZ AS SEGUINTES COMPRAS:\n", cliente);	
+
+	printf("\nMES\t\tFILIAL1\t\tFILIAL2\t\tFILIAL3");
+
+	for (i = 0; i < 12; i++){
+
+		printf("\n\t-------------------------------------------------\n");
+		printf(" %d\t|", i+1);
+
+		for (j = 0; j < 3; j++){
+		
+		printf("\t%d\t|", nProd[i][j]);
+
+		}	
+	}
+
+	printf("\n\t-------------------------------------------------\n");
 	
 }

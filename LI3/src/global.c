@@ -152,3 +152,19 @@ void inorder_avl (AVL a) {
 		inorder_avl(getDir(a));
 	}
 }
+
+int inorder_avl_just_tag (AVL a) 
+{
+	int r = 0;
+	if (a != NULL) 
+	{
+		r += inorder_avl_just_tag(getEsq(a));
+		 
+		printf("> %s\n", getTag(a));
+		r++;
+
+		r += inorder_avl_just_tag(getDir(a));
+	}
+
+	return r;
+}

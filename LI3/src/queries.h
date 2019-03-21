@@ -26,7 +26,7 @@ void query1 (GLOBAL set);
 
 Stack* recursive_query2 (AVL produtos, Stack *s, char c);
 
-void query2 (AVL produtos, char c);
+Stack* query2 (Stack *s, AVL produtos, char c);
 
 void query3 (AVL vendas, int mes, char *produto, int opcao);
 
@@ -57,5 +57,15 @@ void query11 (AVL vendas, int n);
 LString recursive_query12 (AVL vendas, char* cliente, LString produtos);
 
 void query12 (AVL vendas, char* cliente);
+
+void query5(AVL vendas);
+
+void recursive_query5(AVL vendas, AVL* clie_filiais);
+
+void search_filial(AVL vendas, int filial[], char* cliente);
+
+void query7(AVL vendas, char* cliente);
+
+void recursive_query7 (AVL vendas, char* cliente, int** nProd);
 
 #endif

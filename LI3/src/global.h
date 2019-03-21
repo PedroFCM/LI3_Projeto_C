@@ -134,4 +134,6 @@ void write_recursive (AVL a, FILE *fp);
 
 void write_inorder_avl_on_file (char *filepath, AVL a, GLOBAL set);
 
+int inorder_avl_just_tag (AVL a);
+
 #endif
