@@ -154,16 +154,17 @@ void inorder_avl (AVL a) {
 }
 
 int inorder_avl_just_tag (AVL a) 
-{
+{	
+	AVL tmp = a;
 	int r = 0;
-	if (a != NULL) 
+	if (tmp != NULL) 
 	{
-		r += inorder_avl_just_tag(getEsq(a));
+		r += inorder_avl_just_tag(getEsq(tmp));
 		 
-		printf("> %s\n", getTag(a));
+		printf("> %s\n", getTag(tmp));
 		r++;
 
-		r += inorder_avl_just_tag(getDir(a));
+		r += inorder_avl_just_tag(getDir(tmp));
 	}
 
 	return r;

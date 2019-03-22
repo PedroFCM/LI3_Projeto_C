@@ -13,6 +13,16 @@
 /*MACRO para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
 
+/*MACRO para cores do terminal*/
+#define RED   "\x1B[31m"
+#define GRN   "\x1B[32m"
+#define YEL   "\x1B[33m"
+#define BLU   "\x1B[34m"
+#define MAG   "\x1B[35m"
+#define CYN   "\x1B[36m"
+#define WHT   "\x1B[37m"
+#define RESET "\x1B[0m"
+
 /*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
 
 #include <stdio.h>
@@ -30,7 +40,6 @@
 #include "queries.h"
 #include "menu.h"
 #include "time.h"
-#include "stack.h"
 
 /*______________________________________________________________________*/
 
@@ -57,19 +66,19 @@ void displayMenuAndOptions (int loaded) {
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 
 	int l = 0;
-	while (l < w.ws_col) {printf("_"); l++;}
+	while (l < w.ws_col) {printf(RED "_" RESET); l++;}
 
-	printf("\n\n\t\t\t\t\t -- Sistema geral de Vendas [SGV] --\n");
+	printf(CYN "\n\n\t\t\t\t -- Sistema geral de Vendas [SGV] --\n" RESET);
 
 	l = 0;
-	while (l < w.ws_col) {printf("_"); l++;}
+	while (l < w.ws_col) {printf(RED "_" RESET); l++;}
 
-	printf("\n\n=> Opções disponivéis (Introduza o respetivo número):\n\n");
+	printf(YEL "\n\n=> Opções disponivéis (Introduza o respetivo número):\n" RESET);
 
 	if (loaded == 1) 
-		printf("\n\t\t\t\t\t\t\t\t\t[DADOS CARREGADOS]\n\n");
+		printf(YEL "\n\t\t\t\t\t\t\t\t\t[DADOS CARREGADOS]\n\n" RESET);
 	else 
-		printf("\n\t\t\t\t\t\t\t\t\t[DADOS NÃO CARREGADOS]\n\n");
+		printf(YEL "\n\t\t\t\t\t\t\t\t\t[DADOS NÃO CARREGADOS]\n\n" RESET);
 
 	printf("\t[1]  Leitura de ficheiros e validação.\n");
 	printf("\n\t[2]  Lista de Produtos que se iniciam por uma letra maiúscula.\n");
@@ -86,54 +95,15 @@ void displayMenuAndOptions (int loaded) {
 	printf("\n\t[c]  Códigos dos 3 produtos em que mais gastou dinheiro.\n\n");
 
 	l = 0;
-	while (l < w.ws_col) {printf("_"); l++;}
+	while (l < w.ws_col) {printf(RED "_" RESET); l++;}
 }
 
 void displayFicheirosLeitura() {
-	printf("\n-> Qual ficheiro deseja ler?\n\n");
+	printf(YEL "\n-> Qual ficheiro deseja ler?\n\n" RESET);
 	
-	printf("\t[1] Vendas_1M.txt\n");
+	printf(RED "\t[1] Vendas_1M.txt\n");
 	printf("\t[2] Vendas_3M.txt\n");
-	printf("\t[3] Vendas_5M.txt\n");
-}
-
-void printStackBetween (Stack *s, int low, int high) {
-
-	for (; low >= 0 && low < high && low < s->sp; low++) {
-		printf("%s\n", s->elements[low]);
-	}
-
-}
-
-void pages (Stack *s, int loaded) {
-
-	char c = 'f', pagina = 0;
-	int plow = -20, phigh = 0;
-
-	while(c != 'q') {
-		if (pagina >=0)
-			printf("\n\t\t[Página %d: 'f': foward, 'b':back, 'q':exit]\n", pagina);
-		
-		switch (c) {
-			case 'b': 
-				displayMenuAndOptions(loaded);
-				phigh -= 20;
-				plow  -= 20;
-				printStackBetween(s, plow, phigh);
-				pagina--;
-				break;
-			case 'f': 
-				displayMenuAndOptions(loaded);
-				pagina++;
-				phigh += 20;
-				plow  += 20;
-				printStackBetween(s, plow, phigh);
-				break;
-		}
-
-		if (scanf("%c", &c)!=-1);
-	}
-
+	printf("\t[3] Vendas_5M.txt\n" RESET);
 }
 
 void loadOption () {
@@ -196,7 +166,7 @@ void loadOption () {
 								argumentoInteiro == 2 || 
 								argumentoInteiro == 3) {
 
-								printf("\n\n-> A efetuar a leitura de dados...\n");
+								printf(YEL "\n\n-> A efetuar a leitura de dados...\n" RESET);
 								
 								start = clock();
 
@@ -205,24 +175,24 @@ void loadOption () {
 						
 								switch (argumentoInteiro) {
 									case 1: 
-										printf("\nA ler Vendas_1M.txt ...\n");
+										printf("\n...A ler Vendas_1M.txt ...\n");
 										sells = readNvalidate_sells(SELL_PATH_1M, sells, set, products, clients);
 										break;
 									case 2:
-										printf("\nA ler Vendas_3M.txt ...\n");
+										printf("\n...A ler Vendas_3M.txt ...\n");
 										sells = readNvalidate_sells(SELL_PATH_3M, sells, set, products, clients);
 										break;
 									case 3:
-										printf("\nA ler Vendas_5M.txt ...\n");
+										printf("\n...A ler Vendas_5M.txt ...\n");
 										sells = readNvalidate_sells(SELL_PATH_5M, sells, set, products, clients);
 										break;
 								}
 					
 								end = clock();
 
-								write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
+/*								write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
 								write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
-								write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
+*/								write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
 					
 								cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 								
@@ -230,10 +200,10 @@ void loadOption () {
 
 								data_loaded = 1;
 			
-								printf("\nDados Carregados e guardados no folder validData/.");
+								printf(YEL "\nDados Carregados e guardados no folder validData/." RESET);
 								showTime(cpu_time_used);
 
-								printf("\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n");
+								printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 
 								break;
 					
@@ -243,8 +213,8 @@ void loadOption () {
 
 				} 
 				} else {
-					printf("Os dados já foram carregados, por favor escolha outra opcção.\n");
-					printf("Carregar novos dados? [y]\n");
+					printf(RED "Os dados já foram carregados, por favor escolha outra opcção.\n" RESET);
+					printf(YEL "Carregar novos dados? [y]\n" RESET);
 				}
 
 				break;
@@ -253,23 +223,24 @@ void loadOption () {
 
 			case '2': 
 					if (!data_loaded) 
-						printf("Carregue os dados para o programa primeiro, por favor.\n");
+						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
 						printf("Escolha uma letra (Maiúscula): ");
 						while (1) {
 							char letra;
 							if (scanf("%c", &letra) == 1) 
 								if (letra >= 'A' && letra <='Z') {
-									Stack *s = NULL;
-									s = initStack(s, 10000);
-									s = query2(s, products, letra);
+									
+									LISTA_PROD ls = NULL;
+									ls = initLista(ls, 10000);
+									ls = query2(ls, products, letra);
 	
-									pages(s, data_loaded);
+									pages(ls, data_loaded);
 
-									printf("\nNúmero total de produtos com letra %c: %d.\n", letra, s->sp);
+									printf("\nNúmero total de produtos com letra %c: %d.\n", letra, getCurrentSize(ls));
 					
-									freeStack(s);
-									printf("\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n");
+									freeList(ls);
+									printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 									break;
 								}
 						}
@@ -280,7 +251,7 @@ void loadOption () {
 
 			case '3':
 					if (!data_loaded) 
-						printf("Carregue os dados para o programa primeiro, por favor.\n");
+						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
 						printf("Insira um mês: ");
 						while (1)
@@ -298,7 +269,7 @@ void loadOption () {
 										if (scanf("%d", &opcao_mostragem)) {
 											if (opcao_mostragem == 0 || opcao_mostragem == 1) {
 												query3(sells, mes, codprod, opcao_mostragem);
-												printf("\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n");
+												printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 												free(codprod);
 												break;
 											}
@@ -315,7 +286,7 @@ void loadOption () {
 
 			case '4': 
 					if (!data_loaded)
-						printf("Carregue os dados para o programa primeiro, por favor.\n");
+						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
 						printf("\n[error 404] query not found\n");
 					}
@@ -323,25 +294,26 @@ void loadOption () {
 
 			case '5': 
 					if (!data_loaded)
-						printf("Carregue os dados para o programa primeiro, por favor.\n");
+						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
 						printf("\n => A gerar lista...\n");
-						query5(sells); break;
-						printf("\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n");
+						query5(sells);
+						printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
+						break;
 					}
 
 					break;
 
 			case '6': 
 					if (!data_loaded)
-						printf("Carregue os dados para o programa primeiro, por favor.\n");
+						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
 						printf("\n[error 404] query not found\n");
 					}
 					break;
 			case '7': 
 					if (!data_loaded)
-						printf("Carregue os dados para o programa primeiro, por favor.\n");
+						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
 						printf("\nInsira um cliente: ");
 						
@@ -349,13 +321,13 @@ void loadOption () {
 							if (scanf("%s", codcliente)!=-1) break;
 						}
 						query7(sells, codcliente);
-						printf("\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n");
-					}
+						printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
+						}
 					break;
 
 			case '8': 
 					if (!data_loaded)
-						printf("Carregue os dados para o programa primeiro, por favor.\n");
+						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
 				
 						printf("\nInsira um intervalo de meses:\n");
@@ -370,13 +342,13 @@ void loadOption () {
 										break;
 								}
 						}
-						printf("\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n");
+								printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 					}
 					break;
 
 			case '9': 
 					if (!data_loaded)
-						printf("Carregue os dados para o programa primeiro, por favor.\n");
+						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
 
 						printf("\nInsira o código do produto:");
@@ -394,11 +366,11 @@ void loadOption () {
 						if (filial >=1 && filial <=3)
 							query9(sells, codprod, filial);
 					}
-						printf("\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n");
+								printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 					break;
 			case 'a':
 					if (!data_loaded)
-						printf("Carregue os dados para o programa primeiro, por favor.\n");
+						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
 						printf("\nInsira o código do cliente:");
 						while (1) {
@@ -415,13 +387,13 @@ void loadOption () {
 						if (new_mes>=1 && new_mes <=12)
 							query10(sells, codcliente, new_mes);
 					}
-						printf("\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n");
+					printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 					break;
 
 			case 'b': 
 					
 					if (!data_loaded)
-						printf("Carregue os dados para o programa primeiro, por favor.\n");
+						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
 
 						printf("\nInsira o N que deseja: ");
@@ -432,14 +404,14 @@ void loadOption () {
 							}
 						}
 						query11(sells, n);
-						printf("\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n");
+						printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 					}
 					break;
 
 			case 'c':
 
 					if (!data_loaded)
-						printf("Carregue os dados para o programa primeiro, por favor.\n");
+						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
 					
 						printf("\nInsira um cliente: ");
@@ -449,9 +421,7 @@ void loadOption () {
 						}
 						printf("\n");
 						query12(sells, codcliente);
-						printf("\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n");
-				
-
+						printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 					}				
 
 			default: 
@@ -466,7 +436,7 @@ void loadOption () {
 	}
 
 	if (option_selected == 'q' || option_selected == 'Q' || option_selected == 'y') {
-		printf("A sair do programa...\n");
+		printf(YEL "A sair do programa...\n" RESET);
 		freeAVL(products, 0);
 		freeAVL(clients, 0);
 		freeAVL(sells, 1);

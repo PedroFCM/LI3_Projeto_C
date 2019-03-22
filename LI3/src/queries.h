@@ -17,32 +17,23 @@
 
 #include "stack.h"
 #include "lstring.h"
-#include "arrayList.h"
 #include "hashtables.h"
 
 /*______________________________________________________________________*/
 
 void query1 (GLOBAL set);
 
-Stack* recursive_query2 (AVL produtos, Stack *s, char c);
-
-Stack* query2 (Stack *s, AVL produtos, char c);
+LISTA_PROD query2 (LISTA_PROD ls, AVL produtos, char c);
 
 void query3 (AVL vendas, int mes, char *produto, int opcao);
 
-void recursive_query3 (AVL vendas, char* prod, 
-					   int mes, int**n_vendas, 
-					   float** faturacao);
-
 void showStatGlobal_query3 (int **n_vendas, float** faturacao);
-
-void recursive_query8(int min, int max, AVL vendas, float* faturacao, int* total_vendas);
 
 void showStatPorFilial_query3 (int **n_vendas, float** faturacao);
 
-void query8(int min, int max, AVL vendas);
+void recursive_query8(int min, int max, AVL vendas, float* faturacao, int* total_vendas);
 
-void recursive_query9 (AVL vendas, char* prod, int filial, Stack* clientesN, Stack* clientesP);
+void query8(int min, int max, AVL vendas);
 
 void query9 (AVL vendas, char* produto, int filial);
 
@@ -59,10 +50,6 @@ LString recursive_query12 (AVL vendas, char* cliente, LString produtos);
 void query12 (AVL vendas, char* cliente);
 
 void query5(AVL vendas);
-
-void recursive_query5(AVL vendas, AVL* clie_filiais);
-
-void search_filial(AVL vendas, int filial[], char* cliente);
 
 void query7(AVL vendas, char* cliente);
 

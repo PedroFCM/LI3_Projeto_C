@@ -13,6 +13,7 @@ typedef struct celula {
 	char *entry;
 	int total_quant[3];
 	int total_client[3];
+	int final;
 	int status;
 
 } *HashTable;
@@ -40,7 +41,7 @@ void printArrayTable (int *array);
 
 void printTable (HEAD_TABLE h);
 
-void quicksort(HEAD_TABLE h, int first, int last, int filial);
+void quicksort(HEAD_TABLE h, int first, int last);
 
 void printNfirstTableReverse (HEAD_TABLE h, int n);
 

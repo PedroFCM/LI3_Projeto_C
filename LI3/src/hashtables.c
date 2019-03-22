@@ -60,11 +60,12 @@ void update (HEAD_TABLE h, char *key, int filial, int new_quant) {
 	else if (h->content[p].entry!=NULL && !strcmp(h->content[p].entry, key)) {
 		h->content[p].total_quant[filial-1] += new_quant;
 		h->content[p].total_client[filial-1]++;
+		h->content[p].final = 0;
 		h->content[p].status = USED;
 	} else {
 		h -> content[p].entry = strdup(key);
 		h -> content[p].total_quant[filial-1] = new_quant;
-		h -> content[p].total_client[filial-1]++;		
+		h -> content[p].total_client[filial-1]++;
 		h -> content[p].status = USED;
 	}
 }
@@ -93,24 +94,30 @@ void free_hashtable (HEAD_TABLE h) {
 
 void printArrayTable (int *array) {
 	int i;
-	for (i = 0; i < 3; i++)
-		printf("%d|", array[i]);
-	printf(" ");
+
+	for (i = 0; i < 3; i++) {
+		printf("|");
+		printf("%d\t", array[i]);
+	}
+
 }
 
 void printNfirstTableReverse (HEAD_TABLE h, int n) {
 
 	int i, count = 0;
-	for (i = h->hsize; count < n && i > 0; i--)
+
+	printf("=> PRODUTOS\t  #Clientes [p/ filial]\t\t#Quantidade [p/ filial]\n");
+	for (i = h->hsize; count < n && i > 0; i--) {
+		if (count < 9) printf(" ");
 		if (h->content[i].status!=FREE) {
 			count++;
-			printf("prod=%s ", h->content[i].entry);
-			printf("\tQT_CLIENT: ");
+			printf("[#%d]  <%s>  ", count, h->content[i].entry);
 			printArrayTable(h->content[i].total_client);
-			printf(" \tQT_COMPR: ");
+			printf("\t");
 			printArrayTable(h->content[i].total_quant);
 			printf("\n");
 		}
+	}
 }
 
 void printTable (HEAD_TABLE h) {
@@ -127,7 +134,7 @@ void printTable (HEAD_TABLE h) {
 		}
 }
 
-void quicksort(HEAD_TABLE h, int first, int last, int filial){
+void quicksort(HEAD_TABLE h, int first, int last){
 
    int i, j, pivot;
    HashTable temp = malloc(sizeof(struct celula));
@@ -140,10 +147,11 @@ void quicksort(HEAD_TABLE h, int first, int last, int filial){
 
       while(i < j){
     
-         while(h->content[i].total_quant[filial]<=h->content[pivot].total_quant[filial] && i<last)
+         while (h->content[i].final <= h->content[pivot].final && i < last)
             i++;
-         while(h->content[j].total_quant[filial]>h->content[pivot].total_quant[filial])
+         while (h->content[j].final > h->content[pivot].final)
             j--;
+
          if(i<j){
             *temp=h->content[i];
             h->content[i]=h->content[j];
@@ -154,7 +162,7 @@ void quicksort(HEAD_TABLE h, int first, int last, int filial){
       *temp = h->content[pivot];
       h->content[pivot] = h->content[j];
       h->content[j] = *temp;
-      quicksort(h,first,j-1, filial);
-      quicksort(h,j+1,last, filial);
+      quicksort(h,first,j-1);
+      quicksort(h,j+1,last);
    }
 }
