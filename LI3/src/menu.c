@@ -205,7 +205,7 @@ void loadOption () {
 						
 								switch (argumentoInteiro) {
 									case 1: 
-										printf("\nA ler Vendas_2M.txt ...\n");
+										printf("\nA ler Vendas_1M.txt ...\n");
 										sells = readNvalidate_sells(SELL_PATH_1M, sells, set, products, clients);
 										break;
 									case 2:
@@ -220,6 +220,8 @@ void loadOption () {
 					
 								end = clock();
 
+								write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
+								write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
 								write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
 					
 								cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
