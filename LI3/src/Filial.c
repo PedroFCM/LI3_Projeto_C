@@ -62,7 +62,7 @@ void compraramEmTodas (AVL vendas, AVL* clie_filiais) {
 	}
 }
 
-void compraramNaFilial (AVL vendas, char* prod, int filial, Stack* clientesN, Stack* clientesP) {
+void compraramNaFilial (AVL vendas, char* prod, int filial, Stack clientesN, Stack clientesP) {
 	
 	char tipo;
 	char* cliente;
@@ -86,12 +86,16 @@ void compraramNaFilial (AVL vendas, char* prod, int filial, Stack* clientesN, St
 
 void juntaQuantFilial (HEAD_TABLE h) {
 	
-	int i;
-	for (i = 0; i < h -> hsize; i++) {
-		if (h->content[i].status!=FREE) {
-			h->content[i].final = h -> content[i].total_quant[0] +
-								  h -> content[i].total_quant[1] +
-								  h -> content[i].total_quant[2];
+	int val, i, size = getSize(h);
+	
+	for (i = 0; i < size; i++) {	
+		if (getStatus(h, i)!=FREE) {
+			
+			val = getQuant(h, i, 0) +
+				  getQuant(h, i, 1) +
+				  getQuant(h, i, 2);
+
+			setFinal(h, i, val);
 		}
 	}
 }

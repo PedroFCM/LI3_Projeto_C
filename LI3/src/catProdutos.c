@@ -26,6 +26,7 @@
 #include "avlstruct.h"
 #include "menu.h"
 
+/*Struct estilo stack que implementa uma lista de produtos*/
 struct listaProdutos {
 	int size; 
 	char **elements;  

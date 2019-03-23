@@ -1,10 +1,66 @@
+
+/** @file hashtables.c
+*	@brief Ficheiro que implementa uma hashtable para gestão de faturação.
+*
+*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor Paulo Jorge da Silva Araújo 
+*	@autor Pedro Filipe Costa Machado 
+*
+*	@bug Nenhum que tivessemos reparado.
+*	
+*/
+
+/*MACRO para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
+
+/*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
 
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+
 #include "hashtables.h"
+
+/*______________________________________________________________________*/
+
+/*CÉLULA DE UMA HASHTABLE*/
+struct celula {
+
+	char *entry;
+	int total_quant[3];
+	int total_client[3];
+	int final;
+	int status;
+
+};
+
+/*CABEÇALHO DE UMA HASHTABLE*/
+struct head_table {
+	
+	int hsize;
+	HashTable content;
+
+};
+
+/*______________________________________________________________________*/
+
+int getQuant (HEAD_TABLE h, int pos, int col) {
+	return h->content[pos].total_quant[col];
+}
+
+void setFinal (HEAD_TABLE h, int pos, int val) {
+	h->content[pos].final = val;
+}
+
+int getStatus(HEAD_TABLE h, int pos) {
+	return h->content[pos].status;
+}
+
+int getSize (HEAD_TABLE h) {
+	return h->hsize;
+}
 
 HEAD_TABLE initTable (HEAD_TABLE h, int hsize_in) {
 	
@@ -54,8 +110,6 @@ void update (HEAD_TABLE h, char *key, int filial, int new_quant) {
 
 	int p = find_quad_probe (h, key);
 
-	/*char *aux = strndup(key, strlen(key) - 2);*/
-
 	if (p < 0) return;
 	else if (h->content[p].entry!=NULL && !strcmp(h->content[p].entry, key)) {
 		h->content[p].total_quant[filial-1] += new_quant;
@@ -70,7 +124,7 @@ void update (HEAD_TABLE h, char *key, int filial, int new_quant) {
 	}
 }
 
-int lookup (HEAD_TABLE h, char* key, int hsize, int key_hash) {
+int lookup (HEAD_TABLE h, char* key, int hsize) {
 
 	int found, p = find_quad_probe (h, key);
 

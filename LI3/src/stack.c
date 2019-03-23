@@ -26,8 +26,22 @@
 
 /*______________________________________________________________________*/
 
-Stack* initStack (Stack *s, int n) {
-	s = (Stack*) malloc (sizeof(struct stack));
+/*Struct que implementa uma stack básica em C*/
+struct stack {
+	int size; 
+	char **elements; /*ARRAY DE STRINGS GUARDADO NA STACK*/ 
+	int ocurr;
+	int sp;
+};
+
+/*______________________________________________________________________*/
+
+int getSP (Stack s) {
+	return s->sp;
+}
+
+Stack initStack (Stack s, int n) {
+	s = (Stack) malloc (sizeof(struct stack));
 	s -> elements = (char**) malloc(sizeof(char*)*n);
 	s -> size = n;
 	s -> sp = 0;
@@ -35,11 +49,11 @@ Stack* initStack (Stack *s, int n) {
 	return s;
 }
 
-int isEmpty (Stack *s) {
+int isEmpty (Stack s) {
 	return s->sp==0;
 }
 
-Stack* push (Stack *s, char *new) {
+Stack push (Stack s, char *new) {
 
 	if (s -> sp == s -> size)
 		doubleArray(s);
@@ -49,17 +63,17 @@ Stack* push (Stack *s, char *new) {
 	return s;
 }
 
-void pop (Stack *s) {
+void pop (Stack s) {
 	if (s -> sp > 0)
 		free(s->elements[--s->sp]);
 }
 
-void doubleArray (Stack *s) {
+void doubleArray (Stack s) {
 	s -> size *= 2;
 	s -> elements = realloc (s -> elements, s->size);
 }
 
-void freeStack (Stack *s) {
+void freeStack (Stack s) {
 	int i;
 	for (i = 0; i < s->sp; i++)
 		free(s->elements[i]);
@@ -67,7 +81,7 @@ void freeStack (Stack *s) {
 	free(s);
 }
 
-void printStack (Stack *s) {
+void printStack (Stack s) {
 	int i;
 	for (i = 0; i < s->sp; i++)
 		printf("%s\n", s->elements[i]);

@@ -10,6 +10,8 @@
 *	
 */
 
+/*______________________________________________________________________*/
+
 /*MACRO para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
 
@@ -30,7 +32,12 @@
 #include "Faturacao.h"
 #include "Filial.h"
 
+/*______________________________________________________________________*/
+
+/*NOVO TYPE que guarda matrizes de floats*/
 typedef float** FAT_PRECO;
+
+/*NOVO TYPE que guarda matrizes de inteiros*/
 typedef int** FAT_QUANT;
 
 /*-----------------------------------------------------------------------*/
@@ -241,24 +248,24 @@ void query8(int min, int max, AVL vendas) {
 
 void query9 (AVL vendas, char* produto, int filial){
 
-	Stack* clientesP = NULL;
-	Stack* clientesN = NULL;
+	Stack clientesP = NULL;
+	Stack clientesN = NULL;
 	
 	clientesP = initStack(clientesP, 10000);
 	clientesN = initStack(clientesN, 10000);
 
 	compraramNaFilial(vendas, produto, filial, clientesP, clientesN);
 
-	if (clientesP->sp > 0) {
+	if (getSP(clientesP) > 0) {
 		
-		printf("\nClientes do tipo P: (%d resultados)\n", clientesP->sp);
+		printf("\nClientes do tipo P: (%d resultados)\n", getSP(clientesP));
 		printStack(clientesP);
 	
 	} else printf("\nTIPO P VAZIO\n");
 	
-	if (clientesN->sp > 0) {
+	if (getSP(clientesN) > 0) {
 	
-		printf("\nClientes do tipo N: (%d resultados)\n", clientesN->sp);
+		printf("\nClientes do tipo N: (%d resultados)\n", getSP(clientesN));
 		printStack(clientesN);
 	
 	} else printf("\nTIPO N VAZIO\n");
@@ -320,7 +327,7 @@ void query11 (AVL vendas, int n) {
 
 	juntaQuantFilial(h);
 
-	quicksort(h, 0, h->hsize - 1);
+	quicksort(h, 0, getSize(h) - 1);
 
 	printf("\nOs %d produtos mais comprados são: \n\n", n);
 

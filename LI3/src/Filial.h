@@ -52,7 +52,14 @@ void compraramEmTodas (AVL vendas, AVL* clie_filiais);
  *  @return void.
  */
 
-void compraramNaFilial (AVL vendas, char* prod, int filial, Stack* clientesN, Stack* clientesP);
+void compraramNaFilial (AVL vendas, char* prod, int filial, Stack clientesN, Stack clientesP);
+
+
+/** @brief Função que adiciona uma nova quantidade a uma filial.
+ *
+ *  @param h HashTable cabeçalho.
+ *  @return void.
+ */
 
 void juntaQuantFilial (HEAD_TABLE h);
 

@@ -11,8 +11,8 @@
 *
 */
 
+/*MACRO para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
-
 
 /*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
 
@@ -43,10 +43,12 @@
 * @returns Retorna 0 caso tudo corra bem.
 */
 
+/*______________________________________________________________________*/
 
 int main (void) {
 
-	loadOption();
+	/*CHAMA A FUNÇÃO QUE CARREGA O SGV*/
+	loadMenu();
 
 	return 0;
 }

@@ -10,8 +10,24 @@
 *	
 */
 
+/*______________________________________________________________________*/
+
 #ifndef _MENU_
 #define _MENU_
+
+/*______________________________________________________________________*/
+
+/*MACROS para cores do terminal*/
+#define RED   "\x1B[31m"
+#define GRN   "\x1B[32m"
+#define YEL   "\x1B[33m"
+#define BLU   "\x1B[34m"
+#define MAG   "\x1B[35m"
+#define CYN   "\x1B[36m"
+#define WHT   "\x1B[37m"
+#define RESET "\x1B[0m"
+
+/*______________________________________________________________________*/
 
 /** @brief Função que verifica o input do user.
  *
@@ -31,12 +47,12 @@ int checkInput (int input, int selection);
 void clear_screen();
 
 
-/** @brief Função principal que carrega o menu.
+/** @brief Função principal que carrega o menu do SGV.
  *
  *  @return void
  */
 
-void loadOption ();
+void loadMenu ();
 
 
 /** @brief Função que imprime o tempo de execução da leitura.
@@ -50,9 +66,18 @@ void showTime (double time);
 
 /** @brief Função que imprime as opções do user.
  *
+ *  @param loaded variavel que indica se os dados já se encontram carregados.
  *  @return void
  */
 
 void displayMenuAndOptions (int loaded);
+
+
+/** @brief Função que imprime as opções do user relativamente à leitura de ficheiros.
+ *
+ *  @return void
+ */
+
+void displayFicheirosLeitura();
 
 #endif

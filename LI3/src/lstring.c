@@ -1,10 +1,42 @@
+
+/** @file lstring.c
+*	@brief Ficheiro que implementa um lista de strings em C.
+*
+*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor Paulo Jorge da Silva Araújo 
+*	@autor Pedro Filipe Costa Machado 
+*
+*	@bug Nenhum que tivessemos reparado.
+*	
+*/
+
+/*MACRO para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
+
+/*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
 
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
+/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+
 #include "lstring.h"
+
+/*______________________________________________________________________*/
+
+/*ESTRUTURA QUE IMPLEMENTA UM LISTA*/
+struct node {
+    
+    char* val;
+    int ocurr; /*Nº DE OCURRENCIAS DO ELEMENTO*/
+    int vendidos; 
+    double preco;
+    struct node * next;
+
+};
+
+/*______________________________________________________________________*/
 
 void printLString (LString l, int flag) {
 

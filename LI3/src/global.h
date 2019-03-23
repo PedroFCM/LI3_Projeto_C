@@ -134,6 +134,13 @@ void write_recursive (AVL a, FILE *fp);
 
 void write_inorder_avl_on_file (char *filepath, AVL a, GLOBAL set);
 
+
+/** @brief Função que imprime a tag de uma AVL.  
+
+ *  @param  AVL AVL input.
+ *  @return 1 caso corra bem.
+ */
+
 int inorder_avl_just_tag (AVL a);
 
 #endif

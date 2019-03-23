@@ -13,16 +13,6 @@
 /*MACRO para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
 
-/*MACRO para cores do terminal*/
-#define RED   "\x1B[31m"
-#define GRN   "\x1B[32m"
-#define YEL   "\x1B[33m"
-#define BLU   "\x1B[34m"
-#define MAG   "\x1B[35m"
-#define CYN   "\x1B[36m"
-#define WHT   "\x1B[37m"
-#define RESET "\x1B[0m"
-
 /*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
 
 #include <stdio.h>
@@ -106,7 +96,7 @@ void displayFicheirosLeitura() {
 	printf("\t[3] Vendas_5M.txt\n" RESET);
 }
 
-void loadOption () {
+void loadMenu () {
 	
 	clear_screen();
 
@@ -456,6 +446,6 @@ void loadOption () {
 		freeAVL(clients, 0);
 		freeAVL(sells, 1);
 		free(set);
-		if (option_selected=='y') loadOption();
+		if (option_selected=='y') loadMenu();
 	}
 }

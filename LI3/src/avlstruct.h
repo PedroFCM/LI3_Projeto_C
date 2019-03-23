@@ -10,23 +10,35 @@
 *	
 */
 
+/*______________________________________________________________________*/
+
 #ifndef _AVL_
 #define _AVL_
 
-/*MACRO par indicar o tipo de balancemento*/
-
+/*MACRO par indicar o tipo de balancemento duma AVL*/
 #define BAL   0
 #define LEFT -1
 #define RIGHT 1
 
+/*______________________________________________________________________*/
 
+/*TYPE para definir uma AVL básica*/
 typedef struct avl* AVL;
 
+/*TYPE para definir uma AVL básica, nome diferente*/
 typedef struct avl* CAT_CLIENTES;
+
+/*TYPE para definir uma AVL básica, nome diferente*/
 typedef struct avl* CAT_PRODUTOS;
+
+/*TYPE para definir uma AVL básica, nome diferente*/
 typedef struct avl* CAT_VENDAS;
 
+/*TYPE para definir um registo numa AVL, 
+guarda a venda separada*/
 typedef struct registo* REGISTO;
+
+/*______________________________________________________________________*/
 
 /** @brief Função que initializa um registo de venda.
  *
