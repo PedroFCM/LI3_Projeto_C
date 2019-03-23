@@ -137,10 +137,11 @@ void loadOption () {
 	/*---------------------------------------------------------------*/
 
 	while (option_selected != 'q' && option_selected != 'Q' && option_selected != 'y') {
-
+			
 		switch(option_selected) {
 
 			/*---------------------------------------------------------------*/
+			/*PARA SAIR DO PROGRAMA*/
 
 			case 'x' : 
 					displayMenuAndOptions(data_loaded);
@@ -151,6 +152,7 @@ void loadOption () {
 				break;
 
 			/*---------------------------------------------------------------*/
+			/*QUERIES DISPONIVEIS*/
 
 			case '1': 
 
@@ -160,7 +162,7 @@ void loadOption () {
 
 					while (1) {  
 						
-						if (scanf("%d", &argumentoInteiro)!=-1) {
+						if (scanf("%d", &argumentoInteiro)==1) {
 
 							if (argumentoInteiro == 1 || 
 								argumentoInteiro == 2 || 
@@ -190,9 +192,9 @@ void loadOption () {
 					
 								end = clock();
 
-/*								write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
+								write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
 								write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
-*/								write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
+								write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
 					
 								cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 								
@@ -255,28 +257,35 @@ void loadOption () {
 					else {
 						printf("Insira um mês: ");
 						while (1)
-							if (scanf("%d", &mes))
-								break;
+							if (scanf("%d", &mes)==1)
+								if (mes >= 1 && mes <= 12)
+									break;
 						char *codprod = (char*) malloc(sizeof(char)*10);
 						int opcao_mostragem;
 						printf("Insira um código de Produto: ");
 						while(1) {
-							if (scanf("%s", codprod))
-								if (mes >= 1 && mes <= 12) {
-									printf("Deseja o resultado por filial ou o Total?\n");
-									printf("(0: FILIAL | 1: TOTAL)");
-									while (1) {
-										if (scanf("%d", &opcao_mostragem)) {
-											if (opcao_mostragem == 0 || opcao_mostragem == 1) {
-												query3(sells, mes, codprod, opcao_mostragem);
-												printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
-												free(codprod);
-												break;
-											}
+							if (scanf("%s", codprod)!=-1) {
+									if (verify_product(codprod)) {
+										printf("Deseja o resultado por filial ou o Total? [0: FILIAL | 1: TOTAL]");
+										while (1) {
+											if (scanf("%d", &opcao_mostragem)) {
+												if (opcao_mostragem == 0 || opcao_mostragem == 1) {
+													query3(sells, mes, codprod, opcao_mostragem);
+													printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
+													free(codprod);
+													break;
+												}
 										}
 									}
 									break; 
+								} else {
+									printf(RED "[ERROR] Produto inválido!\n" RESET);
+									printf("Insira um código de Produto: ");
 								}
+							} else {
+								printf("Produto inválido!\n");
+								printf("Insira um código de Produto: ");
+							} 
 						}
 					}
 
@@ -315,10 +324,16 @@ void loadOption () {
 					if (!data_loaded)
 						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
-						printf("\nInsira um cliente: ");
-						
+						printf("\nInsira um cliente: ");						
 						while (1) {
-							if (scanf("%s", codcliente)!=-1) break;
+							if (scanf("%s", codcliente)!=-1) {
+								if (verify_client(codcliente)) 
+									break;
+								else {
+									printf(RED "[ERROR] Cliente inválido!\n" RESET);
+									printf("Insira um cliente: ");
+								}
+							}
 						}
 						query7(sells, codcliente);
 						printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);

@@ -23,6 +23,7 @@
 
 #include "Filial.h"
 #include "avlstruct.h"
+#include "hashtables.h"
 
 /*______________________________________________________________________*/
 
@@ -80,5 +81,17 @@ void compraramNaFilial (AVL vendas, char* prod, int filial, Stack* clientesN, St
 		}
 		compraramNaFilial(getDir(vendas), prod, filial, clientesP, clientesN);
 		compraramNaFilial(getEsq(vendas), prod, filial, clientesP, clientesN); 
+	}
+}
+
+void juntaQuantFilial (HEAD_TABLE h) {
+	
+	int i;
+	for (i = 0; i < h -> hsize; i++) {
+		if (h->content[i].status!=FREE) {
+			h->content[i].final = h -> content[i].total_quant[0] +
+								  h -> content[i].total_quant[1] +
+								  h -> content[i].total_quant[2];
+		}
 	}
 }

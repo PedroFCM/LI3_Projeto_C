@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #include "hashtables.h"
- 
+
 HEAD_TABLE initTable (HEAD_TABLE h, int hsize_in) {
 	
 	h = (HEAD_TABLE) malloc (sizeof(struct head_table));

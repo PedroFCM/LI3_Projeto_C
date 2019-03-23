@@ -25,6 +25,8 @@ typedef struct head_table {
 
 } *HEAD_TABLE;
 
+
+
 HEAD_TABLE initTable (HEAD_TABLE h, int hsize_in);
 
 int hash_string (char *key, int hsize);

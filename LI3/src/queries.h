@@ -31,8 +31,6 @@ void showStatGlobal_query3 (int **n_vendas, float** faturacao);
 
 void showStatPorFilial_query3 (int **n_vendas, float** faturacao);
 
-void recursive_query8(int min, int max, AVL vendas, float* faturacao, int* total_vendas);
-
 void query8(int min, int max, AVL vendas);
 
 void query9 (AVL vendas, char* produto, int filial);

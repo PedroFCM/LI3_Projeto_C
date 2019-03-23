@@ -114,7 +114,7 @@ int getCurrentSize (LISTA_PROD s) {
 void printListBetween (LISTA_PROD s, int low, int high) {
 
 	for (; low >= 0 && low < high && low < s->sp; low++) {
-		printf("%s\n", s->elements[low]);
+		printf("> %s\n", s->elements[low]);
 	}
 
 }
@@ -122,25 +122,26 @@ void printListBetween (LISTA_PROD s, int low, int high) {
 void pages (LISTA_PROD s, int dados_carregados) {
 
 	char c = 'f', pagina = 0;
-	int plow = -20, phigh = 0;
+	int plow = s->sp-20, phigh = s->sp;
 
 	while(c != 'q') {
 		if (pagina >=0)
-			printf("\n\t\t[Página %d: 'f': foward, 'b':back, 'q':exit]\n", pagina);
 		
 		switch (c) {
 			case 'b': 
 				displayMenuAndOptions(dados_carregados);
-				phigh -= 20;
-				plow  -= 20;
-				printListBetween(s, plow, phigh);
-				pagina--;
+				printf("\n\t\t[Página %d: 'f': foward, 'b':back, 'q':exit]\n", pagina);
+					phigh += 20;
+					plow  += 20;
+					printListBetween(s, plow, phigh);
+					pagina--;
 				break;
 			case 'f': 
 				displayMenuAndOptions(dados_carregados);
+				printf("\n\t\t[Página %d: 'f': foward, 'b':back, 'q':exit]\n", pagina);
 				pagina++;
-				phigh += 20;
-				plow  += 20;
+				phigh -= 20;
+				plow  -= 20;
 				printListBetween(s, plow, phigh);
 				break;
 		}

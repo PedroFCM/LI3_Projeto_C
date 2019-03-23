@@ -17,6 +17,7 @@
 
 #include "avlstruct.h"
 #include "stack.h"
+#include "hashtables.h"
 
 /** @brief Função que gera uma matriz filial.
  *         Se a matriz estiver toda a 1 então o cliente comprou nas 3 filiais
@@ -52,5 +53,7 @@ void compraramEmTodas (AVL vendas, AVL* clie_filiais);
  */
 
 void compraramNaFilial (AVL vendas, char* prod, int filial, Stack* clientesN, Stack* clientesP);
+
+void juntaQuantFilial (HEAD_TABLE h);
 
 #endif
