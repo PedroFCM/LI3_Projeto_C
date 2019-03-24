@@ -67,7 +67,7 @@ CAT_PRODUTOS readNvalidate_products (char* filename, CAT_PRODUTOS prod, GLOBAL s
 		
 		if (verify_product(buffer)) {
 			
-			prod = updateAVL(prod, NULL, buffer);
+			prod = updateAVL(prod, NULL, buffer, 0);
 			
 			set -> val_prods++;
 		}

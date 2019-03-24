@@ -278,7 +278,7 @@ AVL fixLeft (AVL a);
  *  @return AVL após o fix.
  */
 
-AVL initAVL (AVL a, REGISTO novo, char *arg, int *g);
+AVL initAVL (AVL a, REGISTO novo, char *arg, int *g, int flag);
 
 
 /** @brief Função auxiliar que insere um elemento a uma AVL.
@@ -290,7 +290,7 @@ AVL initAVL (AVL a, REGISTO novo, char *arg, int *g);
  *  @return AVL após inserção.
  */
 
-AVL updateAVLRec (AVL a, REGISTO novo, char *arg, int *g);
+AVL updateAVLRec (AVL a, REGISTO novo, char *arg, int *g, int flag);
 
 
 /** @brief Função que insere um novo elemento numa AVL.
@@ -301,6 +301,6 @@ AVL updateAVLRec (AVL a, REGISTO novo, char *arg, int *g);
  *  @return AVL após inserção.
  */
 
-AVL updateAVL (AVL a, REGISTO novo, char *arg);
+AVL updateAVL (AVL a, REGISTO novo, char *arg, int flag);
 
 #endif

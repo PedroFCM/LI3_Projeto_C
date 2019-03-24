@@ -102,7 +102,7 @@ CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells,
 
 		if (verify_sell(sells, prod, cli, set, buffer, novo_registo)) {
 			
-			sells = updateAVL(sells, novo_registo, buffer);
+			sells = updateAVL(sells, novo_registo, buffer, 0);
 
 			set -> val_sells++;
 		

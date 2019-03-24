@@ -224,11 +224,12 @@ AVL fixLeft (AVL a){
 	return a;
 }
 
-AVL initAVL (AVL a, REGISTO novo, char *arg, int *g) {
+AVL initAVL (AVL a, REGISTO novo, char *arg, int *g, int flag) {
 
 	a = (AVL) malloc(sizeof(struct avl));
 	
-	arg  = string_cut_extra_char (arg);
+	if (flag==0) arg = string_cut_extra_char (arg);
+	
 	a -> tag = strdup(arg);
 	
 	if (novo != NULL) {
@@ -243,16 +244,16 @@ AVL initAVL (AVL a, REGISTO novo, char *arg, int *g) {
 	return a;
 }
 
-AVL updateAVLRec (AVL a, REGISTO novo, char *arg, int *g) {
+AVL updateAVLRec (AVL a, REGISTO novo, char *arg, int *g, int flag) {
 	
-	if (a == NULL) a = initAVL(a, novo, arg, g);
+	if (a == NULL) a = initAVL(a, novo, arg, g, flag);
 	else {
 		
 		int r = strcmp(a -> tag, arg);
 		
 		if (r >= 0) {
 	
-			a->left = updateAVLRec (a -> left, novo, arg, g);
+			a->left = updateAVLRec (a -> left, novo, arg, g, flag);
 		
 			if (*g == 1)
 				switch (a->bal) {
@@ -273,7 +274,7 @@ AVL updateAVLRec (AVL a, REGISTO novo, char *arg, int *g) {
 
 		else {
 		
-		a->right = updateAVLRec (a->right, novo, arg, g);
+		a->right = updateAVLRec (a->right, novo, arg, g, flag);
 		
 		if (*g == 1)
 	
@@ -297,11 +298,11 @@ AVL updateAVLRec (AVL a, REGISTO novo, char *arg, int *g) {
 	return a;
 }
 
-AVL updateAVL (AVL a, REGISTO novo, char *arg) {
+AVL updateAVL (AVL a, REGISTO novo, char *arg, int flag) {
 	
 	int g;
 	
-	a = updateAVLRec(a, novo, arg, &g);
+	a = updateAVLRec(a, novo, arg, &g, flag);
 	
 	return a;
 }

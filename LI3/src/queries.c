@@ -408,7 +408,7 @@ void recursive_query6 (int *sp, AVL vendas, AVL produtos) {
 AVL criaAVLvendasClientes(AVL v_cli, AVL vendas, int *sp) {
 
 	if (vendas!=NULL) {
-		v_cli = updateAVL(v_cli, NULL, getCodCliente(vendas));
+		v_cli = updateAVL(v_cli, NULL, getCodCliente(vendas), 1);
 		v_cli = criaAVLvendasClientes(v_cli, getEsq(vendas), sp);
 		v_cli = criaAVLvendasClientes(v_cli, getDir(vendas), sp);
 	}
@@ -437,16 +437,20 @@ void recursive_query6_v2 (int *sp, AVL v_cli, AVL clientes) {
 
 	if (clientes != NULL) {
 
-		char *aux;
-		aux = strdup(getTag(v_cli));
-		aux[5]='\0';
-
-		if (!procuraClienteAVL(v_cli, aux)) {
+		if (procuraClienteAVL(v_cli, getTag(clientes))) {
 			*sp+=1;
 		}
 
 		recursive_query6_v2 (sp, v_cli, getEsq(clientes));
 		recursive_query6_v2 (sp, v_cli, getDir(clientes));
+	}
+}
+
+void printAVL (AVL a) {
+	if (a!=NULL) {
+		printAVL(getEsq(a));
+		printf("%s\n", getTag(a));
+		printAVL(getDir(a));
 	}
 }
 

@@ -55,7 +55,7 @@ void compraramEmTodas (AVL vendas, AVL* clie_filiais) {
 		/* por causa do 'cut_extra_char' */
 
 		if(filial[0]+filial[1]+filial[2] == 3)
-			*clie_filiais = updateAVL(*clie_filiais, NULL, getCodCliente(vendas)); 
+			*clie_filiais = updateAVL(*clie_filiais, NULL, getCodCliente(vendas), 0); 
 
 		compraramEmTodas(getEsq(vendas), clie_filiais);
 		compraramEmTodas(getDir(vendas), clie_filiais);
