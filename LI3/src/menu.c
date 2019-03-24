@@ -307,7 +307,7 @@ void loadMenu () {
 					if (!data_loaded)
 						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
-						printf("\n[error 404] query not found\n");
+						query6(sells, products, clients);
 					}
 					break;
 			case '7': 

@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 /*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
 
@@ -366,4 +367,98 @@ void query12 (AVL vendas, char* cliente){
 
 	printLString(produtos, 1);
 	
+}
+
+/*______________________________________________________________________*/
+
+int procuraProdutoAVL (AVL vendas, char* prod) {
+
+	int r;
+
+	if (vendas != NULL) {
+
+		r = strcmp(prod, getCodProd(vendas));
+
+		if (!r) return 1;
+		else if (r > 0) return procuraProdutoAVL(getDir(vendas), prod);
+		else return procuraProdutoAVL(getEsq(vendas), prod);
+
+	}
+
+	return 0;
+}
+
+void recursive_query6 (int *sp, AVL vendas, AVL produtos) {
+
+	if (produtos != NULL) {
+
+		char *aux;
+		aux = strdup(getTag(produtos));
+		aux[6]='\0';
+
+		if (!procuraProdutoAVL(vendas, aux)) {
+			*sp+=1;
+		}
+
+		recursive_query6(sp, vendas, getEsq(produtos));
+		recursive_query6(sp, vendas, getDir(produtos));
+	}
+}
+
+int procuraClienteAVL (AVL vendas, char* cliente) {
+
+	int r;
+
+	if (vendas != NULL) {
+
+		r = strcmp(cliente, getCodCliente(vendas));
+
+		if (!r) return 1;
+		else {
+			return procuraClienteAVL(getDir(vendas), cliente) || 
+				   procuraClienteAVL(getEsq(vendas), cliente);
+		}
+	}
+
+	return 0;
+}
+
+void clientesPobres (int *sp, AVL vendas, AVL clientes) {
+
+	if (clientes != NULL) {
+
+		char *aux;
+		aux = strdup(getTag(clientes));
+		aux[5]='\0';
+
+		if (!procuraClienteAVL(vendas, aux)) {
+			*sp+=1;
+		}
+
+		clientesPobres(sp, vendas, getEsq(clientes));
+		clientesPobres(sp, vendas, getDir(clientes));
+	}
+
+}
+
+void query6 (AVL vendas, AVL produtos, AVL clientes) {
+
+	int *sp = (int*) malloc(sizeof(int));
+	*sp = 0;
+
+	clock_t start, end;
+	double cpu_time_used;
+	start = clock();
+
+	recursive_query6(sp, vendas, produtos);
+	printf("Existem %d produtos que ninguém comprou.\n", *sp);
+
+	*sp = 0;
+	clientesPobres(sp, vendas, clientes);
+	printf("Existem %d clientes que não compraram.\n", *sp);	
+	end = clock();
+	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+
+	printf("\n\nCPU Time = %.4f seconds.\n\n", cpu_time_used );
+
 }
