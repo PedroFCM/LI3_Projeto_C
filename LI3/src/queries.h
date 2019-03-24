@@ -22,10 +22,10 @@
 #include "hashtables.h"
 #include "Faturacao.h"
 
+void recursive_query6_v2 (int *sp, AVL v_cli, AVL clientes);
 int procuraProdutoAVL (AVL vendas, char* prod);
 void recursive_query6 (int *sp, AVL vendas, AVL produtos);
-int procuraClienteAVL (AVL vendas, char* cliente);
-void clientesPobres (int *sp, AVL vendas, AVL clientes);
+AVL criaAVLvendasClientes(AVL v_cli, AVL vendas, int *sp);
 void query6 (AVL vendas, AVL produtos, AVL clientes);
 
 /*______________________________________________________________________*/

@@ -405,60 +405,77 @@ void recursive_query6 (int *sp, AVL vendas, AVL produtos) {
 	}
 }
 
-int procuraClienteAVL (AVL vendas, char* cliente) {
+AVL criaAVLvendasClientes(AVL v_cli, AVL vendas, int *sp) {
+
+	if (vendas!=NULL) {
+		v_cli = updateAVL(v_cli, NULL, getCodCliente(vendas));
+		v_cli = criaAVLvendasClientes(v_cli, getEsq(vendas), sp);
+		v_cli = criaAVLvendasClientes(v_cli, getDir(vendas), sp);
+	}
+
+	return v_cli;
+}
+
+int procuraClienteAVL (AVL vendas_clientes, char* cliente) {
 
 	int r;
 
-	if (vendas != NULL) {
+	if (vendas_clientes != NULL) {
 
-		r = strcmp(cliente, getCodCliente(vendas));
+		r = strcmp(cliente, getTag(vendas_clientes));
 
-		if (!r) return 1;
-		else {
-			return procuraClienteAVL(getDir(vendas), cliente) || 
-				   procuraClienteAVL(getEsq(vendas), cliente);
-		}
+		if (r==0) return 1;
+		else if (r > 0) procuraClienteAVL(getDir(vendas_clientes), cliente);
+		else procuraClienteAVL(getEsq(vendas_clientes), cliente);
+
 	}
 
 	return 0;
 }
 
-void clientesPobres (int *sp, AVL vendas, AVL clientes) {
+void recursive_query6_v2 (int *sp, AVL v_cli, AVL clientes) {
 
 	if (clientes != NULL) {
 
 		char *aux;
-		aux = strdup(getTag(clientes));
+		aux = strdup(getTag(v_cli));
 		aux[5]='\0';
 
-		if (!procuraClienteAVL(vendas, aux)) {
+		if (!procuraClienteAVL(v_cli, aux)) {
 			*sp+=1;
 		}
 
-		clientesPobres(sp, vendas, getEsq(clientes));
-		clientesPobres(sp, vendas, getDir(clientes));
+		recursive_query6_v2 (sp, v_cli, getEsq(clientes));
+		recursive_query6_v2 (sp, v_cli, getDir(clientes));
 	}
-
 }
 
 void query6 (AVL vendas, AVL produtos, AVL clientes) {
-
-	int *sp = (int*) malloc(sizeof(int));
-	*sp = 0;
 
 	clock_t start, end;
 	double cpu_time_used;
 	start = clock();
 
+	int *sp = (int*) malloc(sizeof(int));
+	*sp = 0;
+
 	recursive_query6(sp, vendas, produtos);
 	printf("Existem %d produtos que ninguém comprou.\n", *sp);
+	
+	AVL v_cli = NULL;
+	v_cli = criaAVLvendasClientes(v_cli, vendas, sp);
 
 	*sp = 0;
-	clientesPobres(sp, vendas, clientes);
+	recursive_query6_v2(sp, v_cli, clientes);
 	printf("Existem %d clientes que não compraram.\n", *sp);	
+
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 
-	printf("\n\nCPU Time = %.4f seconds.\n\n", cpu_time_used );
+	printf("\nCPU Time = %.4f seconds.\n\n", cpu_time_used );
 
 }
+
+
+
+
