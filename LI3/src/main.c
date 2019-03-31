@@ -30,6 +30,8 @@
 #include "avlstruct.h"
 #include "queries.h"
 #include "menu.h"
+#include "Faturacao.h"
+#include "Filial.h"
 
 /**
 * @brief Função que carrega o SGV.
@@ -47,14 +49,6 @@
 
 int main (void) {
 
-	/*CHAMA A FUNÇÃO QUE CARREGA O SGV*/
-	loadMenu();
-
-	return 0;
-}
-
-/*int main (void) {
-
 	clock_t start, end;
 	double cpu_time_used;
 
@@ -64,32 +58,34 @@ int main (void) {
 	CAT_PRODUTOS products = NULL;
 	CAT_CLIENTES clients  = NULL;
 	CAT_VENDAS   sells    = NULL;
-
-
+	
+	start = clock();
+	
 	products = readNvalidate_products(PROD_PATH, products, set);	
 	clients = readNvalidate_clients(CLIE_PATH, clients, set);
 	sells = readNvalidate_sells(SELL_PATH_1M, sells, set, products, clients);
 
-	start = clock();
-
-	query5(sells);
-
- 	write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
+	write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
 	write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
 	write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
 
-	freeAVL(products, 0);
-	freeAVL(clients, 0);
-	freeAVL(sells, 1);
-
-	free(set);
-	
+	query1(set);
 
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 
 	printf("\n\nCPU Time = %.4f seconds.\n\n", cpu_time_used );
 	
+	
+		
+/*	FAT_FILIAL nova = NULL;
+	initFaturacao(nova, products, sells);
+		
+*/		
+	FILIAL new = NULL;
+	initFilial(new, clients, sells);
+	
+	free(set);
+
 	return 0;
 }
-*/

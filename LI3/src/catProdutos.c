@@ -67,7 +67,7 @@ CAT_PRODUTOS readNvalidate_products (char* filename, CAT_PRODUTOS prod, GLOBAL s
 		
 		if (verify_product(buffer)) {
 			
-			prod = updateAVL(prod, NULL, buffer, 0);
+			prod = updateAVL(prod, NULL, NULL, buffer, NULL, 0);
 			
 			set -> val_prods++;
 		}
@@ -108,18 +108,6 @@ LISTA_PROD geraListaLetra (AVL produtos, LISTA_PROD ls, char letra) {
 	return ls;
 }
 
-int getCurrentSize (LISTA_PROD s) {
-	return s->sp;
-}
-
-void printListBetween (LISTA_PROD s, int low, int high) {
-
-	for (; low >= 0 && low < high && low < s->sp; low++) {
-		printf("> %s\n", s->elements[low]);
-	}
-
-}
-
 void pages (LISTA_PROD s, int dados_carregados) {
 
 	char c = 'f', pagina = 0;
@@ -148,6 +136,18 @@ void pages (LISTA_PROD s, int dados_carregados) {
 		}
 
 		if (scanf("%c", &c)!=-1);
+	}
+
+}
+
+int getCurrentSize (LISTA_PROD s) {
+	return s->sp;
+}
+
+void printListBetween (LISTA_PROD s, int low, int high) {
+
+	for (; low >= 0 && low < high && low < s->sp; low++) {
+		printf("> %s\n", s->elements[low]);
 	}
 
 }

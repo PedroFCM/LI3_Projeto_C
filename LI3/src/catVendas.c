@@ -23,9 +23,22 @@
 /*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
 
 #include "global.h"
-#include "avlstruct.h"
+#include "catVendas.h"
 
-/*______________________________________________________________________*/
+/*ESTRUTURA QUE ARMAZENA O REGISTO DE UMA VENDA*/
+struct registo {
+
+	char* codProd;
+	double preco;
+	int quantidade;
+	char tipo;
+	char* codCli;
+	int mes;
+	int filial;
+
+};
+
+/*_______________________Funções PRINCIPAIS_________________________________*/
 
 int verify_sell (CAT_VENDAS vendas, CAT_PRODUTOS prod, CAT_CLIENTES client, GLOBAL set, char *sell, REGISTO reg) {
 	
@@ -102,7 +115,7 @@ CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells,
 
 		if (verify_sell(sells, prod, cli, set, buffer, novo_registo)) {
 			
-			sells = updateAVL(sells, novo_registo, buffer, 0);
+			sells = updateAVL(sells, novo_registo, NULL, buffer, NULL, 0);
 
 			set -> val_sells++;
 		
@@ -116,4 +129,67 @@ CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells,
 	fclose(fp);
 	
 	return sells;
+}
+
+/*_______________________Funções AUXILIARES_______________________________*/
+
+char* getCodProd (AVL a) {
+	return (getRegisto(a)->codProd);
+}
+
+int getFilial (AVL a) {
+	return (getRegisto(a)->filial);
+}
+
+int getQuantidade (AVL a) {
+	return (getRegisto(a)->quantidade);
+}
+
+char getTipo (AVL a) {
+	return (getRegisto(a)->tipo);
+}
+
+char* getCodCliente (AVL a) {
+	return (getRegisto(a)->codCli);
+}
+
+int getMes (AVL a) {
+	return (getRegisto(a)->mes);
+}
+
+double getPreco (AVL a) {
+	return (getRegisto(a)->preco);
+}
+
+REGISTO initRegisto (REGISTO novo) {
+	novo = (REGISTO) malloc(sizeof(struct registo));
+	return novo;
+}
+
+void setFilial (REGISTO reg, int f) {
+	reg -> filial = f;
+}
+
+void setMes (REGISTO reg, int m) {
+	reg -> mes = m;
+}
+
+void setCodCliente (REGISTO reg, char* cliente) {
+	reg -> codCli = strdup(cliente);
+}
+
+void setTipo (REGISTO reg, char tp) {
+	reg -> tipo = tp;
+}
+
+void setQuantidade (REGISTO reg, int qt) {
+	reg -> quantidade = qt;
+}
+
+void setPreco (REGISTO reg, double price) {
+	reg->preco = price;
+}
+
+void setCodProd (REGISTO reg, char *prod) {
+	reg->codProd = strdup(prod);
 }

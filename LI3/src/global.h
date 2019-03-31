@@ -32,6 +32,12 @@
 /*MACRO para indicar o nº de campos que uma venda tem*/
 #define CAMPOS_SELLS 7
 
+#define NUM_FILIAIS 3
+#define NUM_MESES 12
+
+typedef enum {false, true} boolean;
+typedef struct avl* AVL;
+
 
 /*ESTRUTURA QUE DEFINE ESTATISTICAS GLOBAIS DE LEITURA DOS FICHEIROS*/
 typedef struct settings {

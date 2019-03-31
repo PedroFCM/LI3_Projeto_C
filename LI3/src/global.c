@@ -24,6 +24,7 @@
 
 #include "global.h"
 #include "avlstruct.h"
+#include "catVendas.h"
 
 /*______________________________________________________________________*/
 

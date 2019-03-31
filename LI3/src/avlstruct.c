@@ -21,24 +21,13 @@
 
 /*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
 
-#include "avlstruct.h"
 #include "global.h"
+#include "avlstruct.h"
+
+#include "Faturacao.h"
+#include "Filial.h"
 
 /*______________________________________________________________________*/
-
-
-/*ESTRUTURA QUE ARMAZENA O REGISTO DE UMA VENDA*/
-struct registo {
-
-	char* codProd;
-	double preco;
-	int quantidade;
-	char tipo;
-	char* codCli;
-	int mes;
-	int filial;
-
-};
 
 /*ESTRUTURA QUE DEFINE UMA AVL*/
 struct avl {
@@ -49,67 +38,31 @@ struct avl {
 		
 	REGISTO registo;
 
-	struct avl *left, *right;
+	FATURA fatura;
 
+	GESTAO_FILIAL gestaoFilial;
+
+	struct avl *left, *right;
 };
 
 /*______________________________________________________________________*/
 
-REGISTO initRegisto (REGISTO novo) {
-	novo = (REGISTO) malloc(sizeof(struct registo));
-	return novo;
+GESTAO_FILIAL getGestaoFilial(AVL filial){
+	return filial -> gestaoFilial;
 }
 
-void setFilial (REGISTO reg, int f) {
-	reg -> filial = f;
-}
-
-void setMes (REGISTO reg, int m) {
-	reg -> mes = m;
-}
-
-void setCodCliente (REGISTO reg, char* cliente) {
-	reg -> codCli = strdup(cliente);
-}
-
-void setTipo (REGISTO reg, char tp) {
-	reg -> tipo = tp;
-}
-
-void setQuantidade (REGISTO reg, int qt) {
-	reg -> quantidade = qt;
-}
-
-void setPreco (REGISTO reg, double price) {
-	reg->preco = price;
-}
-
-void setCodProd (REGISTO reg, char *prod) {
-	reg->codProd = strdup(prod);
-}
-
-char getFirstLetterTag (AVL a) {
-	return (a->tag[0]);
-}
-
-char getTipo (AVL a) {
-	return (a->registo->tipo);
-}
-
-char* getCodCliente (AVL a) {
-	return (a->registo->codCli);
-}
-
-int getMes (AVL a) {
-	return (a->registo->mes);
-}
-
-double getPreco (AVL a) {
-	return (a->registo->preco);
+FATURA getFatura (AVL a) {
+	return a->fatura;
 }
 
 REGISTO getRegisto (AVL a) {
-	return (a->registo);
+	return a->registo;
+}
+
+/*______________________________________________________________________*/
+
+char getFirstLetterTag (AVL a) {
+	return (a->tag[0]);
 }
 
 char* getTag (AVL a) {
@@ -124,26 +77,14 @@ AVL getDir (AVL a) {
 	return (a->right);
 }
 
-char* getCodProd (AVL a) {
-	return (a->registo->codProd);
-}
-
-int getFilial (AVL a) {
-	return (a->registo->filial);
-}
-
-int getQuantidade (AVL a) {
-	return (a->registo->quantidade);
-}
-
 void freeAVL (AVL a, int flag) {
 
 	if (a != NULL) {
 		freeAVL (a -> left, flag);
 		freeAVL (a -> right, flag);
-		free (a -> tag);
+/*		free (a -> tag);
 		free(a);
-	}
+*/	}
 
 }
 
@@ -224,16 +165,25 @@ AVL fixLeft (AVL a){
 	return a;
 }
 
-AVL initAVL (AVL a, REGISTO novo, char *arg, int *g, int flag) {
+AVL initAVL (AVL a, REGISTO novo, char *arg, int *g, FATURA new, GESTAO_FILIAL nova_gestao, int flag) {
 
 	a = (AVL) malloc(sizeof(struct avl));
+
+	if (flag==0) {
+		
+		arg = string_cut_extra_char (arg);
+		a -> tag = strdup(arg);
 	
-	if (flag==0) arg = string_cut_extra_char (arg);
+	} else if (flag==2) {
+		
+		a->fatura = new;
 	
-	a -> tag = strdup(arg);
+	} else if (flag==3) {
+		a->gestaoFilial = nova_gestao;
+		setSizeGF(a->gestaoFilial, 0);
+	} else a -> tag = strdup(arg);
 	
 	if (novo != NULL) {
-		a -> registo = (REGISTO) malloc(sizeof(struct registo));
 		a -> registo = novo;	
 	}	
 	
@@ -244,16 +194,22 @@ AVL initAVL (AVL a, REGISTO novo, char *arg, int *g, int flag) {
 	return a;
 }
 
-AVL updateAVLRec (AVL a, REGISTO novo, char *arg, int *g, int flag) {
+AVL updateAVLRec (AVL a, REGISTO novo, GESTAO_FILIAL nova_gestao, char *arg, int *g, FATURA f, int flag) {
 	
-	if (a == NULL) a = initAVL(a, novo, arg, g, flag);
+	if (a == NULL) a = initAVL(a, novo, arg, g, f, nova_gestao, flag);
 	else {
+			
+		int r;
+
+		if (flag == 2) r = strcmp(getProdFatura(a->fatura), arg);
 		
-		int r = strcmp(a -> tag, arg);
+		else if (flag == 3) r = strcmp(getClienteFilial(a -> gestaoFilial), arg); 
 		
+		else r = strcmp(a -> tag, arg); 
+
 		if (r >= 0) {
 	
-			a->left = updateAVLRec (a -> left, novo, arg, g, flag);
+			a->left = updateAVLRec (a -> left, novo, nova_gestao, arg, g, f, flag);
 		
 			if (*g == 1)
 				switch (a->bal) {
@@ -274,7 +230,7 @@ AVL updateAVLRec (AVL a, REGISTO novo, char *arg, int *g, int flag) {
 
 		else {
 		
-		a->right = updateAVLRec (a->right, novo, arg, g, flag);
+		a->right = updateAVLRec (a->right, novo, nova_gestao, arg, g, f, flag);
 		
 		if (*g == 1)
 	
@@ -298,11 +254,11 @@ AVL updateAVLRec (AVL a, REGISTO novo, char *arg, int *g, int flag) {
 	return a;
 }
 
-AVL updateAVL (AVL a, REGISTO novo, char *arg, int flag) {
+AVL updateAVL (AVL a, REGISTO novo, GESTAO_FILIAL nova_gestao, char *arg, FATURA f, int flag) {
 	
 	int g;
 	
-	a = updateAVLRec(a, novo, arg, &g, flag);
+	a = updateAVLRec(a, novo, nova_gestao, arg, &g, f, flag);
 	
 	return a;
 }

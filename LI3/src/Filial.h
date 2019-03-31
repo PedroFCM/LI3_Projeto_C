@@ -16,51 +16,47 @@
 /*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
 
 #include "avlstruct.h"
-#include "stack.h"
-#include "hashtables.h"
 
-/** @brief Função que gera uma matriz filial.
- *         Se a matriz estiver toda a 1 então o cliente comprou nas 3 filiais
- *
- *  @param vendas AVL de vendas para procura.
- *  @param filial matriz de verificacao.
- *  @param cliente string contendo o cliente de pesquisa.
- *  @return void.
- */
+typedef struct filial *FILIAL;
 
-void procuraNaFilial (AVL vendas, int filial[], char* cliente);
+typedef struct fatura *FATURA;
 
+typedef float** FAT_MES;
 
-/** @brief Função que gera a faturacao entre dois meses.
- *
- *  @param f Faturacao.
- *  @param min Mes inferior.
- *  @param max Mes superior.
- *  @param vendas AVL de vendas.
- *  @return void.
- */
+typedef int** VENDAS;
 
-void compraramEmTodas (AVL vendas, AVL* clie_filiais);
+typedef struct avl *AVL;
 
+typedef struct gestaoFilial* GESTAO_FILIAL;
 
-/** @brief Função que gera a faturacao entre dois meses.
- *
- *  @param f Faturacao.
- *  @param min Mes inferior.
- *  @param max Mes superior.
- *  @param vendas AVL de vendas.
- *  @return void.
- */
+typedef struct elementos* ELEM;
 
-void compraramNaFilial (AVL vendas, char* prod, int filial, Stack clientesN, Stack clientesP);
+void initFaturaFilial (GESTAO_FILIAL new);
 
+void setSizeGF (GESTAO_FILIAL f, int new_size);
 
-/** @brief Função que adiciona uma nova quantidade a uma filial.
- *
- *  @param h HashTable cabeçalho.
- *  @return void.
- */
+GESTAO_FILIAL setClienteFilial (char *c, GESTAO_FILIAL* g);
 
-void juntaQuantFilial (HEAD_TABLE h);
+void initMatrizFilial(GESTAO_FILIAL fat, FAT_MES f,VENDAS v, int prod);
+
+int getSizeGF(GESTAO_FILIAL filial);
+
+char* getProdFilial (GESTAO_FILIAL filial, int i);
+
+void setFatFilial (GESTAO_FILIAL g, int prod, int l, int c, double val);
+
+void setVendasFilial (GESTAO_FILIAL g, int prod, int l, int c);
+
+void pushProdutoFilial (char *p, GESTAO_FILIAL filial);
+
+char* getClienteFilial(GESTAO_FILIAL filial);
+
+FILIAL initFilial (FILIAL nova, AVL clientes, AVL vendas);
+
+void insereClienteFat (int fi, AVL *filial, AVL vendas);
+
+void updateGestaoFilial (AVL filial, AVL vendas, char *c, int *r);
+
+void insereNaFilial (GESTAO_FILIAL filial, char *p, char modo, float preco, int quant, int mes);
 
 #endif

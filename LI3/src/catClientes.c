@@ -59,7 +59,7 @@ CAT_CLIENTES readNvalidate_clients (char *filename, CAT_CLIENTES clients, GLOBAL
 		
 		if (verify_client(buffer)) {
 
-			clients = updateAVL(clients, NULL, buffer, 0);
+			clients = updateAVL(clients, NULL, NULL, buffer, NULL, 0);
 		
 			set -> val_clients++;
 		}

@@ -1,4 +1,4 @@
-CC = gcc -ansi -g -Ofast -march=native -Wall
+CC = gcc -ansi -g -O3 -march=native -Wall
 CGLAGS = -I
 DEPS = $(wildcard *.h)
 OBJ = $(patsubst %.c,%.o,$(wildcard *.c))

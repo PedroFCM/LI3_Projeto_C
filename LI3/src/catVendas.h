@@ -22,6 +22,92 @@
 
 /*______________________________________________________________________*/
 
+char* getCodProd (AVL a);
+
+int getFilial (AVL a);
+
+int getQuantidade (AVL a);
+
+char getTipo (AVL a);
+
+char* getCodCliente (AVL a);
+
+int getMes (AVL a);
+
+double getPreco (AVL a);
+
+REGISTO initRegisto (REGISTO novo);
+
+
+/** @brief Função que insere uma filial num registo de venda.
+ *
+ *  @param reg Registo de venda.
+ *  @param f filial para inserção
+ *  @return void
+*/
+
+void setFilial (REGISTO reg, int f);
+
+
+/** @brief Função que insere o mes de compra num registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param mes mes para inserção
+ *  @return void
+*/
+
+void setMes (REGISTO reg, int m);
+
+
+/** @brief Função que insere um cliente num registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param cliente cliente para inserção
+ *  @return void
+*/
+
+void setCodCliente (REGISTO reg, char* cliente);
+
+
+/** @brief Função que insere um tipo de compra a um registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param tp tipo de compra para inserção
+ *  @return void
+*/
+
+void setTipo (REGISTO reg, char tp);
+
+
+/** @brief Função que insere uma quantidade comprada num registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param qt quantidade para inserção
+ *  @return void
+*/
+
+void setQuantidade (REGISTO reg, int qt);
+
+
+/** @brief Função que insere o preco de um produto a um registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param price preco para inserção
+ *  @return void
+*/
+
+void setPreco (REGISTO reg, double price);
+
+
+/** @brief Função que insere um produto a um registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param prod produto para inserção
+ *  @return void
+*/
+
+void setCodProd (REGISTO reg, char *prod);
+
 /** @brief Função que verifica se uma venda é válida.
  *
  *  @param vendas AVL de vendas.

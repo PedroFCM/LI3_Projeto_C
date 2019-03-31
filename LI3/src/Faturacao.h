@@ -17,77 +17,58 @@
 
 #include "avlstruct.h"
 
-/* MACRO para float** */
-typedef float** FAT_PRECO;
-/* MACRO para int** */
-typedef int** FAT_QUANT;
-
-/*typedef para uma faturação*/
-typedef struct faturacao* FAT;
+#define F1 0
+#define F2 1
+#define F3 2
 
 /*______________________________________________________________________*/
 
-/** @brief Função que gera a faturacao entre dois meses.
- *
- *  @param f Faturacao.
- *  @param min Mes inferior.
- *  @param max Mes superior.
- *  @param vendas AVL de vendas.
- *  @return void.
- */
+typedef struct faturacao *FAT_FILIAL;
 
-void faturacaoMes (int min, int max, AVL vendas, FAT f);
+typedef struct fatura *FATURA;
 
+typedef float** FAT_MES;
 
-/** @brief Função que retorna o elemento que está na posição l, c da Faturacao.
- *
- *  @param f Faturacao.
- *  @param l linha.
- *  @param c coluna.
- *  @return elemento nessa posicao.
- */
+typedef int** VENDAS;
 
-int getQuantPos (FAT f, int l, int c);
+typedef struct avl *AVL;
 
+/*______________________________________________________________________*/
 
-/** @brief Função que retorna o elemento que está na posição l, c da Faturacao.
- *
- *  @param f Faturacao.
- *  @param l linha.
- *  @param c coluna.
- *  @return elemento nessa posicao.
- */
+void printFaturacao (AVL fat);
 
-double getPrecoPos(FAT f, int l, int c);
+void printMATRIX (FAT_MES f, VENDAS v, int opcao);
 
+void initFatura (FAT_MES f, VENDAS v);
 
-/** @brief Função que inicializa a struct FAT.
- *
- *  @param new Fatu.
- *  @return elemento nessa posicao.
- */
+void setFatMes (FATURA f, int l, int c, double val);
 
-FAT initFatProduto (FAT new);
+void setVendas (FATURA f, int l, int c);
 
+VENDAS getNumVendas (FATURA f);
 
-/** @brief Função que gera a faturação de um produto.
- *
- *  @param vendas AVL de vendas.
- *  @param prod produto para verificacao.
- *  @param mes mes de procura.
- *  @param f Faturação
- *  @return void.
- */
+FAT_MES getFatMes (FATURA f);
 
-void geraFaturacaoProduto (AVL vendas, char* prod, int mes, FAT f);
+void initMatriz(FATURA fat, FAT_MES f,VENDAS v);
 
+char* getProdFatura (FATURA f);
 
-/** @brief Função que liberta a memória de uma Faturacao.
- *
- *  @param f Faturacao.
- *  @return elemento nessa posicao.
- */
+void printFaturacao (AVL fat);
 
-void freeFat (FAT f);
+AVL getFaturacao (FAT_FILIAL f, int filial);
+
+char* getProdFatura (FATURA f);
+
+void insereNaFatura (FATURA f, double preco, int quant, char modo, int mes);
+
+void insereProdFat (int filial, AVL *fatFilial, AVL vendas);
+
+FAT_FILIAL initFaturacao (FAT_FILIAL nova, AVL prod, AVL vendas);
+
+void updateFatura (AVL fatFilial, AVL vendas, char *p, int *r);
+
+void setProdFatura (char* p, FATURA f);
+
+/*______________________________________________________________________*/
 
 #endif
