@@ -5,12 +5,10 @@
 *	@autor João Pedro Rodrigues Azevedo (A85227) 
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 
-*
-*	@bug Nenhum que tivessemos reparado.
 *	
 */
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 #ifndef _PRODUTOSRW_
 #define _PRODUTOSRW_
@@ -22,10 +20,10 @@
 
 /*______________________________________________________________________*/
 
-/*ESTRUTURA QUE GUARDA UMA LISTA DE PRODUTOS*/
+/*@brief Typedef para uma lista de produtos (estilo stack).*/
 typedef struct listaProdutos* LISTA_PROD;
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que verifica se um produto introduzido é válido.
  *

@@ -2,15 +2,15 @@
 /** @file menu.c
 *	@brief Ficheiro que implementa o menu do SGV.
 *
-*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor João Pedro Rodrigues Azevedo
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 
 *
-*	@bug Nenhum que tivessemos reparado.
+*	@bug Bugs de entrada de argumentos (Não muito relevantes).
 *	
 */
 
-/*MACRO para suprimir warnings de strdup do <string.h>*/
+/*MACRO para suprimir warnings de strdup da library <string.h>*/
 #define _GNU_SOURCE
 
 /*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
@@ -22,16 +22,24 @@
 
 /*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
 
+/*Contém estatisticas de leitura de dados*/
 #include "global.h"
+/*Para validacao de produtos*/
 #include "catProdutos.h"
+/*Para validacao de clientes*/
 #include "catClientes.h"
+/*Para validacao de vendas*/
 #include "catVendas.h"
+/*Para criacao das estruras de armazenamento dos dados de leitura*/
 #include "avlstruct.h"
+/*Para obter a query requested*/
 #include "queries.h"
+/*Default include*/
 #include "menu.h"
+/*Para apresentar tempos de leitura e outros*/
 #include "time.h"
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 int checkInput (int input, int selection) {
 	return (input==1 && ( 
@@ -89,15 +97,22 @@ void displayMenuAndOptions (int loaded) {
 }
 
 void displayFicheirosLeitura() {
+
 	printf(YEL "\n-> Qual ficheiro deseja ler?\n\n" RESET);
 	
 	printf(RED "\t[1] Vendas_1M.txt\n");
 	printf("\t[2] Vendas_3M.txt\n");
 	printf("\t[3] Vendas_5M.txt\n" RESET);
+
 }
+
+/*----------------------------------------------------------------------*/
+					/*FUNÇÃO PRINCIPAL DO MENU*/
 
 void loadMenu () {
 	
+	/*---------------------------------------------------------------*/
+
 	clear_screen();
 
 	/*---------------------------------------------------------------*/
@@ -110,17 +125,22 @@ void loadMenu () {
 	int argumentoInteiro;
 	char codprod[10], codcliente[10];
 
+	/*---------------------------------------------------------------*/
+
 	GLOBAL set = (GLOBAL) malloc(sizeof(struct settings)); 
 
 	CAT_PRODUTOS products = NULL;
 	CAT_CLIENTES clients  = NULL;
 	CAT_VENDAS   sells    = NULL;
 	
+	FAT_FILIAL nova = NULL;
+	
 	/*---------------------------------------------------------------*/
 
 	displayMenuAndOptions(data_loaded);
 
 	input = scanf("%c", &option_selected);
+
 	if (!checkInput(input, option_selected))
 		option_selected = '0';
 
@@ -181,7 +201,11 @@ void loadMenu () {
 								}
 					
 								end = clock();
+							
+								/*Gera a faturação a partir das vendas*/
+								nova = initFaturacao(nova, products, sells);
 
+								/*Escreve os elementos válidos da leitura*/
 								write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
 								write_inorder_avl_on_file(VAL_PROD_PATH, products, set);
 								write_inorder_avl_on_file(VAL_SELL_PATH, sells, set);
@@ -260,7 +284,7 @@ void loadMenu () {
 										while (1) {
 											if (scanf("%d", &opcao_mostragem)) {
 												if (opcao_mostragem == 0 || opcao_mostragem == 1) {
-													query3(sells, mes, codprod, opcao_mostragem);
+													query3(nova, mes, codprod, opcao_mostragem);
 													printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 													free(codprod);
 													break;
@@ -287,7 +311,7 @@ void loadMenu () {
 					if (!data_loaded)
 						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
-						printf("\n[error 404] query not found\n");
+						query4(nova, products);
 					}
 					break;
 
@@ -343,7 +367,7 @@ void loadMenu () {
 								if ((mes_inf <= mes_sup || mes_sup <= mes_inf) &&
 									mes_inf >= 1 && mes_inf <= 12 &&
 									mes_sup >= 1 && mes_sup <= 12) {
-										query8(mes_inf, mes_sup, sells);
+										query8(nova, mes_inf, mes_sup);
 										break;
 								}
 						}
@@ -440,6 +464,8 @@ void loadMenu () {
 	
 	}
 
+	/*---------------------------------------------------------------*/
+
 	if (option_selected == 'q' || option_selected == 'Q' || option_selected == 'y') {
 		printf(YEL "A sair do programa...\n" RESET);
 		freeAVL(products, 0);
@@ -449,3 +475,5 @@ void loadMenu () {
 		if (option_selected=='y') loadMenu();
 	}
 }
+
+/*---------------------------------------------------------------*/

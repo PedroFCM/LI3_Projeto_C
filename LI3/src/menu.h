@@ -2,7 +2,7 @@
 /** @file menu.h
 *	@brief Header file de menu.c
 *
-*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor João Pedro Rodrigues Azevedo
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 
 *
@@ -10,14 +10,14 @@
 *	
 */
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 #ifndef _MENU_
 #define _MENU_
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
-/*MACROS para cores do terminal*/
+/*@brief MACROS para cores do terminal*/
 #define RED   "\x1B[31m"
 #define GRN   "\x1B[32m"
 #define YEL   "\x1B[33m"
@@ -27,7 +27,7 @@
 #define WHT   "\x1B[37m"
 #define RESET "\x1B[0m"
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que verifica o input do user.
  *
@@ -79,5 +79,7 @@ void displayMenuAndOptions (int loaded);
  */
 
 void displayFicheirosLeitura();
+
+/*----------------------------------------------------------------------*/
 
 #endif

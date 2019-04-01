@@ -23,26 +23,33 @@
 
 #include "avlstruct.h"
 #include "global.h"
+#include "Faturacao.h"
+#include "Filial.h"
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
-
-/*ESTRUTURA QUE DEFINE UMA AVL*/
+/*@brief Struct que armazena uma AVL com os 
+campos necessários ao trabalho*/
 struct avl {
 
-	int bal;
+	int bal; /*Indicador de balanceamento*/
 	
-	char* tag;
+	char* tag; /*String pela qual a AVL é ordenada*/
 		
-	REGISTO registo;
+	REGISTO registo; /*Registo de uma venda*/
 
-	FATURA fatura;
+	FATURA fatura; /*Fatura de uma venda*/
+	
+	GESTAO_FILIAL gestaoFilial;
 
-	struct avl *left, *right;
+	struct avl *left, *right; /*AVL esquerda e direita*/
 
 };
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
+GESTAO_FILIAL getGestaoFilial(AVL filial){
+	return filial -> gestaoFilial;
+}
 
 FATURA getFatura (AVL a) {
 	return a->fatura;
@@ -156,16 +163,17 @@ AVL fixLeft (AVL a){
 	return a;
 }
 
-AVL initAVL (AVL a, REGISTO novo, FATURA f, char *arg, int *g, int flag) {
+AVL initAVL (AVL a, REGISTO novo, FATURA f, GESTAO_FILIAL nova_gestao, char *arg, int *g, int flag) {
 
 	a = (AVL) malloc(sizeof(struct avl));
 	
 	if (flag==0) {
 		arg = string_cut_extra_char (arg);
 		a -> tag = strdup(arg);
-	}
-	else if (flag == 2) {
+	} else if (flag == 2) {
 		a->fatura = f;
+	} else if (flag == 3) {
+		a->gestaoFilial = nova_gestao;
 	}
 	else a -> tag = strdup(arg);
 
@@ -180,16 +188,20 @@ AVL initAVL (AVL a, REGISTO novo, FATURA f, char *arg, int *g, int flag) {
 	return a;
 }
 
-AVL updateAVLRec (AVL a, REGISTO novo, FATURA f, char *arg, int *g, int flag) {
+AVL updateAVLRec (AVL a, REGISTO novo, FATURA f,  GESTAO_FILIAL nova_gestao, char *arg, int *g, int flag) {
 	
-	if (a == NULL) a = initAVL(a, novo, f, arg, g, flag);
+	if (a == NULL) a = initAVL(a, novo, f, nova_gestao, arg, g, flag);
 	else {
 		
-		int r = strcmp(a -> tag, arg);
+		int r;
+
+		if (flag == 2) r = strcmp(getProdFatura(a->fatura), arg);
+		else if (flag == 3) r = strcmp(getClienteFilial(a->gestaoFilial), arg);
+		else r = strcmp(a -> tag, arg);
 		
 		if (r >= 0) {
 	
-			a->left = updateAVLRec (a -> left, novo, f, arg, g, flag);
+			a->left = updateAVLRec (a -> left, novo, f, nova_gestao, arg, g, flag);
 		
 			if (*g == 1)
 				switch (a->bal) {
@@ -210,7 +222,7 @@ AVL updateAVLRec (AVL a, REGISTO novo, FATURA f, char *arg, int *g, int flag) {
 
 		else {
 		
-		a->right = updateAVLRec (a->right, novo, f, arg, g, flag);
+		a->right = updateAVLRec (a->right, novo, f, nova_gestao, arg, g, flag);
 		
 		if (*g == 1)
 	
@@ -234,11 +246,11 @@ AVL updateAVLRec (AVL a, REGISTO novo, FATURA f, char *arg, int *g, int flag) {
 	return a;
 }
 
-AVL updateAVL (AVL a, REGISTO novo, FATURA f, char *arg, int flag) {
+AVL updateAVL (AVL a, REGISTO novo, FATURA f, GESTAO_FILIAL nova_gestao, char *arg, int flag) {
 	
 	int g;
 	
-	a = updateAVLRec(a, novo, f, arg, &g, flag);
+	a = updateAVLRec(a, novo, f, nova_gestao, arg, &g, flag);
 	
 	return a;
 }

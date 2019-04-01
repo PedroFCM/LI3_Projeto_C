@@ -50,6 +50,10 @@ void query1 (GLOBAL set);
 
 LISTA_PROD query2 (LISTA_PROD ls, AVL produtos, char c);
 
+void query3 (FAT_FILIAL fat, int mes, char *produto, int opcao);
+void recursive_query3(AVL faturacao, int filial, char* prod, int mes, FAT_MES f, VENDAS v);
+void showStatGlobal(VENDAS n_vendas, FAT_MES faturacao);
+void showStatPorFilial(VENDAS n_vendas, FAT_MES faturacao);
 
 /** @brief Função para apresentacao de resultados da query3.
  *
@@ -57,7 +61,7 @@ LISTA_PROD query2 (LISTA_PROD ls, AVL produtos, char c);
  *  @return void.
 */
 
-void showFaturacaoGlobal_query3 (FAT f);
+/*void showFaturacaoGlobal_query3 (FAT f);*/
 
 
 /** @brief Função para apresentacao de resultados da query3.
@@ -65,9 +69,9 @@ void showFaturacaoGlobal_query3 (FAT f);
  *  @param f struct faturacao.
  *  @return void.
 */
-
+/*
 void showFaturacaoPorFilial_query3 (FAT prod);
-
+*/
 
 /** @brief Função que implementa a query3.
  *
@@ -77,16 +81,18 @@ void showFaturacaoPorFilial_query3 (FAT prod);
  *  @param opcao flag, 0: resultado por filial, 1: resultado global 
  *  @return void.
 */
-
+/*
 void query3 (AVL vendas, int mes, char *produto, int opcao);
-
+*/
 
 /** @brief Função que implementa a query5.
  *
  *  @param vendas AVL que armazena as vendas validas
  *  @return void.
 */
-
+int existFaturacao(AVL fat, char* produto);
+void recursive_query4(FAT_FILIAL fat, AVL produtos, AVL* produtoFilial1, AVL* produtoFilial2, AVL* produtoFilial3);
+void query4(FAT_FILIAL fat, AVL produtos);
 void query5(AVL vendas);
 
 
@@ -110,16 +116,8 @@ void query7(AVL vendas, char* cliente);
 
 void recursive_query7 (AVL vendas, char* cliente, int** nProd);
 
-/** @brief Função que implementa a query8.
- *
- *  @param min mes inferior.
- *  @param max mes superior.
- *  @param vendas AVL que armazena as vendas validas
- *  @return void.
-*/
-
-void query8(int min, int max, AVL vendas);
-
+void recursive_query8(AVL fat, int min, int max, float* faturacao, int* total_vendas);
+void query8(FAT_FILIAL fat, int min, int max);
 
 /** @brief Função que implementa a query9.
  *

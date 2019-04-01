@@ -72,93 +72,215 @@ LISTA_PROD query2 (LISTA_PROD ls, AVL produtos, char c) {
 
 /*-----------------------------------------------------------------------*/
 
-void showFaturacaoPorFilial_query3 (FAT prod) {
-
+void showStatPorFilial(VENDAS n_vendas, FAT_MES faturacao) {
 	int l, c;
-
 	printf("\n\n-> Faturação por Filial: \n\n");
 	
-	for (l = 0; l < 2; l++) {
-		if (l == 0) printf("Tipo P: |");
-		if (l == 1) printf("Tipo N: |");
-		for (c = 0; c < 3; c++) {
-			printf("%.3f| ", getPrecoPos(prod, l, c));
-		}
+	printf("   1   2   3     (Filial)\n");
+	
+	for (l = 0; l < 2; l++) 
+	{
+		if (l == 0) 
+			printf("P: ");
+		
+		if (l == 1) 
+			printf("N: ");
+		
+		for (c = 0; c < 3; c++)
+			printf("%.3f | ", faturacao[l][c]);
+		
 		printf("\n");
 	}
 	
 	printf("\n-> Número de vendas por Filial: \n\n");
 	
-	for (l = 0; l < 2; l++) {
-		if (l == 0) printf("Tipo P: |");
-		if (l == 1) printf("Tipo N: |");
-		for (c = 0; c < 3; c++) {
-			printf("%d\t| ", getQuantPos(prod, l, c));
-		}
+	printf("   1   2   3     (Filial)\n");
+	
+	for (l = 0; l < 2; l++) 
+	{
+		if (l == 0) 
+			printf("P: ");
+		
+		if (l == 1) 
+			printf("N: ");
+		
+		for (c = 0; c < 3; c++) 
+			printf("%d | ", n_vendas[l][c]);
+		
 		printf("\n");
 	}
-
 }
 
-void showFaturacaoGlobal_query3 (FAT f) {
-
+void showStatGlobal(VENDAS n_vendas, FAT_MES faturacao) {
 	int l, c;
 	int globalVendas[2][1];
 	float globalFat[2][1];
 
-	printf("\n\n-> Faturação total das Filiais: \n\n");
-	
-	for (l = 0; l < 2; l++) {
-		if (l == 0) printf("Tipo P: ");
-		if (l == 1) printf("Tipo N: ");
-		for (c = 0; c < 1; c++) {
+	printf("\n\nFaturação total das Filiais: \n\n");
+	for (l = 0; l < 2; l++) 
+	{
+		if (l == 0) 
+			printf("P: ");
 		
-			globalFat[l][c] = getPrecoPos(f, l, 0) + 
-							  getPrecoPos(f, l, 1) + 
-							  getPrecoPos(f, l, 2);
+		if (l == 1) 
+			printf("N: ");
 		
-			printf("%.3f euro(s)", globalFat[l][c]);
+		for (c = 0; c < 1; c++) 
+		{
+			globalFat[l][c] = faturacao[l][0] + faturacao[l][1] + faturacao[l][2];
+			printf("%.3f | ", globalFat[l][c]);
 		}
 		
 		printf("\n");
 	}
 	
-	printf("\n-> Número de vendas totais das Filiais: \n\n");
+	printf("\nNúmero de vendas totais das Filiais: \n\n");
 	
-	for (l = 0; l < 2; l++) {
-		if (l == 0) printf("P: ");
-		if (l == 1) printf("N: ");
-		for (c = 0; c < 1; c++) {
-			globalVendas[l][c] = getQuantPos(f, l, 0) + 
-								 getQuantPos(f, l, 1) + 
-								 getQuantPos(f, l, 2);
+	for (l = 0; l < 2; l++) 
+	{
+		if (l == 0) 
+			printf("P: ");
 		
-			printf("%d venda(s)", globalVendas[l][c]);
+		if (l == 1) 
+			printf("N: ");
+		
+		for (c = 0; c < 1; c++) 
+		{
+			globalVendas[l][c] = n_vendas[l][0] + n_vendas[l][1] + n_vendas[l][2];
+			printf("%d | ", globalVendas[l][c]);
 		}
 		
 		printf("\n");
 	}
 }
 
-void query3 (AVL vendas, int mes, char *produto, int opcao) {
-		
-	FAT nova = NULL;
-	nova = initFatProduto(nova);
+void recursive_query3(AVL faturacao, int filial, char* prod, int mes, FAT_MES f, VENDAS v) 
+{
+	if(faturacao != NULL) 
+	{		
+		int equal = strcmp(getProdFatura(getFatura(faturacao)), prod);
+		int i;
 
-	geraFaturacaoProduto (vendas, produto, mes, nova);
+		if(!equal) 
+			for(i = 0; i < 2; i++)
+			{	
+				f[i][filial] += getFatMes(getFatura(faturacao))[i][mes];
+				v[i][filial] += getNumVendas(getFatura(faturacao))[i][mes];
+			}
 
-	switch(opcao) {
-
-		case 1:	
-			showFaturacaoGlobal_query3(nova);
-			break;
-
-		case 0: 
-			showFaturacaoPorFilial_query3(nova);
-			break;
-
-		default: break; 
+		else
+		{
+			if(equal > 0)
+				recursive_query3(getEsq(faturacao), filial, prod, mes, f, v);
+			else
+				recursive_query3(getDir(faturacao), filial, prod, mes, f, v);
+		}
 	}
+}
+
+void query3 (FAT_FILIAL fat, int mes, char *produto, int opcao) 
+{	
+	int** v = (VENDAS) malloc(sizeof(int*)*2);
+	float** f = (FAT_MES) malloc(sizeof(float*)*2);
+	int l, c;
+
+	for (l = 0; l < 2; l++)   /* N ou P */
+	{
+		f[l] = malloc(sizeof(float) * 3);
+		v[l] = malloc(sizeof(int) * 3);
+		
+		for (c = 0; c < 3; c++)  /* FILIAL 1,2 ou 3*/
+		{
+			f[l][c] = 0.0;
+			v[l][c] = 0;
+		}
+	}
+
+	/* FILIAL 1 */
+	recursive_query3(getFaturacao(fat, 0), 0, produto, mes-1, f, v);
+	/* FILIAL 2 */
+	recursive_query3(getFaturacao(fat, 1), 1, produto, mes-1, f, v);
+	/* FILIAL 3 */
+	recursive_query3(getFaturacao(fat, 2), 2, produto, mes-1, f, v);
+
+	switch(opcao)
+	{	
+		case 0: 
+			showStatPorFilial(v,f);
+			break;	
+			
+		case 1: 
+			showStatGlobal(v,f);
+			break;
+
+		default: 
+			break;
+	}
+}
+
+/*-----------------------------------------------------------------------*/
+
+int existFaturacao(AVL fat, char* produto)
+{
+	int r = 0;
+
+	if(fat != NULL)
+	{
+		int equal = strcmp(getProdFatura(getFatura(fat)), produto);
+
+		if(!equal)
+			r++;
+
+		else
+		{	
+			if(equal > 0)
+				r += existFaturacao(getEsq(fat), produto);
+			else
+				r += existFaturacao(getDir(fat), produto);
+		}
+	}
+
+	return r;
+}
+
+void recursive_query4(FAT_FILIAL fat, AVL produtos, AVL* produtoFilial1, AVL* produtoFilial2, AVL* produtoFilial3)
+{
+	if(produtos != NULL)
+	{
+		getTag(produtos)[6] = '\0';
+		
+		if( !existFaturacao(getFaturacao(fat, 0), getTag(produtos)) && !exist_element(*produtoFilial1, getTag(produtos)) )
+			*produtoFilial1 = updateAVL(*produtoFilial1, NULL, NULL, NULL, getTag(produtos), 1);	
+
+		else
+		{	
+			if( !existFaturacao(getFaturacao(fat, 1), getTag(produtos)) && !exist_element(*produtoFilial2, getTag(produtos)) )
+				*produtoFilial2 = updateAVL(*produtoFilial2, NULL, NULL, NULL, getTag(produtos), 1);	
+			
+			else
+				if( !existFaturacao(getFaturacao(fat, 2), getTag(produtos)) && !exist_element(*produtoFilial3, getTag(produtos)) )
+					*produtoFilial3 = updateAVL(*produtoFilial3, NULL, NULL, NULL, getTag(produtos), 1);	
+				
+		}
+
+		recursive_query4(fat, getEsq(produtos), produtoFilial1, produtoFilial2, produtoFilial3);
+		recursive_query4(fat, getDir(produtos), produtoFilial1, produtoFilial2, produtoFilial3);		
+	}
+}
+
+void query4(FAT_FILIAL fat, AVL produtos)
+{
+	AVL* produtoFilial1 = malloc(sizeof(AVL));
+	AVL* produtoFilial2 = malloc(sizeof(AVL));
+	AVL* produtoFilial3 = malloc(sizeof(AVL));
+	
+	*produtoFilial1 = NULL;
+	*produtoFilial2 = NULL;
+	*produtoFilial3 = NULL;
+
+	recursive_query4(fat, produtos, produtoFilial1, produtoFilial2, produtoFilial3);
+
+	printf("%d\n", inorder_avl_just_tag(*produtoFilial1));
 
 }
 
@@ -232,18 +354,40 @@ void query7(AVL vendas, char* cliente){
 
 /*-----------------------------------------------------------------------*/
 
-void query8(int min, int max, AVL vendas) {
+void recursive_query8(AVL fat, int min, int max, float* faturacao, int* total_vendas)
+{
+	if(fat != NULL)
+	{
+		int i,j;
 
-	FAT f = NULL;
-	f = initFatProduto(f);
+		for(i = 0; i < 2; i++)
+			for(j = 0; j < 12; j++)
+				if(j >= min && j <= max)
+				{
+					*faturacao +=  getFatMes(getFatura(fat))[i][j];
+					*total_vendas +=  getNumVendas(getFatura(fat))[i][j];
+				}
+		
+		recursive_query8(getEsq(fat), min, max, faturacao, total_vendas);
+		recursive_query8(getDir(fat), min, max, faturacao, total_vendas);
+	}
+}
 
-	faturacaoMes (min, max, vendas, f);
 
-	printf("\nFaturação entre os meses %d e %d: \n", min, max);
-	printf("-> %.3f euros.\n", getPrecoPos(f, 0, 0));
+void query8(FAT_FILIAL fat, int min, int max)
+{
+	float *faturacao = (float*) malloc(sizeof(float*));
+	int *total_vendas = (int*) malloc(sizeof(int*));
+	*faturacao = 0.0;
+	*total_vendas = 0;
 
-	printf("\nNumero de vendas entre os meses %d e %d: \n", min, max);
-	printf("-> %d vendas.\n", getQuantPos(f, 0, 0));
+	recursive_query8(getFaturacao(fat, 0), min-1, max-1, faturacao, total_vendas);
+	
+	recursive_query8(getFaturacao(fat, 1), min-1, max-1, faturacao, total_vendas);
+
+	recursive_query8(getFaturacao(fat, 2), min-1, max-1, faturacao, total_vendas);
+
+	printf("Nº Vendas: %d euro(s) | Total Faturado: %f euro(s)\n", *total_vendas, *faturacao);
 }
 
 /*-----------------------------------------------------------------------*/
@@ -409,7 +553,7 @@ void recursive_query6 (int *sp, AVL vendas, AVL produtos) {
 AVL criaAVLvendasClientes(AVL v_cli, AVL vendas, int *sp) {
 
 	if (vendas!=NULL) {
-		v_cli = updateAVL(v_cli, NULL, NULL, getCodCliente(vendas), 1);
+		v_cli = updateAVL(v_cli, NULL, NULL, NULL, getCodCliente(vendas), 1);
 		v_cli = criaAVLvendasClientes(v_cli, getEsq(vendas), sp);
 		v_cli = criaAVLvendasClientes(v_cli, getDir(vendas), sp);
 	}

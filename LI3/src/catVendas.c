@@ -1,8 +1,8 @@
 
 /** @file catVendas.c
-*	@brief Ficheiro que a leitura das vendas.
+*	@brief Ficheiro que efetua a leitura das vendas.
 *
-*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor João Pedro Rodrigues Azevedo
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 
 *
@@ -26,7 +26,9 @@
 #include "avlstruct.h"
 #include "catVendas.h"
 
-/*ESTRUTURA QUE ARMAZENA O REGISTO DE UMA VENDA*/
+/*----------------------------------------------------------------------*/
+
+/*@brief Struct que armazena o registo de uma venda*/
 struct registo {
 
 	char* codProd;
@@ -39,7 +41,7 @@ struct registo {
 
 };
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 int verify_sell (CAT_VENDAS vendas, CAT_PRODUTOS prod, CAT_CLIENTES client, GLOBAL set, char *sell, REGISTO reg) {
 	
@@ -116,7 +118,7 @@ CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells,
 
 		if (verify_sell(sells, prod, cli, set, buffer, novo_registo)) {
 			
-			sells = updateAVL(sells, novo_registo, NULL, buffer, 0);
+			sells = updateAVL(sells, novo_registo, NULL, NULL, buffer, 0);
 
 			set -> val_sells++;
 		
@@ -131,6 +133,10 @@ CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells,
 	
 	return sells;
 }
+
+/*----------------------------------------------------------------------*/
+						/*Getters & Setters*/
+
 
 REGISTO initRegisto (REGISTO novo) {
 	novo = (REGISTO) malloc(sizeof(struct registo));
@@ -192,3 +198,5 @@ int getMes (AVL a) {
 double getPreco (AVL a) {
 	return (getRegisto(a)->preco);
 }
+
+/*----------------------------------------------------------------------*/

@@ -18,22 +18,36 @@
 #include "avlstruct.h"
 
 /*MACROS que estabelecem os paths para os ficheiros de leitura*/
+
+/*PATH source para os produtos*/
 #define PROD_PATH "datafiles/Produtos.txt"
+/*PATH source para os clientes*/
 #define CLIE_PATH "datafiles/Clientes.txt"
+/*PATH source para os vendas 1M*/
 #define SELL_PATH_1M "datafiles/Vendas_1M.txt"
+/*PATH source para os vendas 3M*/
 #define SELL_PATH_3M "datafiles/Vendas_3M.txt"
+/*PATH source para os vendas 5M*/
 #define SELL_PATH_5M "datafiles/Vendas_5M.txt"
 
 /*MACROS que estabelecem os paths para guardar os ficheiros*/
+
+/*PATH source para os vendas (VALIDADAS)*/
 #define VAL_PROD_PATH "validData/Produtos(validados).txt"
+/*PATH source para os clientes (VALIDADOS)*/
 #define VAL_CLIE_PATH "validData/Clientes(validados).txt"
+/*PATH source para os produtos (VALIDADOS)*/
 #define VAL_SELL_PATH "validData/Vendas(validadas).txt"
 
 /*MACRO para indicar o nº de campos que uma venda tem*/
 #define CAMPOS_SELLS 7
 
+#define NUM_FILIAIS 3
+#define NUM_MESES 12
 
-/*ESTRUTURA QUE DEFINE ESTATISTICAS GLOBAIS DE LEITURA DOS FICHEIROS*/
+/*-----------------------------------------------------------------*/
+
+/*@brief Sruct para armazenar estatisticas de leitura de ficheiros*/
 typedef struct settings {
 
 	int num_prods, num_clients, num_sells;
@@ -44,6 +58,14 @@ typedef struct settings {
 
 } *GLOBAL;
 
+/*-----------------------------------------------------------------*/
+
+/** @brief Função que separa uma string vendas nos seus campos.
+ *
+ *  @param campos array para guardar.
+ *  @param sell string venda para separar
+ *  @return array com os campos separados.
+ */
 
 char** tokenize (char** campos, char* sell);
 

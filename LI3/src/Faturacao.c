@@ -27,8 +27,7 @@
 
 /*______________________________________________________________________*/
 
-/*ESTRUTURA QUE ARMAZENA A FATURAÇÃO DE UM */
-
+/*@brief para armazenar a lista de precos/quant*/
 struct listagem {
 
 	FAT_PRECO precario;
@@ -36,12 +35,12 @@ struct listagem {
 
 };
 
+/*@brief ARRAY de AVL's com a Faturacao por filial*/
 struct faturacao {
-
 	AVL faturacao;
-
 };
 
+/*@brief Campo FATURA de uma AVL*/
 struct fatura {
 
 	char* codProd;
@@ -113,7 +112,7 @@ void insereProdFat (int filial, AVL *fatFilial, AVL vendas) {
 				initMatriz(new,f,v);
 				setProdFatura(getCodProd(vendas), new);
 
-				*fatFilial = updateAVL(*fatFilial, NULL, new, getCodProd(vendas), 2);
+				*fatFilial = updateAVL(*fatFilial, NULL, new, NULL, getCodProd(vendas), 2);
 
 				updateFatura(*fatFilial, vendas, getCodProd(vendas), r);
 		
@@ -148,7 +147,8 @@ FAT_FILIAL initFaturacao (FAT_FILIAL nova, AVL prod, AVL vendas) {
  	nova[f2-1].faturacao = *filial2;	
  	nova[f3-1].faturacao = *filial3;	
 
- 	printFaturacao(nova[f3-1].faturacao);
+ 	/*Print para debug*/
+ 	/*printFaturacao(nova[f3-1].faturacao);*/
 
 	return nova;
 }
@@ -257,6 +257,10 @@ char* getProdFatura (FATURA f) {
 	return f->codProd;
 }
 
+AVL getFaturacao(FAT_FILIAL f, int i) {
+	return f[i].faturacao;
+}
+
 /*_________________OUTRAS FUNÇÕES_______________________________________*/
 
 int getQuantPos (FAT f, int l, int c) {
@@ -321,33 +325,5 @@ void geraFaturacaoProduto (AVL vendas, char* prod, int mes, FAT f) {
 	}
 }
 
-void faturacaoMes (int min, int max, AVL vendas, FAT f){
-	
-	if(vendas != NULL) {
-	
-		int month = getMes(vendas);
-		int sold;
-		double price;
-	
-		if(month >= min && month <= max) {
-			
-			sold  = getQuantidade(vendas);
-			price = getPreco(vendas);
-
-			*(f -> precario[0]) += sold * price;
-			*(f -> quantidade[0])+=1;
-		}
-
-		faturacaoMes(min, max, getEsq(vendas), f);
-		faturacaoMes(min, max, getDir(vendas), f);
-
-	}
-}
-
-void freeFat (FAT f) {
-	free(f->quantidade);
-	free(f->precario);
-	free(f);
-}
 
 /*______________________________________________________________________*/

@@ -35,6 +35,16 @@ typedef int** VENDAS;
 
 /*______________________________________________________________________*/
 
+/** @brief Função que imprime.
+ *
+ *  @param f Faturacao.
+ *  @param min Mes inferior.
+ *  @param max Mes superior.
+ *  @param vendas AVL de vendas.
+ *  @return void.
+ */
+AVL getFaturacao(FAT_FILIAL f, int i);
+
 void printFaturacao (AVL fat);
 
 void printMATRIX (FAT_MES f, VENDAS v, int opcao);
@@ -68,18 +78,6 @@ FAT_FILIAL initFaturacao (FAT_FILIAL nova, AVL prod, AVL vendas);
 void updateFatura (AVL fatFilial, AVL vendas, char *p, int *r);
 
 void setProdFatura (char* p, FATURA f);
-
-/** @brief Função que gera a faturacao entre dois meses.
- *
- *  @param f Faturacao.
- *  @param min Mes inferior.
- *  @param max Mes superior.
- *  @param vendas AVL de vendas.
- *  @return void.
- */
-
-void faturacaoMes (int min, int max, AVL vendas, FAT f);
-
 
 /** @brief Função que retorna o elemento que está na posição l, c da Faturacao.
  *
@@ -123,13 +121,5 @@ FAT initFatProduto (FAT new);
 
 void geraFaturacaoProduto (AVL vendas, char* prod, int mes, FAT f);
 
-
-/** @brief Função que liberta a memória de uma Faturacao.
- *
- *  @param f Faturacao.
- *  @return elemento nessa posicao.
- */
-
-void freeFat (FAT f);
 
 #endif

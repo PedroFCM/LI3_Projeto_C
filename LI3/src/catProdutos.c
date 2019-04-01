@@ -1,12 +1,13 @@
 
 /** @file catProdutos.c
 *	@brief Ficheiro que cria o catálogo de Produtos validados.
+*          Efetua também operações básicas sobre os mesmos.
 *
-*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor João Pedro Rodrigues Azevedo
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 
 *
-*	@bug Nenhum que tivessemos reparado.
+*	@bug Nenhum.
 *	
 */
 
@@ -26,7 +27,9 @@
 #include "avlstruct.h"
 #include "menu.h"
 
-/*Struct estilo stack que implementa uma lista de produtos*/
+/*----------------------------------------------------------------------*/
+
+/*@brief Struct estilo stack que implementa uma lista de produtos*/
 struct listaProdutos {
 	int size; 
 	char **elements;  
@@ -34,7 +37,7 @@ struct listaProdutos {
 	int sp;
 };
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 int verify_product (char *product) {
 
@@ -67,7 +70,7 @@ CAT_PRODUTOS readNvalidate_products (char* filename, CAT_PRODUTOS prod, GLOBAL s
 		
 		if (verify_product(buffer)) {
 			
-			prod = updateAVL(prod, NULL, NULL, buffer, 0);
+			prod = updateAVL(prod, NULL, NULL, NULL, buffer, 0);
 			
 			set -> val_prods++;
 		}

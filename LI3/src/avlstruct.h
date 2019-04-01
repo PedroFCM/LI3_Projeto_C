@@ -10,17 +10,21 @@
 *	
 */
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 #ifndef _AVL_
 #define _AVL_
 
-/*MACRO par indicar o tipo de balancemento duma AVL*/
+/*MACROS par indicar o tipo de balancemento duma AVL*/
+
+/*MACRO Para indicar que está balanceada*/
 #define BAL   0
+/*MACRO Para indicar que está balanceada para a esquerda*/
 #define LEFT -1
+/*MACRO Para indicar que está balanceada para a direita*/
 #define RIGHT 1
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 /*TYPE para definir uma AVL básica*/
 typedef struct avl* AVL;
@@ -34,15 +38,40 @@ typedef struct avl* CAT_PRODUTOS;
 /*TYPE para definir uma AVL básica, nome diferente*/
 typedef struct avl* CAT_VENDAS;
 
-/*TYPE para definir um registo numa AVL, 
-guarda a venda separada*/
+/*TYPE para definir um registo numa AVL, guarda a venda separada*/
 typedef struct registo* REGISTO;
 
+/*TYPE para definir uma Fatura numa AVL*/
 typedef struct fatura *FATURA;
+
+typedef struct gestaoFilial* GESTAO_FILIAL;
+
+/*----------------------------------------------------------------------*/
+GESTAO_FILIAL getGestaoFilial(AVL filial);
+
+/** @brief Função que retorna a primeira letra da tag de uma venda
+ *
+ *  @param a AVL.
+ *  @return Primeira letra do campo tag.
+*/
 
 char getFirstLetterTag (AVL a);
 
+
+/** @brief Função que o campo fatura de uma AVL
+ *
+ *  @param a AVL.
+ *  @return Campo fatura.
+*/
+
 FATURA getFatura (AVL a);
+
+
+/** @brief Função que o Campo registo de uma AVL
+ *
+ *  @param a AVL.
+ *  @return Campo registo.
+*/
 
 REGISTO getRegisto (AVL a);
 
@@ -125,7 +154,7 @@ AVL fixLeft (AVL a);
  *  @return AVL após o fix.
  */
 
-AVL initAVL (AVL a, REGISTO novo, FATURA f, char *arg, int *g, int flag);
+AVL initAVL (AVL a, REGISTO novo, FATURA f, GESTAO_FILIAL nova_gestao, char *arg, int *g, int flag);
 
 
 /** @brief Função auxiliar que insere um elemento a uma AVL.
@@ -137,7 +166,7 @@ AVL initAVL (AVL a, REGISTO novo, FATURA f, char *arg, int *g, int flag);
  *  @return AVL após inserção.
  */
 
-AVL updateAVLRec (AVL a, REGISTO novo, FATURA f, char *arg, int *g, int flag);
+AVL updateAVLRec (AVL a, REGISTO novo, FATURA f,  GESTAO_FILIAL nova_gestao, char *arg, int *g, int flag);
 
 
 /** @brief Função que insere um novo elemento numa AVL.
@@ -148,6 +177,6 @@ AVL updateAVLRec (AVL a, REGISTO novo, FATURA f, char *arg, int *g, int flag);
  *  @return AVL após inserção.
  */
 
-AVL updateAVL (AVL a, REGISTO novo, FATURA f, char *arg, int flag);
+AVL updateAVL (AVL a, REGISTO novo, FATURA f, GESTAO_FILIAL nova_gestao, char *arg, int flag);
 
 #endif

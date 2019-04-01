@@ -2,7 +2,7 @@
 /** @file catVendas.h
 *	@brief Header file de catVendas.c
 *
-*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor João Pedro Rodrigues Azevedo
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 
 *
@@ -10,7 +10,7 @@
 *	
 */
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 #ifndef _SELLS_
 #define _SELLS_
@@ -20,9 +20,12 @@
 #include "global.h"
 #include "avlstruct.h"
 
+/*----------------------------------------------------------------------*/
+
+/*@brief struct que implementa um registo*/
 typedef struct registo* REGISTO;
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que verifica se uma venda é válida.
  *
@@ -50,7 +53,7 @@ int verify_sell (CAT_VENDAS vendas, AVL prod, AVL client, GLOBAL set, char *sell
 
 CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells, GLOBAL set, AVL prod, AVL cli);
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que initializa um registo de venda.
  *
@@ -131,12 +134,6 @@ void setPreco (REGISTO reg, double price);
 void setCodProd (REGISTO reg, char *prod);
 
 
-/** @brief Função que retorna a primeira letra de uma tag.
- *
- *  @param a AVL.
- *  @return char primeira letra.
-*/
-
 /** @brief Função que retorna o tipo de uma venda.
  *
  *  @param a AVL.
@@ -153,6 +150,7 @@ char getTipo (AVL a);
 */
 
 char* getCodCliente (AVL a);
+
 
 /** @brief Função que retorna o mes de uma venda.
  *
