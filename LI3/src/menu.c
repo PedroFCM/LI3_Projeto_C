@@ -106,10 +106,10 @@ void loadMenu () {
 	double cpu_time_used;
 					
 	char option_selected = 0, data_loaded = 0, input;
-	/*int mes;
-	*/int argumentoInteiro;
-	/*char codprod[10], codcliente[10];
-*/
+	int mes;
+	int argumentoInteiro;
+	char codprod[10], codcliente[10];
+
 	GLOBAL set = (GLOBAL) malloc(sizeof(struct settings)); 
 
 	CAT_PRODUTOS products = NULL;
@@ -240,7 +240,7 @@ void loadMenu () {
 					break;
 
 			/*---------------------------------------------------------------*/
-/*
+
 			case '3':
 					if (!data_loaded) 
 						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
@@ -280,6 +280,8 @@ void loadMenu () {
 					}
 
 					break;
+
+			/*---------------------------------------------------------------*/
 
 			case '4': 
 					if (!data_loaded)
@@ -430,13 +432,13 @@ void loadMenu () {
 			default: 
 				break;
 		}
-*/
+
 		input = scanf("%c", &option_selected);
 		
 		if (!checkInput(input, option_selected)) 
 			option_selected = '0';
 	
-	}}
+	}
 
 	if (option_selected == 'q' || option_selected == 'Q' || option_selected == 'y') {
 		printf(YEL "A sair do programa...\n" RESET);

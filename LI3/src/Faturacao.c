@@ -27,6 +27,15 @@
 
 /*______________________________________________________________________*/
 
+/*ESTRUTURA QUE ARMAZENA A FATURAÇÃO DE UM */
+
+struct listagem {
+
+	FAT_PRECO precario;
+	FAT_QUANT quantidade;
+
+};
+
 struct faturacao {
 
 	AVL faturacao;
@@ -104,7 +113,7 @@ void insereProdFat (int filial, AVL *fatFilial, AVL vendas) {
 				initMatriz(new,f,v);
 				setProdFatura(getCodProd(vendas), new);
 
-				*fatFilial = updateAVL(*fatFilial, NULL, NULL, getCodProd(vendas), new, 2);
+				*fatFilial = updateAVL(*fatFilial, NULL, new, getCodProd(vendas), 2);
 
 				updateFatura(*fatFilial, vendas, getCodProd(vendas), r);
 		
@@ -121,7 +130,7 @@ FAT_FILIAL initFaturacao (FAT_FILIAL nova, AVL prod, AVL vendas) {
 
 	int f1 = 1, f2 = 2, f3 = 3;
 
-	nova = (FAT_FILIAL) malloc(sizeof(struct faturacao) * NUM_FILIAIS);
+	nova = (FAT_FILIAL) malloc(sizeof(struct faturacao) * 3);
 	
 	AVL *filial1 = malloc(sizeof(AVL));
 	AVL *filial2 = malloc(sizeof(AVL));
@@ -208,10 +217,10 @@ void initFatura (FAT_MES f, VENDAS v) {
 	int l, c;
 
 	for (l = 0; l < 2; l++) {
-		f[l] = malloc(sizeof(float) * NUM_MESES);
-		v[l] = malloc(sizeof(int) * NUM_MESES);
+		f[l] = malloc(sizeof(float) * 12);
+		v[l] = malloc(sizeof(int) * 12);
 		
-		for (c = 0; c < NUM_MESES; c++) {
+		for (c = 0; c < 12; c++) {
 			f[l][c] = 0.0;
 			v[l][c] = 0;
 		}
@@ -247,3 +256,98 @@ void setProdFatura (char* p, FATURA f) {
 char* getProdFatura (FATURA f) {
 	return f->codProd;
 }
+
+/*_________________OUTRAS FUNÇÕES_______________________________________*/
+
+int getQuantPos (FAT f, int l, int c) {
+	return f->quantidade[l][c];
+}
+
+double getPrecoPos(FAT f, int l, int c) {
+	return f->precario[l][c];
+}
+
+FAT initFatProduto (FAT new) {
+
+	int l, c;
+
+	new = malloc(sizeof(struct listagem));
+
+	FAT_PRECO prec = (float**) malloc(sizeof(float*) * 2);
+	FAT_QUANT n_vendas  = (int**)   malloc(sizeof(int*)   * 2);
+		
+	for (l = 0; l < 2; l++) {
+		n_vendas[l]  = malloc(sizeof(int)*3);
+		prec[l] = malloc(sizeof(float)*3);
+		for (c = 0; c < 3; c++) {
+			n_vendas[l][c]  = 0;
+			prec[l][c] = 0.0;
+		}
+	}
+	new -> precario = prec;
+	new -> quantidade = n_vendas;
+
+	return new;
+}
+
+void geraFaturacaoProduto (AVL vendas, char* prod, int mes, FAT f) {
+
+	if (vendas != NULL) {
+			
+		if (!strcmp(getCodProd(vendas), prod) && mes == getMes(vendas)) {
+			
+			switch (getTipo(vendas)) {
+
+				case 'P': 
+					f -> quantidade[0][getFilial(vendas)-1]++;
+					f -> precario[0][getFilial(vendas)-1]+=getQuantidade(vendas)*
+														   getPreco(vendas);
+				
+				  break;
+
+				case 'N': 
+					f -> quantidade[1][getFilial(vendas)-1]++;
+					f -> precario[1][getFilial(vendas)-1]+=getQuantidade(vendas)*
+															getPreco(vendas);
+				
+				 	break;
+				
+				default: break;
+			}
+		}
+
+		geraFaturacaoProduto(getEsq(vendas), prod, mes, f);
+		geraFaturacaoProduto(getDir(vendas), prod, mes, f);
+	}
+}
+
+void faturacaoMes (int min, int max, AVL vendas, FAT f){
+	
+	if(vendas != NULL) {
+	
+		int month = getMes(vendas);
+		int sold;
+		double price;
+	
+		if(month >= min && month <= max) {
+			
+			sold  = getQuantidade(vendas);
+			price = getPreco(vendas);
+
+			*(f -> precario[0]) += sold * price;
+			*(f -> quantidade[0])+=1;
+		}
+
+		faturacaoMes(min, max, getEsq(vendas), f);
+		faturacaoMes(min, max, getDir(vendas), f);
+
+	}
+}
+
+void freeFat (FAT f) {
+	free(f->quantidade);
+	free(f->precario);
+	free(f);
+}
+
+/*______________________________________________________________________*/

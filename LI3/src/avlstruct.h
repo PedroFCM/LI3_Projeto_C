@@ -15,8 +15,6 @@
 #ifndef _AVL_
 #define _AVL_
 
-#include "global.h"
-
 /*MACRO par indicar o tipo de balancemento duma AVL*/
 #define BAL   0
 #define LEFT -1
@@ -39,26 +37,29 @@ typedef struct avl* CAT_VENDAS;
 /*TYPE para definir um registo numa AVL, 
 guarda a venda separada*/
 typedef struct registo* REGISTO;
-typedef struct fatura* FATURA;
-typedef int** VENDAS;
-typedef struct avl *AVL;
-typedef float** FAT_MES;
-typedef struct gestaoFilial* GESTAO_FILIAL;
 
-/*______________________________________________________________________*/
-AVL setGestaoFilial (AVL *filial, GESTAO_FILIAL *g);
-
-GESTAO_FILIAL* getGestaoFilial(AVL filial);
-
-void printFaturacao (AVL fat);
-
-FATURA getFatura (AVL a);
+typedef struct fatura *FATURA;
 
 char getFirstLetterTag (AVL a);
 
+FATURA getFatura (AVL a);
+
 REGISTO getRegisto (AVL a);
 
+
+/** @brief Função que retorna a string venda
+ *
+ *  @param a AVL.
+ *  @return string venda.
+*/
+
 char* getTag (AVL a);
+
+/** @brief Função que retorna o lado esquerdo de uma AVL.
+ *
+ *  @param a AVL.
+ *  @return Lado esquerdo da AVL
+*/
 
 AVL getEsq (AVL a);
 
@@ -124,7 +125,7 @@ AVL fixLeft (AVL a);
  *  @return AVL após o fix.
  */
 
-AVL initAVL (AVL a, REGISTO novo, char *arg, int *g, FATURA new, GESTAO_FILIAL nova_gestao, int flag);
+AVL initAVL (AVL a, REGISTO novo, FATURA f, char *arg, int *g, int flag);
 
 
 /** @brief Função auxiliar que insere um elemento a uma AVL.
@@ -136,7 +137,7 @@ AVL initAVL (AVL a, REGISTO novo, char *arg, int *g, FATURA new, GESTAO_FILIAL n
  *  @return AVL após inserção.
  */
 
-AVL updateAVLRec (AVL a, REGISTO novo, GESTAO_FILIAL nova_gestao, char *arg, int *g, FATURA f, int flag);
+AVL updateAVLRec (AVL a, REGISTO novo, FATURA f, char *arg, int *g, int flag);
 
 
 /** @brief Função que insere um novo elemento numa AVL.
@@ -147,6 +148,6 @@ AVL updateAVLRec (AVL a, REGISTO novo, GESTAO_FILIAL nova_gestao, char *arg, int
  *  @return AVL após inserção.
  */
 
-AVL updateAVL (AVL a, REGISTO novo, GESTAO_FILIAL nova_gestao, char *arg, FATURA f, int flag);
+AVL updateAVL (AVL a, REGISTO novo, FATURA f, char *arg, int flag);
 
 #endif

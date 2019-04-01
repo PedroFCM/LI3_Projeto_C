@@ -23,6 +23,7 @@
 /*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
 
 #include "global.h"
+#include "avlstruct.h"
 #include "catVendas.h"
 
 /*ESTRUTURA QUE ARMAZENA O REGISTO DE UMA VENDA*/
@@ -38,7 +39,7 @@ struct registo {
 
 };
 
-/*_______________________Funções PRINCIPAIS_________________________________*/
+/*______________________________________________________________________*/
 
 int verify_sell (CAT_VENDAS vendas, CAT_PRODUTOS prod, CAT_CLIENTES client, GLOBAL set, char *sell, REGISTO reg) {
 	
@@ -115,7 +116,7 @@ CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells,
 
 		if (verify_sell(sells, prod, cli, set, buffer, novo_registo)) {
 			
-			sells = updateAVL(sells, novo_registo, NULL, buffer, NULL, 0);
+			sells = updateAVL(sells, novo_registo, NULL, buffer, 0);
 
 			set -> val_sells++;
 		
@@ -131,10 +132,9 @@ CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells,
 	return sells;
 }
 
-/*_______________________Funções AUXILIARES_______________________________*/
-
-char* getCodProd (AVL a) {
-	return (getRegisto(a)->codProd);
+REGISTO initRegisto (REGISTO novo) {
+	novo = (REGISTO) malloc(sizeof(struct registo));
+	return novo;
 }
 
 int getFilial (AVL a) {
@@ -145,25 +145,8 @@ int getQuantidade (AVL a) {
 	return (getRegisto(a)->quantidade);
 }
 
-char getTipo (AVL a) {
-	return (getRegisto(a)->tipo);
-}
-
-char* getCodCliente (AVL a) {
-	return (getRegisto(a)->codCli);
-}
-
-int getMes (AVL a) {
-	return (getRegisto(a)->mes);
-}
-
-double getPreco (AVL a) {
-	return (getRegisto(a)->preco);
-}
-
-REGISTO initRegisto (REGISTO novo) {
-	novo = (REGISTO) malloc(sizeof(struct registo));
-	return novo;
+char* getCodProd (AVL a) {
+	return (getRegisto(a)->codProd);
 }
 
 void setFilial (REGISTO reg, int f) {
@@ -192,4 +175,20 @@ void setPreco (REGISTO reg, double price) {
 
 void setCodProd (REGISTO reg, char *prod) {
 	reg->codProd = strdup(prod);
+}
+
+char getTipo (AVL a) {
+	return (getRegisto(a)->tipo);
+}
+
+char* getCodCliente (AVL a) {
+	return (getRegisto(a)->codCli);
+}
+
+int getMes (AVL a) {
+	return (getRegisto(a)->mes);
+}
+
+double getPreco (AVL a) {
+	return (getRegisto(a)->preco);
 }
