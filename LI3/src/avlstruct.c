@@ -47,8 +47,13 @@ struct avl {
 
 /*______________________________________________________________________*/
 
-GESTAO_FILIAL getGestaoFilial(AVL filial){
-	return filial -> gestaoFilial;
+GESTAO_FILIAL* getGestaoFilial(AVL filial){
+	return &(filial -> gestaoFilial);
+}
+
+AVL setGestaoFilial (AVL *filial, GESTAO_FILIAL *g) {
+	(*filial) -> gestaoFilial = *g;
+	return *filial;
 }
 
 FATURA getFatura (AVL a) {
@@ -180,7 +185,6 @@ AVL initAVL (AVL a, REGISTO novo, char *arg, int *g, FATURA new, GESTAO_FILIAL n
 	
 	} else if (flag==3) {
 		a->gestaoFilial = nova_gestao;
-		setSizeGF(a->gestaoFilial, 0);
 	} else a -> tag = strdup(arg);
 	
 	if (novo != NULL) {

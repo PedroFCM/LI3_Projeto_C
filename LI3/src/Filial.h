@@ -31,32 +31,32 @@ typedef struct gestaoFilial* GESTAO_FILIAL;
 
 typedef struct elementos* ELEM;
 
-void initFaturaFilial (GESTAO_FILIAL new);
+int existeNaLista (char* elem, ELEM l);
 
-void setSizeGF (GESTAO_FILIAL f, int new_size);
-
-GESTAO_FILIAL setClienteFilial (char *c, GESTAO_FILIAL* g);
-
-void initMatrizFilial(GESTAO_FILIAL fat, FAT_MES f,VENDAS v, int prod);
-
-int getSizeGF(GESTAO_FILIAL filial);
-
-char* getProdFilial (GESTAO_FILIAL filial, int i);
-
-void setFatFilial (GESTAO_FILIAL g, int prod, int l, int c, double val);
-
-void setVendasFilial (GESTAO_FILIAL g, int prod, int l, int c);
-
-void pushProdutoFilial (char *p, GESTAO_FILIAL filial);
-
-char* getClienteFilial(GESTAO_FILIAL filial);
-
-FILIAL initFilial (FILIAL nova, AVL clientes, AVL vendas);
-
-void insereClienteFat (int fi, AVL *filial, AVL vendas);
+ELEM pushLista (ELEM l, char* elem, char modo, int quant, float preco, int mes);
 
 void updateGestaoFilial (AVL filial, AVL vendas, char *c, int *r);
 
-void insereNaFilial (GESTAO_FILIAL filial, char *p, char modo, float preco, int quant, int mes);
+AVL* insereClienteFat (int fi, AVL *filial, AVL vendas);
+
+FILIAL initFilial (FILIAL nova, AVL clientes, AVL vendas);
+
+void initFaturaFilial (FAT_MES f, VENDAS v);
+
+void initMatrizFilial(ELEM elem, FAT_MES f, VENDAS v);
+
+GESTAO_FILIAL setClienteFilial (char *c, GESTAO_FILIAL *g);
+
+char* getProdFilial (GESTAO_FILIAL filial, int i);
+
+void setList(AVL filial, ELEM l);
+
+void setFatFilial (ELEM elem, int l, int c, double val);
+
+void setVendasFilial (ELEM elem, int l, int c);
+
+char* getClienteFilial(GESTAO_FILIAL filial);
+
+ELEM getList(GESTAO_FILIAL g);
 
 #endif

@@ -31,80 +31,106 @@ struct filial {
 
 struct gestaoFilial {
 	char* codCliente;
-	ELEM *list;
-	int size;
+	ELEM list;
 };
 
 struct elementos {
+	
 	char* produto;
 	VENDAS numVendas;
 	FAT_MES fatMes;
+    struct elementos * next;
 };
 
 /*_______________________Funções PRINCIPAIS_________________________________*/
 
-void insereNaFilial (GESTAO_FILIAL filial, char *p, char modo, float preco, int quant, int mes) {
+int existeNaLista (char* elem, ELEM l) {
 
-	int i;
-	for (i = 0; i < getSizeGF(filial); i++) {
+	int r = 0;
 
-		if (!strcmp(p, getProdFilial(filial, i))) {
-		
-			switch (modo) {
+	ELEM *pt = &l;
 
-				case 'N':
-						setFatFilial(filial, i, 0, mes-1, preco*quant);
-						setVendasFilial(filial, i, 0, mes-1);
-						return;
+    while ((*pt) != NULL && r != 1) {
 
-				case 'P':			
-						setFatFilial(filial, i, 1, mes-1, preco*quant);
-						setVendasFilial(filial, i, 1, mes-1);
-						return;
+    	if (!strcmp(elem, (*pt) -> produto)) r = 1;
+	    
+	    pt = &((*pt) -> next);
+    }
 
-				default: break;
-			}
+    return r;
+}
+
+ELEM pushLista (ELEM l, char* elem, char modo, int quant, float preco, int mes) {
+
+	ELEM new = malloc (sizeof(struct elementos));
+	ELEM *pt = &l;
+
+    if(existeNaLista(elem, *pt)){
+    	
+	    while (strcmp(elem, (*pt) -> produto) != 0)
+	    	pt = &((*pt) -> next);
+   
+	    switch (modo) {
+
+			case 'N':
+					setFatFilial(*pt, 0, mes-1, preco*quant);
+					setVendasFilial(*pt, 0, mes-1);
+					return l;
+
+			case 'P':			
+					setFatFilial(*pt, 1, mes-1, preco*quant);
+					setVendasFilial(*pt, 1, mes-1);
+					return l;
+
+			default: break;
 		}
-	}
+	    
 
-	/*Caso chegue aqui o produto não existe 
-	ou ainda não foi adicinado nenhum*/
+	} else {
+	  
+	    while (*pt != NULL) pt = &((*pt) -> next);
+	    
+	    int** v = (VENDAS)malloc(sizeof(int*)*2);
+		float** f = (FAT_MES) malloc(sizeof(float*)*2);
 
-	pushProdutoFilial(p, filial);
+		initFaturaFilial(f,v);			
+		initMatrizFilial(new,f, v);
 
-	switch (modo) {
+		switch (modo) {
 
 		case 'N':
-				setFatFilial(filial, getSizeGF(filial), 0, mes-1, preco*quant);
-				setVendasFilial(filial, getSizeGF(filial), 0, mes-1);
-				return;
+				setFatFilial(new, 0, mes-1, preco*quant);
+				setVendasFilial(new, 0, mes-1);
+				return l;
 
 		case 'P':
-				setFatFilial(filial, getSizeGF(filial), 1, mes-1, preco*quant);
-				setVendasFilial(filial, getSizeGF(filial), 1, mes-1);
-				return;
+				setFatFilial(new, 1, mes-1, preco*quant);
+				setVendasFilial(new, 1, mes-1);
+				return l;
 
 		default: break;
-	}
+		}
 
+	    new -> produto = strdup(elem);
+
+	    new -> next = *pt;
+	    *pt = new;
+	} 
+
+	return l;
 }
 
 void updateGestaoFilial (AVL filial, AVL vendas, char *c, int *r) {
 	
 	if (filial != NULL) {
 
-		int cmp = strcmp(c, getClienteFilial(getGestaoFilial(filial)));
+		int cmp = strcmp(c, getClienteFilial(*getGestaoFilial(filial)));
 
 		if (!cmp) {
 
 			*r = 1;
 
-			insereNaFilial(getGestaoFilial(filial), 
-						   getCodProd(vendas), 
-						   getTipo(vendas),
-						   getPreco(vendas), 
-						   getQuantidade(vendas), 
-						   getMes(vendas));
+			setList(filial,pushLista(getList(*getGestaoFilial(filial)), getCodProd(vendas), getTipo(vendas), getQuantidade(vendas), getPreco(vendas), getMes(vendas)));
 
 		} else if (cmp > 0)
 
@@ -115,10 +141,10 @@ void updateGestaoFilial (AVL filial, AVL vendas, char *c, int *r) {
 	}	
 }
 
-void insereClienteFat (int fi, AVL *filial, AVL vendas) {
+AVL* insereClienteFat (int fi, AVL *filial, AVL vendas) {
 
 	int *r = malloc(sizeof(int));
-
+ 
 	if (vendas != NULL) {
 
 		if (fi == getFilial(vendas)) {
@@ -129,27 +155,27 @@ void insereClienteFat (int fi, AVL *filial, AVL vendas) {
 
 			if (*r == 0) {
 
-				GESTAO_FILIAL new = (GESTAO_FILIAL) malloc(sizeof(GESTAO_FILIAL));
-				new -> list = malloc(sizeof(struct elementos) * 10);
+				GESTAO_FILIAL *new = (GESTAO_FILIAL*) malloc(sizeof(GESTAO_FILIAL));
 
-				initFaturaFilial (new);				
+				(*new) -> list = NULL;
 
-				new = setClienteFilial(getCodCliente(vendas),&new);
+				(*new) = setClienteFilial(getCodCliente(vendas), new);
 
-				printf("%f\n", new -> list[0]->fatMes[1][1]);
-	
-				*filial = updateAVL(*filial, NULL, new, getCodCliente(vendas), NULL, 3);
-
+				setList(*filial,pushLista((*new) -> list, getCodProd(vendas), getTipo(vendas), getQuantidade(vendas), getPreco(vendas), getMes(vendas)));
+		
 				updateGestaoFilial(*filial, vendas, getCodCliente(vendas), r);
 				
-				getGestaoFilial(*filial) -> size++;
+				*filial = updateAVL(*filial, NULL, *new, getCodCliente(vendas), NULL, 3);
+
 			}
 		}
 		
-		insereClienteFat (fi, filial, getEsq(vendas));
-		insereClienteFat (fi, filial, getDir(vendas));
+		filial = insereClienteFat (fi, filial, getEsq(vendas));
+		filial = insereClienteFat (fi, filial, getDir(vendas));
 
 	}
+
+	return filial;
 }
 
 FILIAL initFilial (FILIAL nova, AVL clientes, AVL vendas) {
@@ -178,59 +204,57 @@ FILIAL initFilial (FILIAL nova, AVL clientes, AVL vendas) {
 }
 
 /*_______________________Funções AUXILIARES_______________________________*/
-
-void initFaturaFilial (GESTAO_FILIAL new) {
+void initFaturaFilial (FAT_MES f, VENDAS v) {
 
 	int l, c;
 
-	new -> list[0] -> fatMes = (FAT_MES) malloc(sizeof(float*) * 2);
-	new -> list[0] -> numVendas = (VENDAS)malloc(sizeof(int*) * 2);
-	
 	for (l = 0; l < 2; l++) {
-		new -> list[0] -> fatMes[l]    = malloc(sizeof(float) * NUM_MESES);
-		new -> list[0] -> numVendas[l] = malloc(sizeof(int) * NUM_MESES);
+		f[l] = malloc(sizeof(float) * NUM_MESES);
+		v[l] = malloc(sizeof(int) * NUM_MESES);
 		
 		for (c = 0; c < NUM_MESES; c++) {
-			new -> list[0] -> fatMes[l][c] = 0.0;
-			new -> list[0] -> numVendas[l][c] = 0;
+			f[l][c] = 0.0;
+			v[l][c] = 0;
 		}
 	}
 }
 
-void initMatrizFilial(GESTAO_FILIAL fat, FAT_MES f, VENDAS v, int prod){
+void initMatrizFilial(ELEM elem, FAT_MES f, VENDAS v){
 
-		fat -> list[prod] -> numVendas = v;
-		fat -> list[prod] -> fatMes = f;
+		elem -> numVendas = v;
+		elem -> fatMes = f;
 }
+
 
 GESTAO_FILIAL setClienteFilial (char *c, GESTAO_FILIAL *g) {
 	(*g)->codCliente = strdup(c);
 	return (*g);
 }
 
-void setSizeGF (GESTAO_FILIAL f, int new_size) {
-	f -> size = new_size;
-}
-
-int getSizeGF(GESTAO_FILIAL filial) {
-	return filial -> size;
-}
-
 char* getProdFilial (GESTAO_FILIAL filial, int i) {
-	return filial -> list[i] -> produto;
+	return filial -> list[i].produto;
 }
 
-void setFatFilial (GESTAO_FILIAL g, int prod, int l, int c, double val) {
-	g->list[prod] -> fatMes[l][c] += val;
+void setFatFilial (ELEM elem, int l, int c, double val) {
+	
+	elem -> fatMes[l][c] += val;
 }
 
-void setVendasFilial (GESTAO_FILIAL g, int prod, int l, int c) {
-	g->list[prod] -> numVendas[l][c] +=1;
-}
-void pushProdutoFilial (char *p, GESTAO_FILIAL filial) {
-	filial -> list[filial->size] -> produto = strdup(p);	
+void setVendasFilial (ELEM elem, int l, int c) {
+
+	elem -> numVendas[l][c] +=1;
 }
 
 char* getClienteFilial(GESTAO_FILIAL filial) {
 	return filial -> codCliente;
+}
+
+ELEM getList(GESTAO_FILIAL g){
+
+	return g -> list;
+}
+
+void setList(AVL filial, ELEM l){
+
+	(*getGestaoFilial(filial)) -> list  = l;
 }

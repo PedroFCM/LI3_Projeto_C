@@ -46,8 +46,9 @@ typedef float** FAT_MES;
 typedef struct gestaoFilial* GESTAO_FILIAL;
 
 /*______________________________________________________________________*/
+AVL setGestaoFilial (AVL *filial, GESTAO_FILIAL *g);
 
-GESTAO_FILIAL getGestaoFilial(AVL filial);
+GESTAO_FILIAL* getGestaoFilial(AVL filial);
 
 void printFaturacao (AVL fat);
 
