@@ -313,8 +313,13 @@ void loadMenu () {
 					if (!data_loaded)
 						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
-						query4(fat, products);
+						start = clock();
+						query4(fat, products, 1);
+						end = clock();
+						cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+						showTime(cpu_time_used);
 					}
+
 					break;
 
 			case '5': 
@@ -352,7 +357,7 @@ void loadMenu () {
 								}
 							}
 						}
-						query7(sells, codcliente);
+						query7(fil, codcliente);
 						printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 						}
 					break;

@@ -32,6 +32,8 @@ struct node {
     int ocurr; /*Nº DE OCURRENCIAS DO ELEMENTO*/
     int vendidos; 
     double preco;
+    char *elem;
+    char tipo;
     struct node * next;
 
 };

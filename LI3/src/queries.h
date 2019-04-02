@@ -90,31 +90,14 @@ void query3 (AVL vendas, int mes, char *produto, int opcao);
  *  @return void.
 */
 int existFaturacao(AVL fat, char* produto);
-void recursive_query4(FAT_FILIAL fat, AVL produtos, AVL* produtoFilial1, AVL* produtoFilial2, AVL* produtoFilial3);
-void query4(FAT_FILIAL fat, AVL produtos);
+void recursive_query4(FAT_FILIAL fat, AVL produtos, AVL* produtoFilial1, AVL* produtoFilial2, AVL* produtoFilial3, int opcao);
+void query4(FAT_FILIAL fat, AVL produtos, int opcao);
 void query5(FILIAL filial, AVL clientes);
 AVL recursive_query5(FILIAL filial, AVL clientes, AVL *compramEmTodas);
 int exist_elementFilial (AVL a, char *element);
 
-/** @brief Função que implementa a query7.
- *
- *  @param cliente cliente para procura.
- *  @param vendas AVL que armazena as vendas validas
- *  @return void.
-*/
-
-void query7(AVL vendas, char* cliente);
-
-
-/** @brief Função que auxilia a query7.
- *
- *  @param cliente cliente de procura.
- *  @param nProd array que armazena o resultado da função.
- *  @param vendas AVL que armazena as vendas validas
- *  @return void.
-*/
-
-void recursive_query7 (AVL vendas, char* cliente, int** nProd);
+int** recursive_query7 (AVL filial, char* cliente, int** nProd, int flag);
+void query7(FILIAL filial, char* cliente);
 
 void recursive_query8(AVL fat, int min, int max, float* faturacao, int* total_vendas);
 void query8(FAT_FILIAL fat, int min, int max);
@@ -127,11 +110,8 @@ void query9 (AVL vendas, char* produto, int filial);
  *  @param filial filial de procura.
  *  @param vendas AVL que armazena as vendas validas
  *  @return void.
-*//*
-void query9 (FILIAL fil, char *codProd, int filial);
-void geraClientesFilial (AVL fil, char *codProd, LString comprasN, LString comprasP);
-int matrizAzeros (float **f, int flag);
 */
+
 /** @brief Função auxilial da query10.
  *         Utiliza uma lista como struct de apoio à procura e armazenamento de dados.
  *

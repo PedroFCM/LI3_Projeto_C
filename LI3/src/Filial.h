@@ -59,7 +59,7 @@ void setList(AVL filial, ELEM l);
 
 void setFatFilial (ELEM elem, int l, int c, double val);
 
-void setVendasFilial (ELEM elem, int l, int c);
+void setVendasFilial (ELEM elem, int l, int c, int quant);
 
 char* getClienteFilial(GESTAO_FILIAL filial);
 
@@ -70,6 +70,12 @@ void printFilial (AVL filial);
 void printElem(ELEM elemenos);
 
 void printMATRIXFilial (FAT_MES f, VENDAS v, int opcao);
+
+void somaMatrizes(int **nProd, int **atual, int flag);
+
+void somaVendas(int **nProd, ELEM elem, int flag);
+
+VENDAS getNumVendasElem (ELEM elem);
 
 /*---------------------------------------------------------------------------------------------*/
 

@@ -77,12 +77,12 @@ ELEM pushLista (ELEM l, char* elem, char modo, int quant, float preco, int mes) 
 
 			case 'N':
 					setFatFilial(*pt, 0, mes-1, preco*quant);
-					setVendasFilial(*pt, 0, mes-1);
+					setVendasFilial(*pt, 0, mes-1, quant);
 					return l;
 
 			case 'P':			
 					setFatFilial(*pt, 1, mes-1, preco*quant);
-					setVendasFilial(*pt, 1, mes-1);
+					setVendasFilial(*pt, 1, mes-1, quant);
 					return l;
 
 			default: break;
@@ -101,12 +101,12 @@ ELEM pushLista (ELEM l, char* elem, char modo, int quant, float preco, int mes) 
 
 		case 'N':
 				setFatFilial(new, 0, mes-1, preco*quant);
-				setVendasFilial(new, 0, mes-1);
+				setVendasFilial(new, 0, mes-1, quant);
 				break;
 
 		case 'P':
 				setFatFilial(new, 1, mes-1, preco*quant);
-				setVendasFilial(new, 1, mes-1);
+				setVendasFilial(new, 1, mes-1, quant);
 				break;
 
 		default: break;
@@ -245,9 +245,9 @@ void setFatFilial (ELEM elem, int l, int c, double val) {
 	elem -> fatMes[l][c] += val;
 }
 
-void setVendasFilial (ELEM elem, int l, int c) {
+void setVendasFilial (ELEM elem, int l, int c, int quant) {
 
-	elem -> numVendas[l][c] +=1;
+	elem -> numVendas[l][c] += quant;
 }
 
 char* getClienteFilial(GESTAO_FILIAL filial) {
@@ -339,6 +339,32 @@ void printFilial (AVL filial) {
 		printFilial(getDir(filial));
 
 	}
+}
+
+void somaMatrizes(int **nProd, int **atual, int flag){
+
+	int j = 0;
+
+	for (j = 0; j < 12; j++){
+		
+			nProd[j][flag-1] += atual[0][j] + atual[1][j];
+		}
+
+}
+
+void somaVendas(int **nProd, ELEM elem, int flag){
+	
+	ELEM *pt = &elem;
+
+	while (*pt != NULL) {
+		somaMatrizes(nProd, getNumVendasElem(*pt), flag);
+		pt = &((*pt) -> next);
+	}
+}
+
+
+VENDAS getNumVendasElem (ELEM elem) {
+	return elem->numVendas;
 }
 
 /*______________________________________________________________________*/
