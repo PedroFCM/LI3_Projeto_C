@@ -137,6 +137,10 @@ CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells,
 /*----------------------------------------------------------------------*/
 						/*Getters & Setters*/
 
+int getQuantidadeReg(REGISTO reg)
+{
+	return reg -> quantidade;
+}
 
 REGISTO initRegisto (REGISTO novo) {
 	novo = (REGISTO) malloc(sizeof(struct registo));

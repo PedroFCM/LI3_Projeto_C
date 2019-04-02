@@ -17,6 +17,8 @@
 
 #include "avlstruct.h"
 
+/*-----------------------------------------------------------------------*/
+
 /* MACRO para float** */
 typedef float** FAT_PRECO;
 /* MACRO para int** */
@@ -33,51 +35,95 @@ typedef float** FAT_MES;
 
 typedef int** VENDAS;
 
-/*______________________________________________________________________*/
+/*-----------------------------------------------------------------------*/
 
-/** @brief Função que imprime.
- *
- *  @param f Faturacao.
- *  @param min Mes inferior.
- *  @param max Mes superior.
- *  @param vendas AVL de vendas.
- *  @return void.
- */
+int existFaturacao(AVL fat, char* produto);
+
+/*-----------------------------------------------------------------------*/
+
+void vendasNoMes (AVL faturacao, int filial, char* prod, int mes, FAT_MES f, VENDAS v);
+
+/*-----------------------------------------------------------------------*/
+
+void prodNinguemComprou(FAT_FILIAL fat, AVL produtos, AVL* produtoFilial1, AVL* produtoFilial2, AVL* produtoFilial3, int opcao);
+
+/*-----------------------------------------------------------------------*/
+
+void vendasEntreMeses(AVL fat, int min, int max, float* faturacao, int* total_vendas);
+
+/*-----------------------------------------------------------------------*/
+
 AVL getFaturacao(FAT_FILIAL f, int i);
 
+/*-----------------------------------------------------------------------*/
+
 void printFaturacao (AVL fat);
+
+/*-----------------------------------------------------------------------*/
 
 void printMATRIX (FAT_MES f, VENDAS v, int opcao);
 
+/*-----------------------------------------------------------------------*/
+
 void initFatura (FAT_MES f, VENDAS v);
+
+/*-----------------------------------------------------------------------*/
 
 void setFatMes (FATURA f, int l, int c, double val);
 
+/*-----------------------------------------------------------------------*/
+
 void setVendas (FATURA f, int l, int c);
+
+/*-----------------------------------------------------------------------*/
 
 VENDAS getNumVendas (FATURA f);
 
+/*-----------------------------------------------------------------------*/
+
 FAT_MES getFatMes (FATURA f);
+
+/*-----------------------------------------------------------------------*/
 
 void initMatriz(FATURA fat, FAT_MES f,VENDAS v);
 
+/*-----------------------------------------------------------------------*/
+
 char* getProdFatura (FATURA f);
+
+/*-----------------------------------------------------------------------*/
 
 void printFaturacao (AVL fat);
 
+/*-----------------------------------------------------------------------*/
+
 AVL getFaturacao (FAT_FILIAL f, int filial);
+
+/*-----------------------------------------------------------------------*/
 
 char* getProdFatura (FATURA f);
 
+/*-----------------------------------------------------------------------*/
+
 void insereNaFatura (FATURA f, double preco, int quant, char modo, int mes);
+
+/*-----------------------------------------------------------------------*/
 
 void insereProdFat (int filial, AVL *fatFilial, AVL vendas);
 
+/*-----------------------------------------------------------------------*/
+
 FAT_FILIAL initFaturacao (FAT_FILIAL nova, AVL prod, AVL vendas);
+
+/*-----------------------------------------------------------------------*/
 
 void updateFatura (AVL fatFilial, AVL vendas, char *p, int *r);
 
+/*-----------------------------------------------------------------------*/
+
 void setProdFatura (char* p, FATURA f);
+
+/*-----------------------------------------------------------------------*/
 
 /** @brief Função que retorna o elemento que está na posição l, c da Faturacao.
  *
@@ -90,6 +136,8 @@ void setProdFatura (char* p, FATURA f);
 int getQuantPos (FAT f, int l, int c);
 
 
+/*-----------------------------------------------------------------------*/
+
 /** @brief Função que retorna o elemento que está na posição l, c da Faturacao.
  *
  *  @param f Faturacao.
@@ -101,6 +149,8 @@ int getQuantPos (FAT f, int l, int c);
 double getPrecoPos(FAT f, int l, int c);
 
 
+/*-----------------------------------------------------------------------*/
+
 /** @brief Função que inicializa a struct FAT.
  *
  *  @param new Fatu.
@@ -109,6 +159,8 @@ double getPrecoPos(FAT f, int l, int c);
 
 FAT initFatProduto (FAT new);
 
+
+/*-----------------------------------------------------------------------*/
 
 /** @brief Função que gera a faturação de um produto.
  *
@@ -121,5 +173,6 @@ FAT initFatProduto (FAT new);
 
 void geraFaturacaoProduto (AVL vendas, char* prod, int mes, FAT f);
 
+/*-----------------------------------------------------------------------*/
 
 #endif

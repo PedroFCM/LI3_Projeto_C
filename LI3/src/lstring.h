@@ -50,7 +50,7 @@ int existLString (char* elem, LString l);
  *  @param preco double.
  *  @return LString após inserção.
  */
-
+LString insertLString2 (LString l, char* elem, double total);
 LString insertLString (LString l, char* elem, int vendidos, double preco);
 
 

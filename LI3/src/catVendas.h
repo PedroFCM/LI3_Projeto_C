@@ -27,6 +27,8 @@ typedef struct registo* REGISTO;
 
 /*----------------------------------------------------------------------*/
 
+int getQuantidadeReg(REGISTO reg);
+
 /** @brief Função que verifica se uma venda é válida.
  *
  *  @param vendas AVL de vendas.

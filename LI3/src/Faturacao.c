@@ -51,6 +51,25 @@ struct fatura {
 
 /*_______________________Funções PRINCIPAIS_________________________________*/
 
+void vendasEntreMeses(AVL fat, int min, int max, float* faturacao, int* total_vendas)
+{
+	if(fat != NULL)
+	{
+		int i,j;
+
+		for(i = 0; i < 2; i++)
+			for(j = 0; j < 12; j++)
+				if(j >= min && j <= max)
+				{
+					*faturacao +=  getFatMes(getFatura(fat))[i][j];
+					*total_vendas +=  getNumVendas(getFatura(fat))[i][j];
+				}
+		
+		vendasEntreMeses(getEsq(fat), min, max, faturacao, total_vendas);
+		vendasEntreMeses(getDir(fat), min, max, faturacao, total_vendas);
+	}
+}
+
 void insereNaFatura (FATURA f, double preco, int quant, char modo, int mes) {
 
 	switch (modo) {
@@ -147,10 +166,87 @@ FAT_FILIAL initFaturacao (FAT_FILIAL nova, AVL prod, AVL vendas) {
  	nova[f2-1].faturacao = *filial2;	
  	nova[f3-1].faturacao = *filial3;	
 
- 	/*Print para debug*/
- 	/*printFaturacao(nova[f3-1].faturacao);*/
-
 	return nova;
+}
+
+void vendasNoMes (AVL faturacao, int filial, char* prod, int mes, FAT_MES f, VENDAS v) 
+{
+	if(faturacao != NULL) 
+	{		
+		int equal = strcmp(getProdFatura(getFatura(faturacao)), prod);
+		int i;
+
+		if(!equal) 
+			for(i = 0; i < 2; i++)
+			{	
+				f[i][filial] += getFatMes(getFatura(faturacao))[i][mes];
+				v[i][filial] += getNumVendas(getFatura(faturacao))[i][mes];
+			}
+
+		else
+		{
+			if(equal > 0)
+				vendasNoMes(getEsq(faturacao), filial, prod, mes, f, v);
+			else
+				vendasNoMes(getDir(faturacao), filial, prod, mes, f, v);
+		}
+	}
+}
+
+int existFaturacao(AVL fat, char* produto)
+{
+	int r = 0;
+
+	if(fat != NULL)
+	{
+		int equal = strcmp(getProdFatura(getFatura(fat)), produto);
+
+		if(!equal)
+			r++;
+
+		else
+		{	
+			if(equal > 0)
+				r += existFaturacao(getEsq(fat), produto);
+			else
+				r += existFaturacao(getDir(fat), produto);
+		}
+	}
+
+	return r;
+}
+
+void prodNinguemComprou(FAT_FILIAL fat, AVL produtos, AVL* produtoFilial1, AVL* produtoFilial2, AVL* produtoFilial3, int opcao)
+{
+	if(produtos != NULL)
+	{
+		getTag(produtos)[6] = '\0';
+		
+		switch(opcao)
+		{
+		case 0: if( !existFaturacao(getFaturacao(fat, 0), getTag(produtos)) && !exist_element(*produtoFilial1, getTag(produtos)) )
+					*produtoFilial1 = updateAVL(*produtoFilial1, NULL, NULL, NULL, getTag(produtos), 1);	
+
+				else
+				{	
+					if( !existFaturacao(getFaturacao(fat, 1), getTag(produtos)) && !exist_element(*produtoFilial2, getTag(produtos)) )
+						*produtoFilial2 = updateAVL(*produtoFilial2, NULL, NULL, NULL, getTag(produtos), 1);	
+			
+					else
+						if( !existFaturacao(getFaturacao(fat, 2), getTag(produtos)) && !exist_element(*produtoFilial3, getTag(produtos)) )
+							*produtoFilial3 = updateAVL(*produtoFilial3, NULL, NULL, NULL, getTag(produtos), 1);	
+				}
+				break;
+		
+		case 1: if(!existFaturacao(getFaturacao(fat, 0), getTag(produtos)) && !existFaturacao(getFaturacao(fat, 1), getTag(produtos)) 
+					&& !existFaturacao(getFaturacao(fat, 2), getTag(produtos)))
+					*produtoFilial1 = updateAVL(*produtoFilial1, NULL, NULL, NULL, getTag(produtos), 1);
+				break;
+		}
+
+		prodNinguemComprou(fat, getEsq(produtos), produtoFilial1, produtoFilial2, produtoFilial3, opcao);
+		prodNinguemComprou(fat, getDir(produtos), produtoFilial1, produtoFilial2, produtoFilial3, opcao);		
+	}
 }
 
 /*_______________________Funções AUXILIARES_______________________________*/
@@ -261,8 +357,6 @@ AVL getFaturacao(FAT_FILIAL f, int i) {
 	return f[i].faturacao;
 }
 
-/*_________________OUTRAS FUNÇÕES_______________________________________*/
-
 int getQuantPos (FAT f, int l, int c) {
 	return f->quantidade[l][c];
 }
@@ -325,5 +419,6 @@ void geraFaturacaoProduto (AVL vendas, char* prod, int mes, FAT f) {
 	}
 }
 
-
-/*______________________________________________________________________*/
+/*-----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------*/

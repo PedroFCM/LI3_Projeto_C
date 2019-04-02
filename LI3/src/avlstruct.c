@@ -25,6 +25,7 @@
 #include "global.h"
 #include "Faturacao.h"
 #include "Filial.h"
+#include "catVendas.h"
 
 /*----------------------------------------------------------------------*/
 
@@ -197,6 +198,7 @@ AVL updateAVLRec (AVL a, REGISTO novo, FATURA f,  GESTAO_FILIAL nova_gestao, cha
 
 		if (flag == 2) r = strcmp(getProdFatura(a->fatura), arg);
 		else if (flag == 3) r = strcmp(getClienteFilial(a->gestaoFilial), arg);
+		else if(flag == 4) r = getQuantidade(a) - getQuantidadeReg(novo);
 		else r = strcmp(a -> tag, arg);
 		
 		if (r >= 0) {

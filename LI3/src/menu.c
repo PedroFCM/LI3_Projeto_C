@@ -48,13 +48,19 @@ int checkInput (int input, int selection) {
 		(selection >= '0' && selection <= '9')));
 }
 
+/*-----------------------------------------------------------------------*/
+
 void clear_screen() {
 	if (system("clear")==-1);
 }
 
+/*-----------------------------------------------------------------------*/
+
 void showTime (double time) {
 	printf("\n\n(Carregados em %.4f segundos)\n\n", time);
 }
+
+/*-----------------------------------------------------------------------*/
 
 void displayMenuAndOptions (int loaded) {
 
@@ -95,6 +101,8 @@ void displayMenuAndOptions (int loaded) {
 	l = 0;
 	while (l < w.ws_col) {printf(RED "_" RESET); l++;}
 }
+
+/*-----------------------------------------------------------------------*/
 
 void displayFicheirosLeitura() {
 
@@ -422,7 +430,8 @@ void loadMenu () {
 						}
 						printf("\nProdutos que mais comprou: \n");
 						if (new_mes>=1 && new_mes <=12)
-							query10(sells, codcliente, new_mes);
+							/*query10(sells, codcliente, new_mes);*/
+							query10(fil, codcliente, new_mes);
 					}
 					printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 					break;
@@ -457,7 +466,7 @@ void loadMenu () {
 							if (scanf("%s", codcliente)!=-1) break;
 						}
 						printf("\n");
-						query12(sells, codcliente);
+						query12(fil, codcliente);
 						printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 					}				
 

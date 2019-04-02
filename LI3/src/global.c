@@ -170,4 +170,21 @@ int inorder_avl_just_tag (AVL a)
 	return r;
 }
 
+int printDecresAvl(AVL a)
+{
+	int r = 0;
+
+	if(a != NULL)
+	{
+		r += printDecresAvl(getDir(a));
+
+		printf("> %s| %d\n", getTag(a), getQuantidade(a));
+		r++;
+
+		r += printDecresAvl(getEsq(a));
+	}
+
+	return r;
+}
+
 /*---------------------------------------------------------------------*/

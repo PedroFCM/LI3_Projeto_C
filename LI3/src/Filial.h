@@ -2,7 +2,7 @@
 /** @file Filial.h
 *	@brief Ficheiro header para o Filial.c.
 *
-*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor João Pedro Rodrigues Azevedo
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 
 *
@@ -18,6 +18,7 @@
 #include "avlstruct.h"
 #include "stack.h"
 #include "hashtables.h"
+#include "lstring.h"
 
 /*---------------------------------------------------------------------------------------------*/
 
@@ -35,92 +36,144 @@ typedef struct gestaoFilial* GESTAO_FILIAL;
 
 typedef struct elementos* ELEM;
 
+/*-----------------------------------------------------------------------*/
+
+void acumVendas(AVL filial, AVL *prodMaisComprad, int mes);
+
+/*-----------------------------------------------------------------------*/
+
+AVL compraramEmTodas(FILIAL filial, AVL clientes, AVL *compramEmTodas);
+
+/*-----------------------------------------------------------------------*/
+
+void clientesSemCompra (FILIAL fil, AVL clientes, int *clientesSC);
+
+/*-----------------------------------------------------------------------*/
+
+int existeClienteNaAVLFilial (AVL a, char* elem);
+
+/*-----------------------------------------------------------------------*/
+
+FAT_MES getFatMesElem (ELEM elem);
+
+/*-----------------------------------------------------------------------*/
+
+float sumatorioMatriz(float **matriz);
+
+/*-----------------------------------------------------------------------*/
+
+int** tabelaComprasFilial (AVL filial, char* cliente, int** nProd, int flag);
+
+/*-----------------------------------------------------------------------*/
+
+LString top3Compras_do_cliente (AVL filial, char* cliente, LString produtos);
+
+/*-----------------------------------------------------------------------*/
+
+LString recursividade (ELEM elem, LString l);
+
+/*-----------------------------------------------------------------------*/
+
 AVL getAVLfilial (FILIAL f, int fi);
+
+/*-----------------------------------------------------------------------*/
 
 int existeNaLista (char* elem, ELEM l);
 
+/*-----------------------------------------------------------------------*/
+
 ELEM pushLista (ELEM l, char* elem, char modo, int quant, float preco, int mes);
+
+/*-----------------------------------------------------------------------*/
 
 void updateGestaoFilial (AVL filial, AVL vendas, char *c, int *r);
 
+/*-----------------------------------------------------------------------*/
+
 void insereClienteFat (int fi, AVL *filial, AVL vendas);
+
+/*-----------------------------------------------------------------------*/
 
 FILIAL initFilial (FILIAL nova, AVL clientes, AVL vendas);
 
+/*-----------------------------------------------------------------------*/
+
 void initFaturaFilial (FAT_MES f, VENDAS v);
+
+/*-----------------------------------------------------------------------*/
 
 void initMatrizFilial(ELEM elem, FAT_MES f, VENDAS v);
 
+/*-----------------------------------------------------------------------*/
+
 void setClienteFilial (char *c, GESTAO_FILIAL g);
+
+/*-----------------------------------------------------------------------*/
 
 char* getProdFilial (GESTAO_FILIAL filial, int i);
 
+/*-----------------------------------------------------------------------*/
+
 void setList(AVL filial, ELEM l);
+
+/*-----------------------------------------------------------------------*/
 
 void setFatFilial (ELEM elem, int l, int c, double val);
 
+/*-----------------------------------------------------------------------*/
+
 void setVendasFilial (ELEM elem, int l, int c, int quant);
+
+/*-----------------------------------------------------------------------*/
 
 char* getClienteFilial(GESTAO_FILIAL filial);
 
+/*-----------------------------------------------------------------------*/
+
 ELEM getList(GESTAO_FILIAL g);
+
+/*-----------------------------------------------------------------------*/
 
 void printFilial (AVL filial);
 
+/*-----------------------------------------------------------------------*/
+
 void printElem(ELEM elemenos);
+
+/*-----------------------------------------------------------------------*/
 
 void printMATRIXFilial (FAT_MES f, VENDAS v, int opcao);
 
+/*-----------------------------------------------------------------------*/
+
 void somaMatrizes(int **nProd, int **atual, int flag);
+
+/*-----------------------------------------------------------------------*/
 
 void somaVendas(int **nProd, ELEM elem, int flag);
 
+/*-----------------------------------------------------------------------*/
+
 VENDAS getNumVendasElem (ELEM elem);
 
-/*---------------------------------------------------------------------------------------------*/
-
-/** @brief Função que gera uma matriz filial.
- *         Se a matriz estiver toda a 1 então o cliente comprou nas 3 filiais
- *
- *  @param vendas AVL de vendas para procura.
- *  @param filial matriz de verificacao.
- *  @param cliente string contendo o cliente de pesquisa.
- *  @return void.
- */
+/*-----------------------------------------------------------------------*/
 
 void procuraNaFilial (AVL vendas, int filial[], char* cliente);
 
+/*-----------------------------------------------------------------------*/
 
-/** @brief Função que gera a faturacao entre dois meses.
- *
- *  @param f Faturacao.
- *  @param min Mes inferior.
- *  @param max Mes superior.
- *  @param vendas AVL de vendas.
- *  @return void.
- */
+int exist_elementFilial (AVL a, char *element);
 
-void compraramEmTodas (AVL vendas, AVL* clie_filiais);
-
-
-/** @brief Função que gera a faturacao entre dois meses.
- *
- *  @param f Faturacao.
- *  @param min Mes inferior.
- *  @param max Mes superior.
- *  @param vendas AVL de vendas.
- *  @return void.
- */
+/*-----------------------------------------------------------------------*/
 
 void compraramNaFilial (AVL vendas, char* prod, int filial, Stack clientesN, Stack clientesP);
 
-
-/** @brief Função que adiciona uma nova quantidade a uma filial.
- *
- *  @param h HashTable cabeçalho.
- *  @return void.
- */
+/*-----------------------------------------------------------------------*/
 
 void juntaQuantFilial (HEAD_TABLE h);
+
+/*-----------------------------------------------------------------------*/
+
+char* getProdutoFilial(ELEM filial);
 
 #endif

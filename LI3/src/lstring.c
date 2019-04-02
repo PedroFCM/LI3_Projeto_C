@@ -32,8 +32,7 @@ struct node {
     int ocurr; /*Nº DE OCURRENCIAS DO ELEMENTO*/
     int vendidos; 
     double preco;
-    char *elem;
-    char tipo;
+    float total;
     struct node * next;
 
 };
@@ -49,14 +48,14 @@ void printLString (LString l, int flag) {
 	switch(flag) {
 		case 0:
 	    	while ((*pt) != NULL) {
-		        printf("%s %d\n", (*pt)->val, (*pt)->ocurr);
+		        printf("%s %f\n", (*pt)->val, (*pt)->total);
 		    	pt = &((*pt) -> next);
 		    }
 		break;
 
 		case 1:
 	    	while (i < 3) {
-		        printf("%s %d %d %f\n", (*pt)->val, (*pt)->ocurr, (*pt)->vendidos, (*pt)->preco);
+		        printf("%s %f\n", (*pt)->val, (*pt)->total);
 		    	pt = &((*pt) -> next);
 		    	i++;
 		    }
@@ -78,6 +77,32 @@ int existLString (char* elem, LString l) {
     }
 
     return r;
+}
+
+LString insertLString2 (LString l, char* elem, double total) {
+
+	LString new = malloc (sizeof(struct node));
+	LString *pt = &l;
+
+    if(existLString(elem, *pt)){
+	    
+	    while (strcmp(elem, (*pt) -> val) != 0)
+	    	pt = &((*pt) -> next);
+    
+	    (*pt) -> total += total;	    
+
+	} else {
+	  
+	    while (*pt != NULL) pt = &((*pt) -> next);
+	    
+	    new -> val = strdup(elem);
+
+	    new -> total = total;
+	    new -> next = *pt;
+	    *pt = new;
+	} 
+
+	return l;
 }
 
 
@@ -110,6 +135,7 @@ LString insertLString (LString l, char* elem, int vendidos, double preco) {
 	return l;
 }
 
+
 LString getTail (LString l) {
 
 	while (l != NULL && l->next != NULL)
@@ -133,7 +159,7 @@ LString partitionLString (LString head, LString end, LString *newHead, LString *
 				compare = curr -> ocurr > pivot -> ocurr;
 				break;
 			case 1: 
-				compare = curr -> preco > pivot -> preco;
+				compare = curr -> total > pivot -> total;
 				break;
 
 		}

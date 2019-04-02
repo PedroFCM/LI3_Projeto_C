@@ -25,9 +25,9 @@
 #include "avlstruct.h"
 #include "hashtables.h"
 #include "catVendas.h"
+#include "lstring.h"
 
-/*______________________________________________________________________*/
-
+/*-----------------------------------------------------------------------*/
 
 struct filial {
 	AVL filial;
@@ -46,7 +46,130 @@ struct elementos {
     struct elementos * next;
 };
 
-/*______________________________________________________________________*/
+/*-----------------------------------------------------------------------*/
+
+int exist_elementFilial (AVL a, char *element) {
+ 
+    int r = 0;
+
+    while (a != NULL) {
+
+        r = strcmp(getClienteFilial(getGestaoFilial(a)), element);
+
+        if (r == 0) return 1;
+        else if (r > 0) return exist_elementFilial(getDir(a), element);
+        else if (r < 0) return exist_elementFilial(getEsq(a), element);
+    }
+
+    return 0;
+}
+
+AVL compraramEmTodas(FILIAL filial, AVL clientes, AVL *compramEmTodas){
+
+    if(clientes != NULL)
+    {
+
+        if (exist_elementFilial(getAVLfilial(filial,1), getTag(clientes)) == 0 &&
+       	 	exist_elementFilial(getAVLfilial(filial,2), getTag(clientes)) == 0 &&
+        	exist_elementFilial(getAVLfilial(filial,3), getTag(clientes)) == 0) 
+        	*compramEmTodas = updateAVL (*compramEmTodas, NULL, NULL, NULL, getTag(clientes), 5);
+
+        *compramEmTodas = compraramEmTodas(filial, getEsq(clientes), compramEmTodas);
+        *compramEmTodas = compraramEmTodas(filial, getDir(clientes), compramEmTodas);
+    }
+
+    return *compramEmTodas;
+}
+
+LString top3Compras_do_cliente (AVL filial, char* cliente, LString produtos) {
+
+	if (filial != NULL) {
+
+		if (strcmp(getClienteFilial(getGestaoFilial(filial)), cliente) == 0) {
+
+			produtos = recursividade(getList((getGestaoFilial(filial))), produtos); 
+			
+		}
+
+		produtos = top3Compras_do_cliente(getEsq(filial), cliente,produtos);		
+		produtos = top3Compras_do_cliente(getDir(filial), cliente,produtos);
+
+	}
+
+	return produtos;
+}
+
+void acumVendas(AVL filial, AVL *prodMaisComprad, int mes)
+{
+	int i, r;
+	ELEM *pt = &(getGestaoFilial(filial) -> list);   
+			
+	while(*pt != NULL)
+	{
+		r = 0;
+
+		for(i = 0; i < 2; i++)
+			r += ((*pt) -> numVendas)[i][mes];
+		
+		REGISTO regist = NULL;
+		regist = initRegisto(regist); 
+		setQuantidade(regist, r);
+
+		if(r)
+			*prodMaisComprad = updateAVL(*prodMaisComprad, regist, NULL, NULL, getProdutoFilial(*pt), 4);
+
+		pt = &((*pt) -> next);
+	}
+}
+
+void clientesSemCompra (FILIAL fil, AVL clientes, int *clientesSC) {
+
+	if (clientes != NULL) {
+
+		if (!existeClienteNaAVLFilial(getAVLfilial(fil, 1), getTag(clientes)) &&
+			!existeClienteNaAVLFilial(getAVLfilial(fil, 2), getTag(clientes)) &&
+			!existeClienteNaAVLFilial(getAVLfilial(fil, 3), getTag(clientes))) {
+			*clientesSC += 1;
+		}
+
+		clientesSemCompra(fil, getEsq(clientes), clientesSC);
+		clientesSemCompra(fil, getDir(clientes), clientesSC);
+	}
+
+}
+
+int existeClienteNaAVLFilial (AVL a, char* elem) {
+
+	int r;
+
+	if (a != NULL) {
+
+		r = strcmp(elem, getClienteFilial(getGestaoFilial(a)));
+
+		if (r==0) return 1;
+		else if (r > 0) return existeClienteNaAVLFilial(getDir(a), elem);
+		else return existeClienteNaAVLFilial(getEsq(a), elem);
+
+	}
+
+	return r;
+}
+
+int** tabelaComprasFilial (AVL filial, char* cliente, int** nProd, int flag) {
+
+	if (filial != NULL) {
+
+		if (strcmp(getClienteFilial(getGestaoFilial(filial)), cliente) == 0) {
+			somaVendas(nProd, getList(getGestaoFilial(filial)), flag);
+		}
+
+		nProd = tabelaComprasFilial(getEsq(filial), cliente, nProd, flag);		
+		nProd = tabelaComprasFilial(getDir(filial), cliente, nProd, flag);
+
+	}
+
+	return nProd;
+}
 
 int existeNaLista (char* elem, ELEM l) {
 
@@ -198,13 +321,48 @@ FILIAL initFilial (FILIAL nova, AVL clientes, AVL vendas) {
  	nova[f2-1].filial = *filial2;	
  	nova[f3-1].filial = *filial3;	
 
-/* 	printFilial(*filial1);
-*/
 	return nova;
 }
 
-/*_______________________Funções AUXILIARES_______________________________*/
+/*-----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------*/
 
+char* getProdutoFilial(ELEM filial){
+
+	return filial->produto;
+}
+
+LString recursividade (ELEM elem, LString l){
+
+	ELEM *pt = &elem;
+
+	while (*pt != NULL) {
+		
+		l = insertLString2(l, getProdutoFilial(*pt), sumatorioMatriz(getFatMesElem(*pt))); 
+		pt = &((*pt) -> next);
+	}	
+
+	return l;
+}
+
+float sumatorioMatriz(float **matriz){
+
+	float res;
+	int i,j;
+	res = i= j = 0;
+	
+	for(i = 0; i < 2; i++)
+		for(j = 0; j < 12; j++) 
+			res += matriz[i][j];
+
+	return res;
+
+}
+
+FAT_MES getFatMesElem (ELEM elem) {
+	return elem->fatMes;
+}
 AVL getAVLfilial (FILIAL f, int fi) {
 	return f[fi-1].filial;
 }
@@ -329,13 +487,6 @@ void printFilial (AVL filial) {
 		printf("Produto:\n");
 		printElem(getGestaoFilial(filial) -> list);
 
-		/*
-		printMATRIX((getfilialura(filial))->filialMes,
-					(getfilialura(filial))->numVendas, 0);
-		printMATRIX((getfilialura(filial))->filialMes,
-					(getfilialura(filial))->numVendas, 1);
-		*/
-
 		printFilial(getDir(filial));
 
 	}
@@ -367,8 +518,6 @@ VENDAS getNumVendasElem (ELEM elem) {
 	return elem->numVendas;
 }
 
-/*______________________________________________________________________*/
-
 void procuraNaFilial (AVL vendas, int filial[], char* cliente) {
 
 	if( (filial[0]+filial[1]+filial[2] < 3) && vendas != NULL) {
@@ -379,28 +528,6 @@ void procuraNaFilial (AVL vendas, int filial[], char* cliente) {
 		procuraNaFilial(getEsq(vendas), filial, cliente);
 		procuraNaFilial(getDir(vendas), filial, cliente);
 
-	}
-}
-
-void compraramEmTodas (AVL vendas, AVL* clie_filiais) {
-
-	if(vendas != NULL) {
-
-		int filial[3], i;
-
-		for(i = 0; i < 3; i++)
-			filial[i] = 0;
-
-		procuraNaFilial(vendas, filial, getCodCliente(vendas));
-		
-		getCodCliente(vendas)[(strlen(getCodCliente(vendas)))] = ' ';  
-		/* por causa do 'cut_extra_char' */
-
-		if(filial[0]+filial[1]+filial[2] == 3)
-			*clie_filiais = updateAVL(*clie_filiais, NULL, NULL, NULL, getCodCliente(vendas), 0); 
-
-		compraramEmTodas(getEsq(vendas), clie_filiais);
-		compraramEmTodas(getDir(vendas), clie_filiais);
 	}
 }
 
@@ -441,3 +568,7 @@ void juntaQuantFilial (HEAD_TABLE h) {
 		}
 	}
 }
+
+/*-----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------*/
