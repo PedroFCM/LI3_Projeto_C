@@ -35,6 +35,8 @@ typedef struct gestaoFilial* GESTAO_FILIAL;
 
 typedef struct elementos* ELEM;
 
+AVL getAVLfilial (FILIAL f, int fi);
+
 int existeNaLista (char* elem, ELEM l);
 
 ELEM pushLista (ELEM l, char* elem, char modo, int quant, float preco, int mes);

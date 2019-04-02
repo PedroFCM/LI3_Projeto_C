@@ -198,12 +198,16 @@ FILIAL initFilial (FILIAL nova, AVL clientes, AVL vendas) {
  	nova[f2-1].filial = *filial2;	
  	nova[f3-1].filial = *filial3;	
 
- 	printFilial(*filial1);
-
+/* 	printFilial(*filial1);
+*/
 	return nova;
 }
 
 /*_______________________Funções AUXILIARES_______________________________*/
+
+AVL getAVLfilial (FILIAL f, int fi) {
+	return f[fi-1].filial;
+}
 
 void initFaturaFilial (FAT_MES f, VENDAS v) {
 

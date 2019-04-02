@@ -286,18 +286,142 @@ void query4(FAT_FILIAL fat, AVL produtos)
 
 /*-----------------------------------------------------------------------*/
 
-void query5(AVL vendas) {
+int exist_elementFilial (AVL a, char *element) {
+ 
+    int r = 0;
 
-	AVL* clie_filiais = malloc(sizeof(AVL));
-	*clie_filiais = NULL; 
+    while (a != NULL) {
+
+        r = strcmp(getClienteFilial(getGestaoFilial(a)), element);
+
+        if (r == 0) return 1;
+        else if (r > 0) return exist_elementFilial(getDir(a), element);
+        else if (r < 0) return exist_elementFilial(getEsq(a), element);
+    }
+
+    return 0;
+}
+
+AVL recursive_query5(FILIAL filial, AVL clientes, AVL *compramEmTodas){
+
+    if(clientes != NULL)
+    {
+
+        if (exist_elementFilial(getAVLfilial(filial,1), getTag(clientes)) == 0 &&
+       	 	exist_elementFilial(getAVLfilial(filial,2), getTag(clientes)) == 0 &&
+        	exist_elementFilial(getAVLfilial(filial,3), getTag(clientes)) == 0) 
+        	*compramEmTodas = updateAVL (*compramEmTodas, NULL, NULL, NULL, getTag(clientes), 0);
+
+        *compramEmTodas = recursive_query5(filial, getEsq(clientes), compramEmTodas);
+        *compramEmTodas = recursive_query5(filial, getDir(clientes), compramEmTodas);
+    }
+
+    return *compramEmTodas;
+}
+
+
+void query5(FILIAL filial, AVL clientes) {
+
+    AVL compramEmTodas = NULL; 
+
+    compramEmTodas = recursive_query5(filial, clientes, &compramEmTodas);
+
+    printf("\nClientes que compraram em todas as filiais:\n");
+
+    int r = inorder_avl_just_tag(compramEmTodas); 
+
+    printf("\n>> Existem %d clientes que comraram em todas as filiais.\n", r);
+}
+
+
+
+/*-----------------------------------------------------------------------*/
+
+int existeProdutoNaAVLFilial (AVL a, char* elem) {
 	
-	compraramEmTodas(vendas, clie_filiais);
+	int cmp;
+	
+	if (a != NULL) {
 
-	printf("\nClientes que compraram em todas as filiais:\n");
+		cmp = strcmp(elem, getProdFatura(getFatura(a)));
 
-	inorder_avl_just_tag(*clie_filiais); 
+		if (cmp==0) return 1;
+		else if (cmp > 0) 
+			return (existeProdutoNaAVLFilial(getDir(a), elem));
+		else return (existeProdutoNaAVLFilial(getEsq(a), elem));
+	}
 
-	freeAVL(*clie_filiais, 0);
+	return 0;
+}
+
+void produtosQuery6 (FAT_FILIAL fat, AVL produtos, int *produtosNC) {
+
+	if (produtos != NULL) {
+		
+		char *aux;
+		aux = strdup(getTag(produtos));
+		aux[6]='\0';
+
+		if (!existeProdutoNaAVLFilial(getFaturacao(fat, 0), aux) &&
+			!existeProdutoNaAVLFilial(getFaturacao(fat, 1), aux) &&
+			!existeProdutoNaAVLFilial(getFaturacao(fat, 2), aux)) {
+			*produtosNC += 1;
+		}
+
+		produtosQuery6(fat, getEsq(produtos), produtosNC);
+		produtosQuery6(fat, getDir(produtos), produtosNC);
+	}
+}
+
+int existeClienteNaAVLFilial (AVL a, char* elem) {
+
+	int r;
+
+	if (a != NULL) {
+
+		r = strcmp(elem, getClienteFilial(getGestaoFilial(a)));
+
+		if (r==0) return 1;
+		else if (r > 0) return existeClienteNaAVLFilial(getDir(a), elem);
+		else return existeClienteNaAVLFilial(getEsq(a), elem);
+
+	}
+
+	return r;
+}
+
+void clientesQuery6 (FILIAL fil, AVL clientes, int *clientesSC) {
+
+	if (clientes != NULL) {
+
+		if (!existeClienteNaAVLFilial(getAVLfilial(fil, 1), getTag(clientes)) &&
+			!existeClienteNaAVLFilial(getAVLfilial(fil, 2), getTag(clientes)) &&
+			!existeClienteNaAVLFilial(getAVLfilial(fil, 3), getTag(clientes))) {
+			*clientesSC += 1;
+		}
+
+		clientesQuery6(fil, getEsq(clientes), clientesSC);
+		clientesQuery6(fil, getDir(clientes), clientesSC);
+	}
+
+}
+
+void query6 (FAT_FILIAL fat, FILIAL fil, AVL produtos, AVL clientes) {
+
+	int *clientesSemCompras = (int*) malloc(sizeof(int));
+	int *produtosNaoComprados = (int*) malloc(sizeof(int));
+
+	*clientesSemCompras = 0;
+	*produtosNaoComprados = 0;
+
+	clientesQuery6(fil, clientes, clientesSemCompras);
+
+	produtosQuery6(fat, produtos, produtosNaoComprados);
+
+	printf("Existem %d clientes que não realizaram compras.\n", 
+			*clientesSemCompras);
+	printf("Existem %d produtos que não foram comprados.\n", 
+			*produtosNaoComprados);
 }
 
 /*-----------------------------------------------------------------------*/
@@ -420,6 +544,64 @@ void query9 (AVL vendas, char* produto, int filial){
 	freeStack(clientesN);
 }
 
+/* QEWRUY 9 TESTING
+int matrizAzeros (float **f, int flag) {
+
+	int l, c;
+
+	switch (flag) {
+
+		case 1:
+			for (l = 0; l < 2; l++)
+				for (c = 0; c < 12; c++)
+					if (f[l][c]!=0) return 0;
+			break; 
+		case 2:
+			for (l = 0; l < 2; l++)
+				for (c = 0; c < 12; c++)
+					if (f[l][c]!=0) return 0;
+			break;
+	}
+
+	return 1;
+}
+
+void geraClientesFilial (AVL fil, char *codProd, LString comprasN, LString comprasP) {
+
+	if (fil != NULL) {
+
+			if (existeNaLista(codProd, getFatMes(getList(getGestaoFilial(fil)))) {
+
+				if (matrizAzeros(getFatMes(getGestaoFilial(fil))), 1) {
+
+					comprasN = insertLString(comprasN, getClienteFilial(fil), 'N');
+
+				} else if (matrizAzeros(getFatMes(getList(getGestaoFilial(fil)))), 2) {
+
+					comprasP = insertLString(comprasP, getClienteFilial(fil), 'P');
+				
+				} 
+
+			}
+
+			geraClientesFilial(getEsq(fil), codProd, comprasN, comprasP);
+			geraClientesFilial(getDir(fil), codProd, comprasN, comprasP);
+	}
+}
+
+void query9 (FILIAL fil, char *codProd, int filial) {
+
+	LString comprasN = NULL;
+	LString comprasP = NULL;
+
+	geraClientesFilial(getAVLfilial(fil, filial), codProd, comprasP, comprasN);
+
+	printLString(comprasN);
+	printLString(comprasP);
+
+}
+*/
+
 /*______________________________________________________________________*/
 
 LString recursive_query10 (AVL vendas, char* cliente, int mes, LString produtos) {
@@ -515,116 +697,3 @@ void query12 (AVL vendas, char* cliente){
 }
 
 /*______________________________________________________________________*/
-
-int procuraProdutoAVL (AVL vendas, char* prod) {
-
-	int r;
-
-	if (vendas != NULL) {
-
-		r = strcmp(prod, getCodProd(vendas));
-
-		if (!r) return 1;
-		else if (r > 0) return procuraProdutoAVL(getDir(vendas), prod);
-		else return procuraProdutoAVL(getEsq(vendas), prod);
-
-	}
-
-	return 0;
-}
-
-void recursive_query6 (int *sp, AVL vendas, AVL produtos) {
-
-	if (produtos != NULL) {
-
-		char *aux;
-		aux = strdup(getTag(produtos));
-		aux[6]='\0';
-
-		if (!procuraProdutoAVL(vendas, aux)) {
-			*sp+=1;
-		}
-
-		recursive_query6(sp, vendas, getEsq(produtos));
-		recursive_query6(sp, vendas, getDir(produtos));
-	}
-}
-
-AVL criaAVLvendasClientes(AVL v_cli, AVL vendas, int *sp) {
-
-	if (vendas!=NULL) {
-		v_cli = updateAVL(v_cli, NULL, NULL, NULL, getCodCliente(vendas), 1);
-		v_cli = criaAVLvendasClientes(v_cli, getEsq(vendas), sp);
-		v_cli = criaAVLvendasClientes(v_cli, getDir(vendas), sp);
-	}
-
-	return v_cli;
-}
-
-int procuraClienteAVL (AVL vendas_clientes, char* cliente) {
-
-	int r;
-
-	if (vendas_clientes != NULL) {
-
-		r = strcmp(cliente, getTag(vendas_clientes));
-
-		if (r==0) return 1;
-		else if (r > 0) procuraClienteAVL(getDir(vendas_clientes), cliente);
-		else procuraClienteAVL(getEsq(vendas_clientes), cliente);
-
-	}
-
-	return 0;
-}
-
-void recursive_query6_v2 (int *sp, AVL v_cli, AVL clientes) {
-
-	if (clientes != NULL) {
-
-		if (procuraClienteAVL(v_cli, getTag(clientes))) {
-			*sp+=1;
-		}
-
-		recursive_query6_v2 (sp, v_cli, getEsq(clientes));
-		recursive_query6_v2 (sp, v_cli, getDir(clientes));
-	}
-}
-
-void printAVL (AVL a) {
-	if (a!=NULL) {
-		printAVL(getEsq(a));
-		printf("%s\n", getTag(a));
-		printAVL(getDir(a));
-	}
-}
-
-void query6 (AVL vendas, AVL produtos, AVL clientes) {
-
-	clock_t start, end;
-	double cpu_time_used;
-	start = clock();
-
-	int *sp = (int*) malloc(sizeof(int));
-	*sp = 0;
-
-	recursive_query6(sp, vendas, produtos);
-	printf("Existem %d produtos que ninguém comprou.\n", *sp);
-	
-	AVL v_cli = NULL;
-	v_cli = criaAVLvendasClientes(v_cli, vendas, sp);
-
-	*sp = 0;
-	recursive_query6_v2(sp, v_cli, clientes);
-	printf("Existem %d clientes que não compraram.\n", *sp);	
-
-	end = clock();
-	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-
-	printf("\nCPU Time = %.4f seconds.\n\n", cpu_time_used );
-
-}
-
-
-
-

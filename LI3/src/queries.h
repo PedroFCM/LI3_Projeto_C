@@ -21,15 +21,14 @@
 #include "lstring.h"
 #include "hashtables.h"
 #include "Faturacao.h"
-
-void recursive_query6_v2 (int *sp, AVL v_cli, AVL clientes);
-int procuraProdutoAVL (AVL vendas, char* prod);
-void recursive_query6 (int *sp, AVL vendas, AVL produtos);
-AVL criaAVLvendasClientes(AVL v_cli, AVL vendas, int *sp);
-void query6 (AVL vendas, AVL produtos, AVL clientes);
-
+#include "Filial.h"
 /*______________________________________________________________________*/
 
+void query6 (FAT_FILIAL fat, FILIAL fil, AVL produtos, AVL clientes);
+void clientesQuery6 (FILIAL fil, AVL clientes, int filial, int *clientesSC);
+int existeClienteNaAVLFilial (AVL a, char* elem);
+void produtosQuery6 (FILIAL fil, AVL clientes, int filial, int *produtosNC);
+int existeProdutoNaAVLFilial (AVL a, char* elem);
 /** @brief Função que gere a query1.
  *
  *  @param set Struct que contém as informações de leitura.
@@ -93,8 +92,9 @@ void query3 (AVL vendas, int mes, char *produto, int opcao);
 int existFaturacao(AVL fat, char* produto);
 void recursive_query4(FAT_FILIAL fat, AVL produtos, AVL* produtoFilial1, AVL* produtoFilial2, AVL* produtoFilial3);
 void query4(FAT_FILIAL fat, AVL produtos);
-void query5(AVL vendas);
-
+void query5(FILIAL filial, AVL clientes);
+AVL recursive_query5(FILIAL filial, AVL clientes, AVL *compramEmTodas);
+int exist_elementFilial (AVL a, char *element);
 
 /** @brief Função que implementa a query7.
  *
@@ -119,17 +119,19 @@ void recursive_query7 (AVL vendas, char* cliente, int** nProd);
 void recursive_query8(AVL fat, int min, int max, float* faturacao, int* total_vendas);
 void query8(FAT_FILIAL fat, int min, int max);
 
+void query9 (AVL vendas, char* produto, int filial);
+
 /** @brief Função que implementa a query9.
  *
  *  @param produto produto de pesquisa.
  *  @param filial filial de procura.
  *  @param vendas AVL que armazena as vendas validas
  *  @return void.
+*//*
+void query9 (FILIAL fil, char *codProd, int filial);
+void geraClientesFilial (AVL fil, char *codProd, LString comprasN, LString comprasP);
+int matrizAzeros (float **f, int flag);
 */
-
-void query9 (AVL vendas, char* produto, int filial);
-
-
 /** @brief Função auxilial da query10.
  *         Utiliza uma lista como struct de apoio à procura e armazenamento de dados.
  *

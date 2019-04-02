@@ -133,8 +133,9 @@ void loadMenu () {
 	CAT_CLIENTES clients  = NULL;
 	CAT_VENDAS   sells    = NULL;
 	
-	FAT_FILIAL nova = NULL;
-	
+	FAT_FILIAL fat = NULL;
+	FILIAL fil = NULL;
+
 	/*---------------------------------------------------------------*/
 
 	displayMenuAndOptions(data_loaded);
@@ -203,7 +204,8 @@ void loadMenu () {
 								end = clock();
 							
 								/*Gera a faturação a partir das vendas*/
-								nova = initFaturacao(nova, products, sells);
+								fat = initFaturacao(fat, products, sells);
+								fil = initFilial(fil, clients, sells);
 
 								/*Escreve os elementos válidos da leitura*/
 								write_inorder_avl_on_file(VAL_CLIE_PATH, clients, set);
@@ -284,7 +286,7 @@ void loadMenu () {
 										while (1) {
 											if (scanf("%d", &opcao_mostragem)) {
 												if (opcao_mostragem == 0 || opcao_mostragem == 1) {
-													query3(nova, mes, codprod, opcao_mostragem);
+													query3(fat, mes, codprod, opcao_mostragem);
 													printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 													free(codprod);
 													break;
@@ -311,7 +313,7 @@ void loadMenu () {
 					if (!data_loaded)
 						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
-						query4(nova, products);
+						query4(fat, products);
 					}
 					break;
 
@@ -320,7 +322,7 @@ void loadMenu () {
 						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
 						printf("\n => A gerar lista...\n");
-						query5(sells);
+						query5(fil, clients);
 						printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 						break;
 					}
@@ -331,7 +333,8 @@ void loadMenu () {
 					if (!data_loaded)
 						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
-						query6(sells, products, clients);
+						query6(fat, fil, products, clients);
+						printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 					}
 					break;
 			case '7': 
@@ -367,7 +370,7 @@ void loadMenu () {
 								if ((mes_inf <= mes_sup || mes_sup <= mes_inf) &&
 									mes_inf >= 1 && mes_inf <= 12 &&
 									mes_sup >= 1 && mes_sup <= 12) {
-										query8(nova, mes_inf, mes_sup);
+										query8(fat, mes_inf, mes_sup);
 										break;
 								}
 						}
