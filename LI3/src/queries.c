@@ -328,7 +328,7 @@ void query8(FAT_FILIAL fat, int min, int max)
 }
 
 /*-----------------------------------------------------------------------*/
-
+/*
 void query9 (AVL vendas, char* produto, int filial){
 
 	Stack clientesP = NULL;
@@ -356,83 +356,109 @@ void query9 (AVL vendas, char* produto, int filial){
 	freeStack(clientesP);
 	freeStack(clientesN);
 }
-
+*/
 /*------------------------QUERY 9 TESTING------------------------*/
-/*
-int matrizAzeros (float **f) {
 
-	int l, c;
+int matrizAzeros (float **f, int flag) {
 
-	for (l = 0; l < 2; l++)
+	int c;
+
 		for (c = 0; c < 12; c++)
-			if (f[l][c]!=0) return 0;
+			if (f[flag][c]!=0) return 0;
 
 	return 1;
 }
 
-void geraClientesFilial (AVL fil, char *codProd, LString comprasN, LString comprasP) {
+LString geraClientesFilial (AVL fil, char *codProd, LString compras, char tipo) {
 
 	if (fil != NULL) 
 	{
-			if (existeNaLista(codProd, getFatMes(getList(getGestaoFilial(fil)))))
+			if (existeNaLista(codProd, getList(getGestaoFilial(fil))))
 			{
-				if (matrizAzeros(getFatMes(getGestaoFilial(fil))), 1) 
-				{
-					comprasN = insertLString(comprasN, getClienteFilial(fil), 'N');
 
-				} else if (matrizAzeros(getFatMes(getList(getGestaoFilial(fil)))), 2) {
-
-					comprasP = insertLString(comprasP, getClienteFilial(fil), 'P');
+				switch(tipo) {
 				
-				} 
+					case 'N': 
+						if (0==matrizAzeros(getFatMesElem(getList(getGestaoFilial(fil))), 0))
+						{				
+							compras = pushLString(compras, getClienteFilial(getGestaoFilial(fil)), 'N');
+						}
+						break;
+
+					case 'P': 
+						if (0==matrizAzeros(getFatMesElem(getList(getGestaoFilial(fil))), 1)) 
+						{
+							compras = pushLString(compras, getClienteFilial(getGestaoFilial(fil)), 'P');
+						} 
+				}
 
 			}
 
-			geraClientesFilial(getEsq(fil), codProd, comprasN, comprasP);
-			geraClientesFilial(getDir(fil), codProd, comprasN, comprasP);
+			compras = geraClientesFilial(getEsq(fil), codProd, compras, tipo);
+			compras = geraClientesFilial(getDir(fil), codProd, compras, tipo);
 	}
+
+	return compras;
 }
 
 void query9 (FILIAL fil, char *codProd, int filial) {
 
-	LString comprasN = NULL;
-	LString comprasP = NULL;
+	LString comprasN = NULL, comprasP = NULL;
 
-	geraClientesFilial(getAVLfilial(fil, filial), codProd, comprasP, comprasN);
+	comprasN = geraClientesFilial(getAVLfilial(fil, filial), codProd, comprasN, 'N');
+	comprasP = geraClientesFilial(getAVLfilial(fil, filial), codProd, comprasP, 'P');
 
-	printLString(comprasN);
-	printLString(comprasP);
+	printf("\n=> Clientes (Sem promoção):\n");
+
+	if (comprasP == NULL)
+		printf("Nenhum cliente encontrado do tipo P.\n");
+
+	printLString(comprasP, 3);
+
+	printf("\n=> Clientes (Com promoção):\n");
+
+	if (comprasN == NULL)
+		printf("Nenhum cliente encontrado do tipo N.\n");
+
+	printLString(comprasN, 3);
 
 }
-*/
-/*------------------------------------------------------------------------------------------------*/
-/*
-LString recursive_query10 (AVL vendas, char* cliente, int mes, LString produtos) {
 
-	if (vendas != NULL) {
 
-		if (strcmp(getCodCliente(vendas), cliente) == 0 && mes == getMes(vendas))
-			produtos = insertLString (produtos, getCodProd(vendas), 0, 0);
+/*-----------------------------------------------------------------------------------*/
 
-		produtos = recursive_query10(getEsq(vendas), cliente, mes, produtos);		
-		produtos = recursive_query10(getDir(vendas), cliente, mes, produtos);
+void recursive_query10(AVL filial, AVL* prodMaisComprad, char* cliente, int mes) 
+{
+	if(filial != NULL)
+	{
+		int equal = strcmp(getClienteFilial(getGestaoFilial(filial)), cliente);
+
+		if(!equal)
+			acumVendas(filial, prodMaisComprad, mes);
+
+		else
+		{
+			if(equal > 0)
+				recursive_query10(getEsq(filial), prodMaisComprad, cliente, mes);
+			else
+				recursive_query10(getDir(filial), prodMaisComprad, cliente, mes);
+		}
 
 	}
-
-	return produtos;
 }
 
-void query10 (AVL vendas, char* cliente, int mes){
+void query10(FILIAL filial, char* cliente, int mes)
+{
+	AVL* prodMaisComprad = malloc(sizeof(AVL));
+	*prodMaisComprad = NULL;
 
-	LString l = NULL;
+	recursive_query10(getAVLfilial(filial, 1), prodMaisComprad, cliente, mes-1);
+	recursive_query10(getAVLfilial(filial, 2), prodMaisComprad, cliente, mes-1);
+	recursive_query10(getAVLfilial(filial, 3), prodMaisComprad, cliente, mes-1);
 
-	l = recursive_query10(vendas, cliente, mes, l);
-
-	l = quickSortL(l, 0);
-
-	printLString(l, 0);
+	printDecresAvl(*prodMaisComprad);
 }
-*/
+
 /*-----------------------------------------------------------------------------------*/
 
 void recursive_query11(AVL vendas, HEAD_TABLE h) {
@@ -484,35 +510,3 @@ void query12 (FILIAL filial, char* cliente){
 }
 
 /*-----------------------------------------------------------------------------------*/
-
-void recursive_query10(AVL filial, AVL* prodMaisComprad, char* cliente, int mes) 
-{
-	if(filial != NULL)
-	{
-		int equal = strcmp(getClienteFilial(getGestaoFilial(filial)), cliente);
-
-		if(!equal)
-			acumVendas(filial, prodMaisComprad, mes);
-
-		else
-		{
-			if(equal > 0)
-				recursive_query10(getEsq(filial), prodMaisComprad, cliente, mes);
-			else
-				recursive_query10(getDir(filial), prodMaisComprad, cliente, mes);
-		}
-
-	}
-}
-
-void query10(FILIAL filial, char* cliente, int mes)
-{
-	AVL* prodMaisComprad = malloc(sizeof(AVL));
-	*prodMaisComprad = NULL;
-
-	recursive_query10(getAVLfilial(filial, 1), prodMaisComprad, cliente, mes-1);
-	recursive_query10(getAVLfilial(filial, 2), prodMaisComprad, cliente, mes-1);
-	recursive_query10(getAVLfilial(filial, 3), prodMaisComprad, cliente, mes-1);
-
-	printDecresAvl(*prodMaisComprad);
-}

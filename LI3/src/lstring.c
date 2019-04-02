@@ -33,6 +33,9 @@ struct node {
     int vendidos; 
     double preco;
     float total;
+    char *elem;
+    char tipo;
+
     struct node * next;
 
 };
@@ -59,6 +62,14 @@ void printLString (LString l, int flag) {
 		    	pt = &((*pt) -> next);
 		    	i++;
 		    }
+		    break;
+		case 3:
+	    	while ((*pt) != NULL) {
+		        printf(" %s,", (*pt)->elem);
+		    	pt = &((*pt) -> next);
+		    }
+		    break;
+
 	}
 
 }
@@ -101,6 +112,22 @@ LString insertLString2 (LString l, char* elem, double total) {
 	    new -> next = *pt;
 	    *pt = new;
 	} 
+
+	return l;
+}
+
+LString pushLString (LString l, char* elem, char tipo) {
+
+	LString new = malloc (sizeof(struct node));
+	LString *pt = &l;
+
+
+	while (*pt != NULL) pt = &((*pt) -> next);
+
+	new -> elem = strdup(elem);
+	new -> tipo = tipo;	
+	new -> next = *pt;
+	*pt = new;
 
 	return l;
 }

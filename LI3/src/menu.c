@@ -409,7 +409,7 @@ void loadMenu () {
 						}
 
 						if (filial >=1 && filial <=3)
-							query9(sells, codprod, filial);
+							query9(fil, codprod, filial);
 					}
 								printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 					break;

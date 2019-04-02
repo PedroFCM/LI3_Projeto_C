@@ -22,6 +22,8 @@ typedef struct node *LString;
 
 /*______________________________________________________________________*/
 
+LString pushLString (LString l, char* elem, char tipo);
+
 /** @brief Função que imprime uma lista de strings no ecra.
  *
  *  @param l LString argumento para imprimir.

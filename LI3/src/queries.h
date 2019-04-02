@@ -67,18 +67,14 @@ void query8(FAT_FILIAL fat, int min, int max);
 
 /*-----------------------------------------------------------------------*/
 
-void query9 (AVL vendas, char* produto, int filial);
-/*
-int matrizAzeros (float **f);
-void geraClientesFilial (AVL fil, char *codProd, LString comprasN, LString comprasP);
+/*void query9 (AVL vendas, char* produto, int filial);*/
+
+int matrizAzeros (float **f, int flag);
+LString geraClientesFilial (AVL fil, char *codProd, LString *compras, char tipo);
 void query9 (FILIAL fil, char *codProd, int filial);
-*/
+
 
 /*-----------------------------------------------------------------------*/
-/*
-LString recursive_query10 (AVL vendas, char* cliente, int mes, LString produtos);
-void query10 (AVL vendas, char* cliente, int mes);
-*/
 
 void query10(FILIAL filial, char* cliente, int mes);
 void recursive_query10(AVL filial, AVL* prodMaisComprad, char* cliente, int mes);

@@ -48,6 +48,7 @@ struct avl {
 };
 
 /*----------------------------------------------------------------------*/
+
 GESTAO_FILIAL getGestaoFilial(AVL filial){
 	return filial -> gestaoFilial;
 }
