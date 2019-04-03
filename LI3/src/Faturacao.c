@@ -14,42 +14,38 @@
 
 #define _GNU_SOURCE
 
-/*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
+/*-----------------------------------------------------------------------*/
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+/*-----------------------------------------------------------------------*/
 
 #include "Faturacao.h"
 #include "catVendas.h"
 
-/*______________________________________________________________________*/
+/*-----------------------------------------------------------------------*/
 
-/*@brief para armazenar a lista de precos/quant*/
-struct listagem {
-
-	FAT_PRECO precario;
-	FAT_QUANT quantidade;
-
-};
-
-/*@brief ARRAY de AVL's com a Faturacao por filial*/
+/**
+* Struct que representa um array de AVL' faturacao.
+*/
 struct faturacao {
 	AVL faturacao;
 };
 
-/*@brief Campo FATURA de uma AVL*/
+/**
+* Struct que representa a faturacao de um produto num AVL faturacao.
+*/
 struct fatura {
-
-	char* codProd;
-	FAT_MES fatMes;
-	VENDAS numVendas;
-
+	/*@{*/
+	char* codProd; /**< Código do produto vendido. */
+	FAT_MES fatMes; /**< faturacao do produto por mes. */
+	VENDAS numVendas; /**< numero de vendas do produto por mes. */
+	/*@}*/
 };
 
-/*_______________________Funções PRINCIPAIS_________________________________*/
+/*-----------------------------------------------------------------------*/
 
 void vendasEntreMeses(AVL fat, int min, int max, float* faturacao, int* total_vendas)
 {
@@ -356,69 +352,3 @@ char* getProdFatura (FATURA f) {
 AVL getFaturacao(FAT_FILIAL f, int i) {
 	return f[i].faturacao;
 }
-
-int getQuantPos (FAT f, int l, int c) {
-	return f->quantidade[l][c];
-}
-
-double getPrecoPos(FAT f, int l, int c) {
-	return f->precario[l][c];
-}
-
-FAT initFatProduto (FAT new) {
-
-	int l, c;
-
-	new = malloc(sizeof(struct listagem));
-
-	FAT_PRECO prec = (float**) malloc(sizeof(float*) * 2);
-	FAT_QUANT n_vendas  = (int**)   malloc(sizeof(int*)   * 2);
-		
-	for (l = 0; l < 2; l++) {
-		n_vendas[l]  = malloc(sizeof(int)*3);
-		prec[l] = malloc(sizeof(float)*3);
-		for (c = 0; c < 3; c++) {
-			n_vendas[l][c]  = 0;
-			prec[l][c] = 0.0;
-		}
-	}
-	new -> precario = prec;
-	new -> quantidade = n_vendas;
-
-	return new;
-}
-
-void geraFaturacaoProduto (AVL vendas, char* prod, int mes, FAT f) {
-
-	if (vendas != NULL) {
-			
-		if (!strcmp(getCodProd(vendas), prod) && mes == getMes(vendas)) {
-			
-			switch (getTipo(vendas)) {
-
-				case 'P': 
-					f -> quantidade[0][getFilial(vendas)-1]++;
-					f -> precario[0][getFilial(vendas)-1]+=getQuantidade(vendas)*
-														   getPreco(vendas);
-				
-				  break;
-
-				case 'N': 
-					f -> quantidade[1][getFilial(vendas)-1]++;
-					f -> precario[1][getFilial(vendas)-1]+=getQuantidade(vendas)*
-															getPreco(vendas);
-				
-				 	break;
-				
-				default: break;
-			}
-		}
-
-		geraFaturacaoProduto(getEsq(vendas), prod, mes, f);
-		geraFaturacaoProduto(getDir(vendas), prod, mes, f);
-	}
-}
-
-/*-----------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------*/

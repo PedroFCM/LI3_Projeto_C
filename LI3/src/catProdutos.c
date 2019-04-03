@@ -11,16 +11,16 @@
 *	
 */
 
-/*MACRO para suprimir warnings de strdup do <string.h>*/
+/** Macro para suprimir warnings de strdup do <string.h> */
 #define _GNU_SOURCE
 
-/*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
+/*----------------------------------------------------------------------*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+/*----------------------------------------------------------------------*/
 
 #include "catProdutos.h"
 #include "global.h"
@@ -29,17 +29,23 @@
 
 /*----------------------------------------------------------------------*/
 
-/*@brief Struct estilo stack que implementa uma lista de produtos*/
+/**
+* Struct para representar uma lista de elementos (Produtos no caso implementado).
+* Usada para guardar as paginas a apresentar ao utilizador.
+* Pode ser entendida com o catálogo de produtos com uma dada letra.
+*/
 struct listaProdutos {
-	int size; 
-	char **elements;  
-	int ocurr;
-	int sp;
+	/*@{*/
+	int size; /**< Tamanho da lista de elementos. */
+	char **elements; /**< Lista de strings. */
+	int ocurr; /**< Nº de ocurrencias de um elemento. */
+	int sp; /**< Index do ultimo elemento adicionado. */
+	/*@}*/
 };
 
 /*----------------------------------------------------------------------*/
 
-int verify_product (char *product) {
+int verify_product (PRODUTO product) {
 
 	int r = 0;
 	int num_prod = atoi(product+2);
@@ -84,6 +90,8 @@ CAT_PRODUTOS readNvalidate_products (char* filename, CAT_PRODUTOS prod, GLOBAL s
 
 	return prod;
 }
+
+/*----------------------------------------------------------------------*/
 
 LISTA_PROD geraListaLetra (AVL produtos, LISTA_PROD ls, char letra) {
 

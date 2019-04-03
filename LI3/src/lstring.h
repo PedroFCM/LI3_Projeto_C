@@ -10,17 +10,24 @@
 *	
 */
 
-/*______________________________________________________________________*/
-
+/*----------------------------------------------------------------------*/
 #ifndef _LINKEDLIST_
 #define _LINKEDLIST_
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
-/*TYPE para simplificar a escrita*/
+/**TYPE para uma linked list*/
 typedef struct node *LString;
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
+
+/** @brief Função que insere um produto e o tipo de venda.
+ *
+ *  @param l LString.
+ *  @param elem string.
+ *  @param tipo modo de venda [N ou P].
+ *  @return LString após inserção.
+ */
 
 LString pushLString (LString l, char* elem, char tipo);
 
@@ -48,11 +55,21 @@ int existLString (char* elem, LString l);
  *
  *  @param l LString.
  *  @param elem string.
+ *  @param total preco double.
+ *  @return LString após inserção.
+ */
+
+LString insertLString2 (LString l, char* elem, double total);
+
+/** @brief Função que insere os parametros num LString.
+ *
+ *  @param l LString.
+ *  @param elem string.
  *  @param vendidos int.
  *  @param preco double.
  *  @return LString após inserção.
  */
-LString insertLString2 (LString l, char* elem, double total);
+
 LString insertLString (LString l, char* elem, int vendidos, double preco);
 
 

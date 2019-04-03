@@ -2,7 +2,7 @@
 /** @file hashtables.c
 *	@brief Ficheiro que implementa uma hashtable para gestão de faturação.
 *
-*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor João Pedro Rodrigues Azevedo 
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 
 *
@@ -10,41 +10,45 @@
 *	
 */
 
-/*MACRO para suprimir warnings de strdup do <string.h>*/
+/**MACRO para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
 
-/*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
+/*----------------------------------------------------------------------*/
 
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+/*----------------------------------------------------------------------*/
 
 #include "hashtables.h"
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
-/*CÉLULA DE UMA HASHTABLE*/
+/**
+* Celula de uma HashTable.
+*/
 struct celula {
-
-	char *entry;
-	int total_quant[3];
-	int total_client[3];
-	int final;
-	int status;
-
+	/*@{*/
+	char *entry; /**< elemento string. */
+	int total_quant[3]; /**< array de quantidade vendida por filial. */
+	int total_client[3]; /**< array de registos venda. */
+	int final; /**< quantidade total. */
+	int status; /**< macro para indicar se esta ocupada/free/deleted. */
+	/*@}*/
 };
 
-/*CABEÇALHO DE UMA HASHTABLE*/
+/**
+* Struct para representar o cabeçalho de uma hashtable.
+*/
 struct head_table {
-	
-	int hsize;
-	HashTable content;
-
+	/*@{*/	
+	int hsize; /**< size da hashtable. */
+	HashTable content; /**< array de celulas == hashtable. */
+	/*@}*/
 };
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 int getQuant (HEAD_TABLE h, int pos, int col) {
 	return h->content[pos].total_quant[col];

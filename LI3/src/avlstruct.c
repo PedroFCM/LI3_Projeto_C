@@ -1,8 +1,10 @@
 
 /** @file avlstruct.c
 *	@brief Ficheiro que implementa uma AVL.
+*          Usa assim os campos necessários ao trabalho,
+*          guarda faturção, registo de venda e info da Filial.
 *
-*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor João Pedro Rodrigues Azevedo
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 
 *
@@ -10,16 +12,16 @@
 *	
 */
 
-/*MACRO para suprimir warnings de strdup do <string.h>*/
+/**MACRO para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
 
-/*_________________BIBLIOTECAS STD IMPORTADAS___________________________*/
+/*----------------------------------------------------------------------*/
 
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
-/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+/*----------------------------------------------------------------------*/
 
 #include "avlstruct.h"
 #include "global.h"
@@ -29,22 +31,21 @@
 
 /*----------------------------------------------------------------------*/
 
-/*@brief Struct que armazena uma AVL com os 
-campos necessários ao trabalho*/
+/**
+* Struct que representa uma AVL.
+*/
 struct avl {
 
-	int bal; /*Indicador de balanceamento*/
-	
-	char* tag; /*String pela qual a AVL é ordenada*/
+	/*@{*/
+	int bal; /**< Indicador de balancemaneto de uma AVL. */	
+	char* tag; /**< key da AVL para efetuar a ordenação (**na maior parte dos casos). */
 		
-	REGISTO registo; /*Registo de uma venda*/
+	REGISTO registo; /**< Struct registo do ficheiro catVendas.c. */
+	FATURA fatura; /**< Struct faturacao do ficheiro Faturacao.c. */
+	GESTAO_FILIAL gestaoFilial; /**< Struct Gestao de Filial do ficheiro Filial.c. */
 
-	FATURA fatura; /*Fatura de uma venda*/
-	
-	GESTAO_FILIAL gestaoFilial;
-
-	struct avl *left, *right; /*AVL esquerda e direita*/
-
+	struct avl *left, *right; /**< Apontadores para a esquerda e direita da AVL. */
+	/*@}*/
 };
 
 /*----------------------------------------------------------------------*/

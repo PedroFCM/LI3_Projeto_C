@@ -30,10 +30,10 @@
 
 /*______________________________________________________________________*/
 
-/*TYPE para um cabeçalho de uma hashtable*/
+/**TYPE para um cabeçalho de uma hashtable*/
 typedef struct head_table* HEAD_TABLE;
 
-/*TYPE para definir uma posição/célula de uma hashtable*/
+/**TYPE para definir uma posição/célula de uma hashtable*/
 typedef struct celula* HashTable;
 
 /*______________________________________________________________________*/

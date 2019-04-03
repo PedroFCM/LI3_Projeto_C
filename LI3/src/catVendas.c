@@ -1,6 +1,7 @@
 
 /** @file catVendas.c
-*	@brief Ficheiro que efetua a leitura das vendas.
+*	@brief Ficheiro que efetua a leitura e validação das vendas.
+*		   Contém também getters e setters essenciais ao programa.
 *
 *	@autor João Pedro Rodrigues Azevedo
 *	@autor Paulo Jorge da Silva Araújo 
@@ -10,17 +11,19 @@
 *	
 */
 
-/*MACRO para suprimir warnings de strdup do <string.h>*/
+/*----------------------------------------------------------------------*/
+
+/**Macro usada para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
 
-/*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
+/*----------------------------------------------------------------------*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
-/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+/*----------------------------------------------------------------------*/
 
 #include "global.h"
 #include "avlstruct.h"
@@ -28,22 +31,25 @@
 
 /*----------------------------------------------------------------------*/
 
-/*@brief Struct que armazena o registo de uma venda*/
+/**
+* Struct para representar o registo de uma venda válida.
+*/
 struct registo {
-
-	char* codProd;
-	double preco;
-	int quantidade;
-	char tipo;
-	char* codCli;
-	int mes;
-	int filial;
-
+	/*@{*/
+	PRODUTO codProd; /**< Código do produto vendido. */
+	double preco; /**< Preco do produto. */
+	int quantidade; /**< Quantidade comprada. */
+	char tipo; /**< Tipo da venda [N ou P]. */
+	CLIENTE codCli; /**< Código do cliente que comprou. */
+	int mes; /**< Mês da venda. */
+	int filial; /**< Filial na qual foi feita a venda */
+	/*@}*/
 };
 
 /*----------------------------------------------------------------------*/
 
-int verify_sell (CAT_VENDAS vendas, CAT_PRODUTOS prod, CAT_CLIENTES client, GLOBAL set, char *sell, REGISTO reg) {
+int verify_sell (CAT_VENDAS vendas, CAT_PRODUTOS prod, CAT_CLIENTES client, 
+				 GLOBAL set, char *sell, REGISTO reg) {
 	
 	int r = 1;
 
@@ -96,8 +102,8 @@ int verify_sell (CAT_VENDAS vendas, CAT_PRODUTOS prod, CAT_CLIENTES client, GLOB
 	return r;
 }
 
-CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells, 
-								GLOBAL set, CAT_PRODUTOS prod, CAT_CLIENTES cli) {
+CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells, GLOBAL set, 
+								CAT_PRODUTOS prod, CAT_CLIENTES cli) {
 
 	FILE *fp = fopen(filename, "r");
 	
@@ -191,7 +197,7 @@ char getTipo (AVL a) {
 	return (getRegisto(a)->tipo);
 }
 
-char* getCodCliente (AVL a) {
+CLIENTE getCodCliente (AVL a) {
 	return (getRegisto(a)->codCli);
 }
 
@@ -202,5 +208,3 @@ int getMes (AVL a) {
 double getPreco (AVL a) {
 	return (getRegisto(a)->preco);
 }
-
-/*----------------------------------------------------------------------*/

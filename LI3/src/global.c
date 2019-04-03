@@ -2,7 +2,7 @@
 /** @file global.c
 *	@brief Ficheiro que contém funções auxiliares ao projeto.
 *
-*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor João Pedro Rodrigues Azevedo
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 
 *
@@ -10,17 +10,17 @@
 *	
 */
 
-/*MACRO para suprimir warnings de strdup do <string.h>*/
+/**MACRO para suprimir warnings de strdup do <string.h>*/
 #define _GNU_SOURCE
 
-/*_________________BIBLIOTECAS STD IMPORTADAS________________________*/
+/*---------------------------------------------------------------------*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
-/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+/*---------------------------------------------------------------------*/
 
 #include "global.h"
 #include "avlstruct.h"
@@ -186,5 +186,3 @@ int printDecresAvl(AVL a)
 
 	return r;
 }
-
-/*---------------------------------------------------------------------*/

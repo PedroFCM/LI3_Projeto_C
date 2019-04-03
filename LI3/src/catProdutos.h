@@ -2,7 +2,7 @@
 /** @file catProdutos.h
 *	@brief Header file de catProdutos.c
 *
-*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor João Pedro Rodrigues Azevedo
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 
 *	
@@ -13,14 +13,18 @@
 #ifndef _PRODUTOSRW_
 #define _PRODUTOSRW_
 
-/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+/*----------------------------------------------------------------------*/
 
 #include "global.h"
 #include "avlstruct.h"
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
-/*@brief Typedef para uma lista de produtos (estilo stack).*/
+/**
+* Struct para representar uma lista de elementos (Produtos no caso implementado).
+* Usada para guardar as paginas a apresentar ao utilizador.
+* Pode ser entendida com o catálogo de produtos com uma dada letra.
+*/
 typedef struct listaProdutos* LISTA_PROD;
 
 /*----------------------------------------------------------------------*/

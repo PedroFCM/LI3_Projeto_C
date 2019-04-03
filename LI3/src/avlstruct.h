@@ -26,37 +26,36 @@
 
 /*----------------------------------------------------------------------*/
 
-/*TYPE para definir uma AVL básica*/
+/** Define uma AVL básica.*/
 typedef struct avl* AVL;
 
-/*TYPE para definir uma AVL básica, nome diferente*/
+/** Define um catálogo de clientes usando uma AVL.*/
 typedef struct avl* CAT_CLIENTES;
 
-/*TYPE para definir uma AVL básica, nome diferente*/
+/** Define um catálogo de produtos usando uma AVL.*/
 typedef struct avl* CAT_PRODUTOS;
 
-/*TYPE para definir uma AVL básica, nome diferente*/
+/** Define um catálogo de vendas usando uma AVL.*/
 typedef struct avl* CAT_VENDAS;
 
-/*TYPE para definir um registo numa AVL, guarda a venda separada*/
+/** Define o campo catálogo de clientes de uma AVL.*/
 typedef struct registo* REGISTO;
 
-/*TYPE para definir uma Fatura numa AVL*/
+/** Define o campo fatura de uma AVL.*/
 typedef struct fatura *FATURA;
 
+/** Define o campo gestao de filial de uma AVL.*/
 typedef struct gestaoFilial* GESTAO_FILIAL;
 
 /*----------------------------------------------------------------------*/
-GESTAO_FILIAL getGestaoFilial(AVL filial);
 
-/** @brief Função que retorna a primeira letra da tag de uma venda
+/** @brief Função que retorna o campo GESTAO_FILIAL de uma AVL.
  *
  *  @param a AVL.
- *  @return Primeira letra do campo tag.
+ *  @return A GESTAO_FILIAL.
 */
 
-char getFirstLetterTag (AVL a);
-
+GESTAO_FILIAL getGestaoFilial(AVL filial);
 
 /** @brief Função que o campo fatura de uma AVL
  *
@@ -74,6 +73,14 @@ FATURA getFatura (AVL a);
 */
 
 REGISTO getRegisto (AVL a);
+
+/** @brief Função que retorna a primeira letra da tag de uma venda
+ *
+ *  @param a AVL.
+ *  @return Primeira letra do campo tag.
+*/
+
+char getFirstLetterTag (AVL a);
 
 
 /** @brief Função que retorna a string venda

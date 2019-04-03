@@ -1,6 +1,7 @@
 
 /** @file catVendas.h
-*	@brief Header file de catVendas.c
+*	@brief Ficheiro header de catVendas.c.
+*		   Contém as definições básicas das funções.
 *
 *	@autor João Pedro Rodrigues Azevedo
 *	@autor Paulo Jorge da Silva Araújo 
@@ -15,19 +16,19 @@
 #ifndef _SELLS_
 #define _SELLS_
 
-/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+/*----------------------------------------------------------------------*/
 
 #include "global.h"
 #include "avlstruct.h"
 
 /*----------------------------------------------------------------------*/
 
-/*@brief struct que implementa um registo*/
+/**
+* Struct para representar o registo de uma venda válida.
+*/
 typedef struct registo* REGISTO;
 
 /*----------------------------------------------------------------------*/
-
-int getQuantidadeReg(REGISTO reg);
 
 /** @brief Função que verifica se uma venda é válida.
  *
@@ -42,6 +43,7 @@ int getQuantidadeReg(REGISTO reg);
 
 int verify_sell (CAT_VENDAS vendas, AVL prod, AVL client, GLOBAL set, char *sell, REGISTO reg);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que verifica se uma venda é válida.
  *
@@ -65,6 +67,7 @@ CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells, GLOBAL set, AV
 
 REGISTO initRegisto (REGISTO novo);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que insere uma filial num registo de venda.
  *
@@ -75,6 +78,7 @@ REGISTO initRegisto (REGISTO novo);
 
 void setFilial (REGISTO reg, int f);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que insere o mes de compra num registo.
  *
@@ -85,6 +89,7 @@ void setFilial (REGISTO reg, int f);
 
 void setMes (REGISTO reg, int m);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que insere um cliente num registo.
  *
@@ -95,6 +100,7 @@ void setMes (REGISTO reg, int m);
 
 void setCodCliente (REGISTO reg, char* cliente);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que insere um tipo de compra a um registo.
  *
@@ -105,6 +111,7 @@ void setCodCliente (REGISTO reg, char* cliente);
 
 void setTipo (REGISTO reg, char tp);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que insere uma quantidade comprada num registo.
  *
@@ -115,6 +122,7 @@ void setTipo (REGISTO reg, char tp);
 
 void setQuantidade (REGISTO reg, int qt);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que insere o preco de um produto a um registo.
  *
@@ -125,6 +133,7 @@ void setQuantidade (REGISTO reg, int qt);
 
 void setPreco (REGISTO reg, double price);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que insere um produto a um registo.
  *
@@ -135,24 +144,27 @@ void setPreco (REGISTO reg, double price);
 
 void setCodProd (REGISTO reg, char *prod);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que retorna o tipo de uma venda.
  *
  *  @param a AVL.
- *  @return o cliente de um registo venda.
+ *  @return o tipo de um registo venda.
 */
 
 char getTipo (AVL a);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que retorna o código de cliente.
  *
  *  @param a AVL.
- *  @return o cliente de um registo venda.
+ *  @return Código do cliente.
 */
 
-char* getCodCliente (AVL a);
+CLIENTE getCodCliente (AVL a);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que retorna o mes de uma venda.
  *
@@ -162,15 +174,17 @@ char* getCodCliente (AVL a);
 
 int getMes (AVL a);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que retorna o preco de um produto numa venda.
  *
  *  @param a AVL.
- *  @return o preco de um produto de uma venda.
+ *  @return o preco do produto de uma venda.
 */
 
 double getPreco (AVL a);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que retorna o produto comprado numa venda.
  *
@@ -180,6 +194,7 @@ double getPreco (AVL a);
 
 char* getCodProd (AVL a);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que retorna a filial da venda.
  *
@@ -189,6 +204,7 @@ char* getCodProd (AVL a);
 
 int getFilial (AVL a);
 
+/*----------------------------------------------------------------------*/
 
 /** @brief Função retorna a quantidade vendida numa venda.
  *
@@ -198,5 +214,16 @@ int getFilial (AVL a);
 
 int getQuantidade (AVL a);
 
+/*----------------------------------------------------------------------*/
+
+/** @brief Função retorna a quantidade vendida numa venda, dado um registo.
+ *
+ *  @param o Registo.
+ *  @return quantidade registada.
+*/
+
+int getQuantidadeReg(REGISTO reg);
+
+/*----------------------------------------------------------------------*/
 
 #endif

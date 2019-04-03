@@ -2,7 +2,7 @@
 /** @file global.h
 *	@brief Header file de global.c
 *
-*	@autor João Pedro Rodrigues Azevedo (A85227) 
+*	@autor João Pedro Rodrigues Azevedo
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 
 *
@@ -13,24 +13,24 @@
 #ifndef _LER_
 #define _LER_
 
-/*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
+/*-----------------------------------------------------------------*/
 
 #include "avlstruct.h"
 
-/*MACROS que estabelecem os paths para os ficheiros de leitura*/
+/*-----------------------------------------------------------------*/
 
-/*PATH source para os produtos*/
+/**PATH source para os produtos*/
 #define PROD_PATH "datafiles/Produtos.txt"
-/*PATH source para os clientes*/
+/**PATH source para os clientes*/
 #define CLIE_PATH "datafiles/Clientes.txt"
-/*PATH source para os vendas 1M*/
+/**PATH source para os vendas 1M*/
 #define SELL_PATH_1M "datafiles/Vendas_1M.txt"
-/*PATH source para os vendas 3M*/
+/**PATH source para os vendas 3M*/
 #define SELL_PATH_3M "datafiles/Vendas_3M.txt"
-/*PATH source para os vendas 5M*/
+/**PATH source para os vendas 5M*/
 #define SELL_PATH_5M "datafiles/Vendas_5M.txt"
 
-/*MACROS que estabelecem os paths para guardar os ficheiros*/
+/*-----------------------------------------------------------------*/
 
 /*PATH source para os vendas (VALIDADAS)*/
 #define VAL_PROD_PATH "validData/Produtos(validados).txt"
@@ -39,23 +39,34 @@
 /*PATH source para os produtos (VALIDADOS)*/
 #define VAL_SELL_PATH "validData/Vendas(validadas).txt"
 
-/*MACRO para indicar o nº de campos que uma venda tem*/
+/*-----------------------------------------------------------------*/
+
+/**MACRO para indicar o nº de campos que uma venda tem*/
 #define CAMPOS_SELLS 7
 
+/**MACRO para indicar o nº total de filiais*/
 #define NUM_FILIAIS 3
+
+/**MACRO para indicar o nº de meses total*/
 #define NUM_MESES 12
+
+/**MACRO para definir um char* com um PRODUTO */
+#define PRODUTO char*
+
+/**MACRO definir um char* como um CLIENTE*/
+#define CLIENTE char*
 
 /*-----------------------------------------------------------------*/
 
-/*@brief Sruct para armazenar estatisticas de leitura de ficheiros*/
+/**
+* Struct para representar o registo de uma venda válida.
+*/
 typedef struct settings {
-
-	int num_prods, num_clients, num_sells;
-	
-	int val_prods, val_clients, val_sells;
-
-	int max_line_prods, max_line_clients, max_line_sells;
-
+	/*@{*/
+	int num_prods, num_clients, num_sells; /**< Numero de prods, clients e vendas lidas. */	
+	int val_prods, val_clients, val_sells; /**< Numero de prods, clients e vendas lidas (VALIDADAS). */
+	int max_line_prods, max_line_clients, max_line_sells; /**< Tamanho de linha maximo do ficheiro. */
+	/*@}*/
 } *GLOBAL;
 
 /*-----------------------------------------------------------------*/
@@ -164,6 +175,13 @@ void write_inorder_avl_on_file (char *filepath, AVL a, GLOBAL set);
  */
 
 int inorder_avl_just_tag (AVL a);
+
+
+/** @brief Função que imprime uma AVL posorder.  
+
+ *  @param  AVL AVL input.
+ *  @return 1 caso corra bem.
+ */
 
 int printDecresAvl(AVL a);
 
