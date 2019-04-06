@@ -1,6 +1,6 @@
 
 /** @file Faturacao.c
-*	@brief Ficheiro que implementa a faturacao.
+*	@brief Ficheiro que implementa a faturacao. 
 *
 *	@autor João Pedro Rodrigues Azevedo (A85227) 
 *	@autor Paulo Jorge da Silva Araújo 

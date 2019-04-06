@@ -1,5 +1,5 @@
 
-/** @file lstring.c
+/** @file lstring.c 
 *	@brief Ficheiro que implementa um lista de strings em C.
 *
 *	@autor João Pedro Rodrigues Azevedo

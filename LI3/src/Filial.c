@@ -1,6 +1,6 @@
 
 /** @file Filial.c
-*	@brief Ficheiro que gere as operações numa filial.
+*	@brief Ficheiro que gere as operações numa filial. 
 *
 *	@autor João Pedro Rodrigues Azevedo (A85227) 
 *	@autor Paulo Jorge da Silva Araújo 

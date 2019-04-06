@@ -1,5 +1,5 @@
 
-/** @file catProdutos.c
+/** @file catProdutos.c 
 *	@brief Ficheiro que cria o catálogo de Produtos validados.
 *          Efetua também operações básicas sobre os mesmos.
 *

@@ -1,7 +1,7 @@
 
 /** @file hashtables.c
 *	@brief Ficheiro que implementa uma hashtable para implementar procuras eficientes.
-*
+* 
 *	@autor João Pedro Rodrigues Azevedo 
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 

@@ -1,7 +1,7 @@
 /**
 *	@mainpage LI3_PROJETO GRUPO 58
 *	
-*	@autor João Pedro Rodrigues Azevedo
+*	@autor João Pedro Rodrigues Azevedo 
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 
 *

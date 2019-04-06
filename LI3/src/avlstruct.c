@@ -1,5 +1,5 @@
 
-/** @file avlstruct.c
+/** @file avlstruct.c 
 *	@brief Ficheiro que implementa uma AVL.
 *          Usa assim os campos necessários ao trabalho,
 *          guarda faturção, registo de venda e info da Filial.

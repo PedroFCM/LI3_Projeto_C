@@ -1,5 +1,5 @@
 
-/** @file menu.c
+/** @file menu.c 
 *	@brief Ficheiro que implementa o menu do SGV.
 *
 *	@autor João Pedro Rodrigues Azevedo

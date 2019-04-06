@@ -1,4 +1,4 @@
-
+ 
 /** @file queries.c
 *	@brief Ficheiro que implenta as 12 querys em causa.
 *

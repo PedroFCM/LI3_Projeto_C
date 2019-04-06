@@ -1,6 +1,6 @@
 
 /** @file catVendas.c
-*	@brief Ficheiro que efetua a leitura e validação das vendas.
+*	@brief Ficheiro que efetua a leitura e validação das vendas. 
 *		   Contém também getters e setters essenciais ao programa.
 *
 *	@autor João Pedro Rodrigues Azevedo

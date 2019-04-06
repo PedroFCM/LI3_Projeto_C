@@ -1,7 +1,7 @@
 
 /** @file global.c
 *	@brief Ficheiro que contém funções auxiliares ao projeto.
-*
+* 
 *	@autor João Pedro Rodrigues Azevedo
 *	@autor Paulo Jorge da Silva Araújo 
 *	@autor Pedro Filipe Costa Machado 
