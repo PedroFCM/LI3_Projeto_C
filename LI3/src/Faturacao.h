@@ -36,6 +36,26 @@ typedef int** VENDAS;
 
 /*-----------------------------------------------------------------------*/
 
+/** @brief Função que faz free a uma fatura.
+ *
+ *  @param f Fatura.
+ *  @return void.
+ */
+
+void freeFatura (FATURA f);
+
+/*-----------------------------------------------------------------------*/
+
+/** @brief Função que faz free a uma faturacao (array de avls).
+ *
+ *  @param fat faturacao.
+ *  @return void.
+ */
+
+void freeFaturacao (FAT_FILIAL fat);
+
+/*-----------------------------------------------------------------------*/
+
 /** @brief Função mais generica que verifica se um produto existe numa Faturacao.
  *
  *  @param fat AVL faturacao.
@@ -231,34 +251,6 @@ char* getProdFatura (FATURA f);
 /*-----------------------------------------------------------------------*/
 
 
-/** @brief Função que insere novos campos numa nova fatura.
- *
- *  @param f fatura.
- *  @param preco double preco para adicionar.
- *  @param quant quantidade vendida.
- *  @param modo tipo da venda.
- *  @param mes mes de venda.
- *  @return void.
- */
-
-void insereNaFatura (FATURA f, double preco, int quant, char modo, int mes);
-
-/*-----------------------------------------------------------------------*/
-
-
-/** @brief Função que insere uma produto num AVL de faturacao de uma filial.
- *
- *  @param filial a filial pretendida.
- *  @param fatFilial AVL nova para inserção.
- *  @param vendas AVL catalogo de vendas validas.
- *  @return void.
- */
-
-void insereProdFat (int filial, AVL *fatFilial, AVL vendas);
-
-/*-----------------------------------------------------------------------*/
-
-
 /** @brief Função que inicializa a faturacao de um produto.
  *
  *  @param nova Array de faturacao (AVL's).
@@ -268,20 +260,6 @@ void insereProdFat (int filial, AVL *fatFilial, AVL vendas);
  */
 
 FAT_FILIAL initFaturacao (FAT_FILIAL nova, AVL prod, AVL vendas);
-
-/*-----------------------------------------------------------------------*/
-
-/** @brief Função que insere uma nova fatura ou atualiza uma existente.
- *
- *  @param fatFilial AVL nova para inserção.
- *  @param vendas AVL catalogo de vendas validas.
- *  @param vendas AVL catalogo de vendas validas.
- *  @param p novo produto
- *  @param r variavel para indicar se o produto ja existe ou nao
- *  @return void.
- */
-
-void updateFatura (AVL fatFilial, AVL vendas, char *p, int *r);
 
 /*-----------------------------------------------------------------------*/
 

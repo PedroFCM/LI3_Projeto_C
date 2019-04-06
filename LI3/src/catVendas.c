@@ -48,6 +48,73 @@ struct registo {
 
 /*----------------------------------------------------------------------*/
 
+/** @brief Função que insere uma filial num registo de venda.
+ *
+ *  @param reg Registo de venda.
+ *  @param f filial para inserção
+ *  @return void
+*/
+
+static void setFilial (REGISTO reg, int f);
+
+/*----------------------------------------------------------------------*/
+
+/** @brief Função que insere o mes de compra num registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param mes mes para inserção
+ *  @return void
+*/
+
+static void setMes (REGISTO reg, int m);
+
+/*----------------------------------------------------------------------*/
+
+/** @brief Função que insere um cliente num registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param cliente cliente para inserção
+ *  @return void
+*/
+
+static void setCodCliente (REGISTO reg, char* cliente);
+
+/*----------------------------------------------------------------------*/
+
+/** @brief Função que insere um tipo de compra a um registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param tp tipo de compra para inserção
+ *  @return void
+*/
+
+static void setTipo (REGISTO reg, char tp);
+
+/*----------------------------------------------------------------------*/
+
+/** @brief Função que insere o preco de um produto a um registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param price preco para inserção
+ *  @return void
+*/
+
+static void setPreco (REGISTO reg, double price);
+
+/*----------------------------------------------------------------------*/
+
+/** @brief Função que insere um produto a um registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param prod produto para inserção
+ *  @return void
+*/
+
+static void setCodProd (REGISTO reg, char *prod);
+
+
+/*----------------------------------------------------------------------*/
+
 int verify_sell (CAT_VENDAS vendas, CAT_PRODUTOS prod, CAT_CLIENTES client, 
 				 GLOBAL set, char *sell, REGISTO reg) {
 	
@@ -86,23 +153,14 @@ int verify_sell (CAT_VENDAS vendas, CAT_PRODUTOS prod, CAT_CLIENTES client,
 
 		/*CRIA NOVO REGISTO CASO A VENDA SEJA VÁLIDA*/
 		if (r == 1) { 
-
-			reg -> codProd = strdup(campos[1]);
-			reg -> preco = price;
-			reg -> quantidade = sold;
-			reg -> tipo = campos[4][0];
-			reg -> codCli = strdup(campos[5]);
-			reg -> mes = month;
-			reg -> filial = filial;
-
-/*			setCodProd(reg, campos[1]);
+			setCodProd(reg, campos[1]);
 			setPreco(reg, price);
 			setQuantidade(reg, sold);
 			setTipo(reg, campos[4][0]);
 			setCodCliente(reg, campos[5]);
 			setMes(reg, month);
 			setFilial(reg, filial);
-*/		}
+		}
 	}
 
 	free(campos);
@@ -172,34 +230,6 @@ char* getCodProd (AVL a) {
 	return (getRegisto(a)->codProd);
 }
 
-void setFilial (REGISTO reg, int f) {
-	reg -> filial = f;
-}
-
-void setMes (REGISTO reg, int m) {
-	reg -> mes = m;
-}
-
-void setCodCliente (REGISTO reg, char* cliente) {
-	reg -> codCli = strdup(cliente);
-}
-
-void setTipo (REGISTO reg, char tp) {
-	reg -> tipo = tp;
-}
-
-void setQuantidade (REGISTO reg, int qt) {
-	reg -> quantidade = qt;
-}
-
-void setPreco (REGISTO reg, double price) {
-	reg->preco = price;
-}
-
-void setCodProd (REGISTO reg, char *prod) {
-	reg->codProd = strdup(prod);
-}
-
 char getTipo (AVL a) {
 	return (getRegisto(a)->tipo);
 }
@@ -214,4 +244,41 @@ int getMes (AVL a) {
 
 double getPreco (AVL a) {
 	return (getRegisto(a)->preco);
+}
+
+void setQuantidade (REGISTO reg, int qt) {
+	reg -> quantidade = qt;
+}
+
+/*----------------------------------------------------------------------*/
+/*Setters privados*/
+
+static void setFilial (REGISTO reg, int f) {
+	reg -> filial = f;
+}
+
+static void setMes (REGISTO reg, int m) {
+	reg -> mes = m;
+}
+
+static void setCodCliente (REGISTO reg, char* cliente) {
+	reg -> codCli = strdup(cliente);
+}
+
+static void setTipo (REGISTO reg, char tp) {
+	reg -> tipo = tp;
+}
+
+static void setPreco (REGISTO reg, double price) {
+	reg->preco = price;
+}
+
+static void setCodProd (REGISTO reg, char *prod) {
+	reg->codProd = strdup(prod);
+}
+
+void freeRegisto (REGISTO r) {
+	free(r -> codProd);
+	free(r -> codCli);
+	free(r);
 }

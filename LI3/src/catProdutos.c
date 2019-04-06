@@ -123,44 +123,12 @@ int getCurrentSize (LISTA_PROD s) {
 	return s->sp;
 }
 
-void printListBetween (LISTA_PROD s, int low, int high) {
-
-	for (; low >= 0 && low < high && low < s->sp; low++) {
-		printf("> %s\n", s->elements[low]);
-	}
-
+char* getElementList(LISTA_PROD s, int pos) {
+	return s -> elements[pos];
 }
 
-void pages (LISTA_PROD s, int dados_carregados) {
-
-	char c = 'f', pagina = 0;
-	int plow = s->sp-20, phigh = s->sp;
-
-	while(c != 'q') {
-		if (pagina >=0)
-		
-		switch (c) {
-			case 'b': 
-				displayMenuAndOptions(dados_carregados);
-				printf("\n\t\t[Página %d: 'f': foward, 'b':back, 'q':exit]\n", pagina);
-					phigh += 20;
-					plow  += 20;
-					printListBetween(s, plow, phigh);
-					pagina--;
-				break;
-			case 'f': 
-				displayMenuAndOptions(dados_carregados);
-				printf("\n\t\t[Página %d: 'f': foward, 'b':back, 'q':exit]\n", pagina);
-				pagina++;
-				phigh -= 20;
-				plow  -= 20;
-				printListBetween(s, plow, phigh);
-				break;
-		}
-
-		if (scanf("%c", &c)!=-1);
-	}
-
+int getSPList (LISTA_PROD s) {
+	return s -> sp;
 }
 
 void duplicateList (LISTA_PROD s) {
@@ -174,13 +142,6 @@ void freeList (LISTA_PROD s) {
 		free(s->elements[i]);
 
 	free(s);
-}
-
-void printList (LISTA_PROD s) {
-	int i;
-
-	for (i = 0; i < s->sp; i++)
-		printf("%s\n", s->elements[i]);
 }
 
 LISTA_PROD addProduto (LISTA_PROD l, char *new_produto) {
@@ -206,3 +167,5 @@ LISTA_PROD initLista (LISTA_PROD s, int tamanho_inicial) {
 
 	return s;
 }
+
+/*----------------------------------------------------------------------*/

@@ -69,83 +69,6 @@ REGISTO initRegisto (REGISTO novo);
 
 /*----------------------------------------------------------------------*/
 
-/** @brief Função que insere uma filial num registo de venda.
- *
- *  @param reg Registo de venda.
- *  @param f filial para inserção
- *  @return void
-*/
-
-void setFilial (REGISTO reg, int f);
-
-/*----------------------------------------------------------------------*/
-
-/** @brief Função que insere o mes de compra num registo.
- *
- *  @param reg Registo de venda.
- *  @param mes mes para inserção
- *  @return void
-*/
-
-void setMes (REGISTO reg, int m);
-
-/*----------------------------------------------------------------------*/
-
-/** @brief Função que insere um cliente num registo.
- *
- *  @param reg Registo de venda.
- *  @param cliente cliente para inserção
- *  @return void
-*/
-
-void setCodCliente (REGISTO reg, char* cliente);
-
-/*----------------------------------------------------------------------*/
-
-/** @brief Função que insere um tipo de compra a um registo.
- *
- *  @param reg Registo de venda.
- *  @param tp tipo de compra para inserção
- *  @return void
-*/
-
-void setTipo (REGISTO reg, char tp);
-
-/*----------------------------------------------------------------------*/
-
-/** @brief Função que insere uma quantidade comprada num registo.
- *
- *  @param reg Registo de venda.
- *  @param qt quantidade para inserção
- *  @return void
-*/
-
-void setQuantidade (REGISTO reg, int qt);
-
-/*----------------------------------------------------------------------*/
-
-/** @brief Função que insere o preco de um produto a um registo.
- *
- *  @param reg Registo de venda.
- *  @param price preco para inserção
- *  @return void
-*/
-
-void setPreco (REGISTO reg, double price);
-
-/*----------------------------------------------------------------------*/
-
-/** @brief Função que insere um produto a um registo.
- *
- *  @param reg Registo de venda.
- *  @param prod produto para inserção
- *  @return void
-*/
-
-void setCodProd (REGISTO reg, char *prod);
-
-/*----------------------------------------------------------------------*/
-
 /** @brief Função que retorna o tipo de uma venda.
  *
  *  @param a AVL.
@@ -225,5 +148,24 @@ int getQuantidade (AVL a);
 int getQuantidadeReg(REGISTO reg);
 
 /*----------------------------------------------------------------------*/
+
+/** @brief Função que insere uma quantidade comprada num registo.
+ *
+ *  @param reg Registo de venda.
+ *  @param qt quantidade para inserção
+ *  @return void
+*/
+
+void setQuantidade (REGISTO reg, int qt);
+
+/*----------------------------------------------------------------------*/
+
+/** @brief Função que liberta a memoria de um registo venda.
+ *
+ *  @param r Registo de venda.
+ *  @return void
+*/
+
+void freeRegisto (REGISTO r);
 
 #endif

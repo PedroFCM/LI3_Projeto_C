@@ -31,7 +31,9 @@
 * Struct que representa um array de AVL' faturacao.
 */
 struct faturacao {
-	AVL faturacao;
+	/*@{*/
+	AVL faturacao; /**< Estrutura (AVL) onde está guardada a faturacao. */
+	/*@}*/
 };
 
 /**
@@ -47,26 +49,45 @@ struct fatura {
 
 /*-----------------------------------------------------------------------*/
 
-void vendasEntreMeses(AVL fat, int min, int max, float* faturacao, int* total_vendas)
-{
-	if(fat != NULL)
-	{
-		int i,j;
+/** @brief Função que insere uma produto num AVL de faturacao de uma filial.
+ *
+ *  @param filial a filial pretendida.
+ *  @param fatFilial AVL nova para inserção.
+ *  @param vendas AVL catalogo de vendas validas.
+ *  @return void.
+ */
 
-		for(i = 0; i < 2; i++)
-			for(j = 0; j < 12; j++)
-				if(j >= min && j <= max)
-				{
-					*faturacao +=  getFatMes(getFatura(fat))[i][j];
-					*total_vendas +=  getNumVendas(getFatura(fat))[i][j];
-				}
-		
-		vendasEntreMeses(getEsq(fat), min, max, faturacao, total_vendas);
-		vendasEntreMeses(getDir(fat), min, max, faturacao, total_vendas);
-	}
-}
+static void insereProdFat (int filial, AVL *fatFilial, AVL vendas);
 
-void insereNaFatura (FATURA f, double preco, int quant, char modo, int mes) {
+
+/** @brief Função que insere uma nova fatura ou atualiza uma existente.
+ *
+ *  @param fatFilial AVL nova para inserção.
+ *  @param vendas AVL catalogo de vendas validas.
+ *  @param vendas AVL catalogo de vendas validas.
+ *  @param p novo produto
+ *  @param r variavel para indicar se o produto ja existe ou nao
+ *  @return void.
+ */
+
+static void updateFatura (AVL fatFilial, AVL vendas, char *p, int *r);
+
+
+/** @brief Função que insere novos campos numa nova fatura.
+ *
+ *  @param f fatura.
+ *  @param preco double preco para adicionar.
+ *  @param quant quantidade vendida.
+ *  @param modo tipo da venda.
+ *  @param mes mes de venda.
+ *  @return void.
+ */
+
+static void insereNaFatura (FATURA f, double preco, int quant, char modo, int mes);
+
+/*-----------------------------------------------------------------------*/
+
+static void insereNaFatura (FATURA f, double preco, int quant, char modo, int mes) {
 
 	switch (modo) {
 
@@ -83,7 +104,7 @@ void insereNaFatura (FATURA f, double preco, int quant, char modo, int mes) {
 	}
 }
 
-void updateFatura (AVL fatFilial, AVL vendas, char *p, int *r) {
+static void updateFatura (AVL fatFilial, AVL vendas, char *p, int *r) {
 	
 	if (fatFilial != NULL) {
 
@@ -105,7 +126,7 @@ void updateFatura (AVL fatFilial, AVL vendas, char *p, int *r) {
 	}	
 }
 
-void insereProdFat (int filial, AVL *fatFilial, AVL vendas) {
+static void insereProdFat (int filial, AVL *fatFilial, AVL vendas) {
 
 	int *r = malloc(sizeof(int));
 
@@ -163,6 +184,25 @@ FAT_FILIAL initFaturacao (FAT_FILIAL nova, AVL prod, AVL vendas) {
  	nova[f3-1].faturacao = *filial3;	
 
 	return nova;
+}
+
+void vendasEntreMeses(AVL fat, int min, int max, float* faturacao, int* total_vendas)
+{
+	if(fat != NULL)
+	{
+		int i,j;
+
+		for(i = 0; i < 2; i++)
+			for(j = 0; j < 12; j++)
+				if(j >= min && j <= max)
+				{
+					*faturacao +=  getFatMes(getFatura(fat))[i][j];
+					*total_vendas +=  getNumVendas(getFatura(fat))[i][j];
+				}
+		
+		vendasEntreMeses(getEsq(fat), min, max, faturacao, total_vendas);
+		vendasEntreMeses(getDir(fat), min, max, faturacao, total_vendas);
+	}
 }
 
 void vendasNoMes (AVL faturacao, int filial, char* prod, int mes, FAT_MES f, VENDAS v) 
@@ -245,6 +285,55 @@ void prodNinguemComprou(FAT_FILIAL fat, AVL produtos, AVL* produtoFilial1, AVL* 
 	}
 }
 
+void initFatura (FAT_MES f, VENDAS v) {
+
+	int l, c;
+
+	for (l = 0; l < 2; l++) {
+		f[l] = malloc(sizeof(float) * 12);
+		v[l] = malloc(sizeof(int) * 12);
+		
+		for (c = 0; c < 12; c++) {
+			f[l][c] = 0.0;
+			v[l][c] = 0;
+		}
+	}
+}
+
+void setFatMes (FATURA f, int l, int c, double val) {
+	f->fatMes[l][c] += val;
+}
+
+void setVendas (FATURA f, int l, int c) {
+	f->numVendas[l][c]++;
+}
+
+VENDAS getNumVendas (FATURA f) {
+	return f->numVendas;
+}
+
+FAT_MES getFatMes (FATURA f) {
+	return f->fatMes;
+}
+
+void initMatriz(FATURA fat, FAT_MES f,VENDAS v){
+
+	fat -> numVendas = v;
+	fat -> fatMes = f;
+}
+
+void setProdFatura (char* p, FATURA f) {
+	f -> codProd = strdup(p);
+}
+
+char* getProdFatura (FATURA f) {
+	return f->codProd;
+}
+
+AVL getFaturacao(FAT_FILIAL f, int i) {
+	return f[i].faturacao;
+}
+
 /*_______________________Funções AUXILIARES_______________________________*/
 
 void printMATRIX (FAT_MES f, VENDAS v, int opcao) {
@@ -304,51 +393,14 @@ void printFaturacao (AVL fat) {
 	}
 }
 
-void initFatura (FAT_MES f, VENDAS v) {
-
-	int l, c;
-
-	for (l = 0; l < 2; l++) {
-		f[l] = malloc(sizeof(float) * 12);
-		v[l] = malloc(sizeof(int) * 12);
-		
-		for (c = 0; c < 12; c++) {
-			f[l][c] = 0.0;
-			v[l][c] = 0;
-		}
-	}
+void freeFatura (FATURA f) {
+	free(f -> codProd);
+	free(f -> fatMes);
+	free(f -> numVendas);
 }
 
-void setFatMes (FATURA f, int l, int c, double val) {
-	f->fatMes[l][c] += val;
-}
-
-void setVendas (FATURA f, int l, int c) {
-	f->numVendas[l][c]++;
-}
-
-VENDAS getNumVendas (FATURA f) {
-	return f->numVendas;
-}
-
-FAT_MES getFatMes (FATURA f) {
-	return f->fatMes;
-}
-
-void initMatriz(FATURA fat, FAT_MES f,VENDAS v){
-
-	fat -> numVendas = v;
-	fat -> fatMes = f;
-}
-
-void setProdFatura (char* p, FATURA f) {
-	f -> codProd = strdup(p);
-}
-
-char* getProdFatura (FATURA f) {
-	return f->codProd;
-}
-
-AVL getFaturacao(FAT_FILIAL f, int i) {
-	return f[i].faturacao;
+void freeFaturacao (FAT_FILIAL fat) {
+	freeAVLfaturacao(fat[0].faturacao);
+	freeAVLfaturacao(fat[1].faturacao);
+	freeAVLfaturacao(fat[2].faturacao);	
 }

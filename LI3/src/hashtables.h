@@ -10,25 +10,30 @@
 *	
 */
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 #ifndef _HASHTABLES_
 #define _HASHTABLES_
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
-/*MACRO que define o tamanho que seria de esperar num HT de produtos*/
+/**MACRO que define o tamanho que seria de esperar num HT de produtos*/
 #define HSIZE_PRODS 200000
-/*MACRO que define o tamanho que seria de esperar num HT de clientes*/
+/**MACRO que define o tamanho que seria de esperar num HT de clientes*/
 #define HSIZE_CLIEN 20000
 
 /*______________________________________________________________________*/
 
+/**MACRO que define estados das posiçoes das hashtables*/
+
+/** Indica uma posição livre */
 #define FREE 0
+/** Indica uma posição ocupada */
 #define USED 1
+/** Indica uma posição eliminada */
 #define DELETED 2
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 /**TYPE para um cabeçalho de uma hashtable*/
 typedef struct head_table* HEAD_TABLE;
@@ -36,7 +41,7 @@ typedef struct head_table* HEAD_TABLE;
 /**TYPE para definir uma posição/célula de uma hashtable*/
 typedef struct celula* HashTable;
 
-/*______________________________________________________________________*/
+/*----------------------------------------------------------------------*/
 
 /** @brief Função que faz set da variavel final de um HT.
  *
@@ -177,5 +182,7 @@ void quicksort(HEAD_TABLE h, int first, int last);
  */
 
 void printNfirstTableReverse (HEAD_TABLE h, int n);
+
+/*----------------------------------------------------------------------*/
 
 #endif

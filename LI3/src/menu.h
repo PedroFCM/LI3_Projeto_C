@@ -80,6 +80,26 @@ void displayMenuAndOptions (int loaded);
 
 void displayFicheirosLeitura();
 
+/** @brief Função que gera e apresenta as páginas que mostram a lista.
+ *
+ *  @param s Lista de produtos.
+ *  @param dados_carregados uma flag que indica se os dados já foram carregados no programa.
+ *  @return void.
+ */
+
+void pages (LISTA_PROD s, int dados_carregados);
+
+
+/** @brief Função quem imprime uma lista entre duas posições.
+ *
+ *  @param s lista.
+ *  @param low limite inferior.
+ *  @param high limite superior
+ *  @return void.
+ */
+
+void printListBetween (LISTA_PROD s, int low, int high);
+
 /*----------------------------------------------------------------------*/
 
 #endif

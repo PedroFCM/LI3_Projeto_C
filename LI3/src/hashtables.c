@@ -1,6 +1,6 @@
 
 /** @file hashtables.c
-*	@brief Ficheiro que implementa uma hashtable para gestão de faturação.
+*	@brief Ficheiro que implementa uma hashtable para implementar procuras eficientes.
 *
 *	@autor João Pedro Rodrigues Azevedo 
 *	@autor Paulo Jorge da Silva Araújo 
@@ -225,3 +225,5 @@ void quicksort(HEAD_TABLE h, int first, int last){
       quicksort(h,j+1,last);
    }
 }
+
+/*----------------------------------------------------------------------*/

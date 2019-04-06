@@ -104,6 +104,47 @@ void displayMenuAndOptions (int loaded) {
 
 /*-----------------------------------------------------------------------*/
 
+void pages (LISTA_PROD s, int dados_carregados) {
+
+	char c = 'f', pagina = 0;
+	int plow = getSPList(s)-20, phigh = getSPList(s);
+
+	while(c != 'q') {
+		if (pagina >=0)
+		
+		switch (c) {
+			case 'b': 
+				displayMenuAndOptions(dados_carregados);
+				printf("\n\t\t[Página %d: 'f': foward, 'b':back, 'q':exit]\n", pagina);
+					phigh += 20;
+					plow  += 20;
+					printListBetween(s, plow, phigh);
+					pagina--;
+				break;
+			case 'f': 
+				displayMenuAndOptions(dados_carregados);
+				printf("\n\t\t[Página %d: 'f': foward, 'b':back, 'q':exit]\n", pagina);
+				pagina++;
+				phigh -= 20;
+				plow  -= 20;
+				printListBetween(s, plow, phigh);
+				break;
+		}
+
+		if (scanf("%c", &c)!=-1);
+	}
+}
+
+void printListBetween (LISTA_PROD s, int low, int high) {
+
+	for (; low >= 0 && low < high && low < getSPList(s); low++) {
+		printf("> %s\n", getElementList(s, low));
+	}
+
+}
+
+/*----------------------------------------------------------------------*/
+
 void displayFicheirosLeitura() {
 
 	printf(YEL "\n-> Qual ficheiro deseja ler?\n\n" RESET);
@@ -254,7 +295,7 @@ void loadMenu () {
 						printf("Escolha uma letra (Maiúscula): ");
 						while (1) {
 							char letra;
-							if (scanf("%c", &letra) == 1) 
+							if (scanf("%c", &letra) == 1) {
 								if (letra >= 'A' && letra <='Z') {
 									
 									LISTA_PROD ls = NULL;
@@ -266,9 +307,11 @@ void loadMenu () {
 									printf("\nNúmero total de produtos com letra %c: %d.\n", letra, getCurrentSize(ls));
 					
 									freeList(ls);
+
 									printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 									break;
 								}
+							}
 						}
 					}
 					break;
@@ -321,12 +364,21 @@ void loadMenu () {
 					if (!data_loaded)
 						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
-						start = clock();
-						query4(fat, products, 1);
-						end = clock();
-						cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-						showTime(cpu_time_used);
+						printf("Deseja o resultado por filial ou o Total? [0: FILIAL | 1: TOTAL]\n");
+						int opcao;
+						while(1)
+						{
+							if( scanf("%d", &opcao) )
+							{
+								if(opcao == 0 || opcao == 1)
+								{	
+									query4(fat, products, opcao);
+									break;
+								}
+							}
+						}
 					}
+						printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 
 					break;
 
@@ -375,8 +427,8 @@ void loadMenu () {
 						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
 				
-						printf("\nInsira um intervalo de meses:\n");
-						printf("(Exemplo o intervalo [1..3] ficaria > 1..3)\n");
+						printf("\nInsira um intervalo de meses: \n");
+						printf("(Exemplo o intervalo [1..3] ficaria -> 1..3)\n");
 						int mes_inf, mes_sup;
 						while (1) {
 							if (scanf("%d..%d", &mes_inf, &mes_sup))
@@ -396,7 +448,7 @@ void loadMenu () {
 						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
 
-						printf("\nInsira o código do produto:");
+						printf("\nInsira o código do produto: ");
 						while (1) {
 							if (scanf("%s", codprod)) {
 								break;
@@ -405,7 +457,9 @@ void loadMenu () {
 						int filial;
 						printf("\nInsira a FILIAL: ");
 						while (1) {
-							if (scanf("%d", &filial)) break;
+							if (scanf("%d", &filial)) 
+								if (filial == 1 || filial == 2 || filial == 3)
+									break;
 						}
 
 						if (filial >=1 && filial <=3)
@@ -417,16 +471,19 @@ void loadMenu () {
 					if (!data_loaded)
 						printf(RED "Carregue os dados para o programa primeiro, por favor.\n" RESET);
 					else {
-						printf("\nInsira o código do cliente:");
+						printf("\nInsira o código do cliente: ");
 						while (1) {
 							if (scanf("%s", codcliente)) {
-								break;
+								if (verify_client(codcliente))
+									break;
 							}
 						}
 						int new_mes;
 						printf("\nInsira o mês: ");
 						while (1) {
-							if (scanf("%d", &new_mes)) break;
+							if (scanf("%d", &new_mes)) 
+								if (new_mes >= 1 && new_mes <= 12)
+									break;
 						}
 						printf("\nProdutos que mais comprou: \n");
 						if (new_mes>=1 && new_mes <=12)
@@ -446,6 +503,7 @@ void loadMenu () {
 						int n;
 						while (1) {
 							if (scanf("%d", &n)) {
+								if (n>0)
 								break;
 							}
 						}
@@ -463,7 +521,9 @@ void loadMenu () {
 						printf("\nInsira um cliente: ");
 						
 						while (1) {
-							if (scanf("%s", codcliente)!=-1) break;
+							if (scanf("%s", codcliente)!=-1) 
+								if (verify_client(codcliente))
+									break;
 						}
 						printf("\n");
 						query12(fil, codcliente);
@@ -484,11 +544,14 @@ void loadMenu () {
 	/*---------------------------------------------------------------*/
 
 	if (option_selected == 'q' || option_selected == 'Q' || option_selected == 'y') {
-		printf(YEL "A sair do programa...\n" RESET);
-		freeAVL(products, 0);
-		freeAVL(clients, 0);
-		freeAVL(sells, 1);
+		printf(YEL "Libertando toda a memória usada...\n" RESET);
+		freeAVL_andTag(products);
+		freeAVL_andTag(clients);
+		freeAVLregisto(sells);
+		freeFaturacao(fat);
+		freeFilial(fil);
 		free(set);
+		printf(YEL "A sair do programa...\n" RESET);
 		if (option_selected=='y') loadMenu();
 	}
 }

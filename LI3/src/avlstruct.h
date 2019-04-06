@@ -49,6 +49,30 @@ typedef struct gestaoFilial* GESTAO_FILIAL;
 
 /*----------------------------------------------------------------------*/
 
+/** @brief Função que liberta a memoria de uma AVL contendo a struct gestaoFilial != NULL.
+ *
+ *  @param a AVL.
+ *  @return void.
+*/
+
+void freeAVLfil (AVL a);
+
+/** @brief Função que liberta a memoria de uma AVL contendo a struct registo != NULL.
+ *
+ *  @param a AVL.
+ *  @return void.
+*/
+
+void freeAVLregisto(AVL a);
+
+/** @brief Função que liberta a memoria de uma AVL contendo a struct fatura != NULL.
+ *
+ *  @param a AVL.
+ *  @return void.
+*/
+
+void freeAVLfaturacao (AVL a);
+
 /** @brief Função que retorna o campo GESTAO_FILIAL de uma AVL.
  *
  *  @param a AVL.
@@ -115,66 +139,7 @@ AVL getDir (AVL a);
  *  @return void
  */
 
-void freeAVL (AVL a, int flag);
-
-
-/** @brief Função que faz uma rotação à direita de uma AVL.
- *
- *  @param a AVL.
- *  @param flag pode ser 0 ou 1, no caso de ser 1 indica que queremos fazer free às vendas
- *  @return AVL após rotação.
- */
-
-AVL rotateRight (AVL a);
-
-
-/** @brief Função que faz uma rotação à esquerda de uma AVL.
- *
- *  @param a AVL.
- *  @return AVL após rotação.
- */
-
-AVL rotateLeft (AVL b);
-
-
-/** @brief Função que resolver diferenças de altura à direita.
- *
- *  @param a AVL.
- *  @return AVL após o fix.
- */
-
-AVL fixRight (AVL a);
-
-
-/** @brief Função que resolver diferenças de altura à esquerda.
- *
- *  @param a AVL.
- *  @return AVL após o fix.
- */
-
-AVL fixLeft (AVL a);
-
-
-/** @brief Função que cria memória para uma AVL.
- *
- *  @param a AVL.
- *  @return AVL após o fix.
- */
-
-AVL initAVL (AVL a, REGISTO novo, FATURA f, GESTAO_FILIAL nova_gestao, char *arg, int *g, int flag);
-
-
-/** @brief Função auxiliar que insere um elemento a uma AVL.
- *
- *  @param a AVL.
- *  @param novo novo registos.
- *  @param arg string de venda.
- *  @param g flag que indica se cresceu ou não a AVL após inserção
- *  @return AVL após inserção.
- */
-
-AVL updateAVLRec (AVL a, REGISTO novo, FATURA f,  GESTAO_FILIAL nova_gestao, char *arg, int *g, int flag);
-
+void freeAVL_andTag (AVL a);
 
 /** @brief Função que insere um novo elemento numa AVL.
  *
@@ -185,5 +150,7 @@ AVL updateAVLRec (AVL a, REGISTO novo, FATURA f,  GESTAO_FILIAL nova_gestao, cha
  */
 
 AVL updateAVL (AVL a, REGISTO novo, FATURA f, GESTAO_FILIAL nova_gestao, char *arg, int flag);
+
+/*----------------------------------------------------------------------*/
 
 #endif

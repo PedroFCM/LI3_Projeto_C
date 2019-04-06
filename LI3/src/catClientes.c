@@ -73,3 +73,5 @@ CAT_CLIENTES readNvalidate_clients (char *filename, CAT_CLIENTES clients, GLOBAL
 
 	return clients;
 }
+
+/*----------------------------------------------------------------------*/

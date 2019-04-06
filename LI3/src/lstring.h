@@ -11,6 +11,7 @@
 */
 
 /*----------------------------------------------------------------------*/
+
 #ifndef _LINKEDLIST_
 #define _LINKEDLIST_
 
@@ -114,5 +115,7 @@ LString qSortLStringAux (LString lhead, LString lfim, int flag);
  */
 
 LString quickSortL (LString l, int flag);
+
+/*----------------------------------------------------------------------*/
 
 #endif

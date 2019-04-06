@@ -25,7 +25,6 @@
 /*_________________BIBLIOTECAS IMPLEMENTADAS____________________________*/
 
 #include "avlstruct.h"
-#include "stack.h"
 #include "global.h"
 #include "lstring.h"
 #include "hashtables.h"
@@ -182,10 +181,14 @@ void query3 (FAT_FILIAL fat, int mes, char *produto, int opcao)
 		default: 
 			break;
 	}
+
+	free(v);
+	free(f);
+
 }
 
 /*-----------------------------------------------------------------------*/
-
+/*
 void query4(FAT_FILIAL fat, AVL produtos, int opcao)
 {
 	AVL* produtoFilial1 = malloc(sizeof(AVL));
@@ -200,7 +203,49 @@ void query4(FAT_FILIAL fat, AVL produtos, int opcao)
 
 	printf("Produtos não comprados nas 3 filiais: %d Produto(s).\n", 
 			inorder_avl_just_tag(*produtoFilial1));
+	
+	freeAVL(*produtoFilial1, 0);
+	freeAVL(*produtoFilial2, 0);
+	freeAVL(*produtoFilial3, 0);
 
+}
+*/
+
+void query4(FAT_FILIAL fat, AVL produtos, int opcao)
+{
+	AVL* produtoFilial1 = malloc(sizeof(AVL));
+	AVL* produtoFilial2 = malloc(sizeof(AVL));
+	AVL* produtoFilial3 = malloc(sizeof(AVL));
+	
+	*produtoFilial1 = NULL;
+	*produtoFilial2 = NULL;
+	*produtoFilial3 = NULL;
+
+	prodNinguemComprou(fat, produtos, produtoFilial1, produtoFilial2, produtoFilial3, opcao);
+
+	int fil1, fil2, fil3;
+
+	switch(opcao)
+	{
+		case 0: 
+			printf("Produtos não comprados na filial 1:\n");
+			fil1 = inorder_avl_just_tag(*produtoFilial1);
+			
+			printf("Produtos não comprados na filial 2:\n");
+			fil2 = inorder_avl_just_tag(*produtoFilial2);
+			
+			printf("Produtos não comprados na filial 3:\n");
+			fil3 = inorder_avl_just_tag(*produtoFilial3);
+
+			printf("Número de Produtos não comprados na filial 1: %d\n", fil1);
+			printf("Número de Produtos não comprados na filial 2: %d\n", fil2);
+			printf("Número de Produtos não comprados na filial 3: %d\n", fil3);
+			break;
+
+		case 1: 
+			printf("Produtos não comprados nas 3 filiais: %d Produto(s).\n", inorder_avl_just_tag(*produtoFilial1));
+			break;
+	}
 }
 
 /*-----------------------------------------------------------------------*/
@@ -216,6 +261,8 @@ void query5(FILIAL filial, AVL clientes) {
     int r = inorder_avl_just_tag(compramEmTodas); 
 
     printf("\n>> Existem %d clientes que compraram em todas as filiais.\n", r);
+
+	freeAVL_andTag(compramEmTodas);    
 }
 
 /*-----------------------------------------------------------------------*/
@@ -271,6 +318,9 @@ void query6 (FAT_FILIAL fat, FILIAL fil, AVL produtos, AVL clientes) {
 			*clientesSemCompras);
 	printf("Existem %d produtos que não foram comprados.\n", 
 			*produtosNaoComprados);
+
+	free(clientesSemCompras);
+	free(produtosNaoComprados);
 }
 
 /*-----------------------------------------------------------------------*/
@@ -308,7 +358,8 @@ void query7(FILIAL filial, char* cliente){
 	}
 
 	printf("\n\t-------------------------------------------------\n");
-	
+
+	free(nProd);
 }
 
 /*------------------------------------------------------------------------------------------------*/
@@ -324,7 +375,10 @@ void query8(FAT_FILIAL fat, int min, int max)
 	vendasEntreMeses(getFaturacao(fat, 1), min-1, max-1, faturacao, total_vendas);
 	vendasEntreMeses(getFaturacao(fat, 2), min-1, max-1, faturacao, total_vendas);
 
-	printf("Nº Vendas: %d euro(s) | Total Faturado: %f euro(s)\n", *total_vendas, *faturacao);
+	printf("Nº Vendas: %d venda(s) | Total Faturado: %f euro(s)\n", *total_vendas, *faturacao);
+
+	free(faturacao);
+	free(total_vendas);
 }
 
 /*------------------------QUERY 9 TESTING------------------------*/
@@ -378,14 +432,14 @@ void query9 (FILIAL fil, char *codProd, int filial) {
 	comprasN = geraClientesFilial(getAVLfilial(fil, filial), codProd, comprasN, 'N');
 	comprasP = geraClientesFilial(getAVLfilial(fil, filial), codProd, comprasP, 'P');
 
-	printf("\n=> Clientes (Sem promoção):\n");
+	printf("\n=> Clientes (Com promoção):\n");
 
 	if (comprasP == NULL)
 		printf("Nenhum cliente encontrado do tipo P.\n");
 
 	printLString(comprasP, 3);
 
-	printf("\n=> Clientes (Com promoção):\n");
+	printf("\n=> Clientes (Sem promoção):\n");
 
 	if (comprasN == NULL)
 		printf("Nenhum cliente encontrado do tipo N.\n");
@@ -397,34 +451,14 @@ void query9 (FILIAL fil, char *codProd, int filial) {
 
 /*-----------------------------------------------------------------------------------*/
 
-void recursive_query10(AVL filial, AVL* prodMaisComprad, char* cliente, int mes) 
-{
-	if(filial != NULL)
-	{
-		int equal = strcmp(getClienteFilial(getGestaoFilial(filial)), cliente);
-
-		if(!equal)
-			acumVendas(filial, prodMaisComprad, mes);
-
-		else
-		{
-			if(equal > 0)
-				recursive_query10(getEsq(filial), prodMaisComprad, cliente, mes);
-			else
-				recursive_query10(getDir(filial), prodMaisComprad, cliente, mes);
-		}
-
-	}
-}
-
 void query10(FILIAL filial, char* cliente, int mes)
 {
 	AVL* prodMaisComprad = malloc(sizeof(AVL));
 	*prodMaisComprad = NULL;
 
-	recursive_query10(getAVLfilial(filial, 1), prodMaisComprad, cliente, mes-1);
-	recursive_query10(getAVLfilial(filial, 2), prodMaisComprad, cliente, mes-1);
-	recursive_query10(getAVLfilial(filial, 3), prodMaisComprad, cliente, mes-1);
+	cria_avl_produtos_Comprados(getAVLfilial(filial, 1), prodMaisComprad, cliente, mes-1);
+	cria_avl_produtos_Comprados(getAVLfilial(filial, 2), prodMaisComprad, cliente, mes-1);
+	cria_avl_produtos_Comprados(getAVLfilial(filial, 3), prodMaisComprad, cliente, mes-1);
 
 	printDecresAvl(*prodMaisComprad);
 }
@@ -448,18 +482,14 @@ void query11 (FILIAL filial, int n) {
 
 	h = initTable(h, 200000);
 	
-	printf("A gerar a HashTable...\n");
+	printf("A gerar a lista...\n");
 	geraTabelaQuantidades(getAVLfilial(filial, 1) , h, 1);
 	geraTabelaQuantidades(getAVLfilial(filial, 2) , h, 2);
 	geraTabelaQuantidades(getAVLfilial(filial, 3) , h, 3);
-	printf("> HashTable gerada.\n");
 
-/*	juntaQuantFilial(h);
-*/
-	printf("A fazer quicksort da hashtable...\n");
+	printf("A ordenar a lista...\n");
 	quicksort(h, 0, getSize(h) - 1);
-	printf("> Sort feito.\n");
-	printf("\nOs %d produtos mais comprados são: \n\n", n);
+	printf("> Ordenação feita.\n");
 
 	printNfirstTableReverse(h, n);
 

@@ -50,6 +50,66 @@ struct avl {
 
 /*----------------------------------------------------------------------*/
 
+/** @brief Função que faz uma rotação à direita de uma AVL.
+ *
+ *  @param a AVL.
+ *  @param flag pode ser 0 ou 1, no caso de ser 1 indica que queremos fazer free às vendas
+ *  @return AVL após rotação.
+ */
+
+static AVL rotateRight (AVL a);
+
+
+/** @brief Função que faz uma rotação à esquerda de uma AVL.
+ *
+ *  @param a AVL.
+ *  @return AVL após rotação.
+ */
+
+static AVL rotateLeft (AVL b);
+
+
+/** @brief Função que resolver diferenças de altura à direita.
+ *
+ *  @param a AVL.
+ *  @return AVL após o fix.
+ */
+
+static AVL fixRight (AVL a);
+
+
+/** @brief Função que resolver diferenças de altura à esquerda.
+ *
+ *  @param a AVL.
+ *  @return AVL após o fix.
+ */
+
+static AVL fixLeft (AVL a);
+
+
+/** @brief Função que cria memória para uma AVL.
+ *
+ *  @param a AVL.
+ *  @return AVL após o fix.
+ */
+
+static AVL initAVL (AVL a, REGISTO novo, FATURA f, GESTAO_FILIAL nova_gestao, char *arg, int *g, int flag);
+
+
+/** @brief Função auxiliar que insere um elemento a uma AVL.
+ *
+ *  @param a AVL.
+ *  @param novo novo registos.
+ *  @param arg string de venda.
+ *  @param g flag que indica se cresceu ou não a AVL após inserção
+ *  @return AVL após inserção.
+ */
+
+static AVL updateAVLRec (AVL a, REGISTO novo, FATURA f,  GESTAO_FILIAL nova_gestao, char *arg, int *g, int flag);
+
+
+/*----------------------------------------------------------------------*/
+
 GESTAO_FILIAL getGestaoFilial(AVL filial){
 	return filial -> gestaoFilial;
 }
@@ -66,6 +126,32 @@ char getFirstLetterTag (AVL a) {
 	return (a->tag[0]);
 }
 
+void freeAVLfaturacao (AVL a) {
+	if (a != NULL) {
+		freeAVLfaturacao (a -> left);
+		freeAVLfaturacao (a -> right);
+		freeFatura (a->fatura);
+		free(a);
+	}
+}
+
+void freeAVLregisto(AVL a) {
+	if (a != NULL) {
+		freeAVLregisto (a -> left);
+		freeAVLregisto (a -> right);
+		freeRegisto (a->registo);
+	}
+
+}
+
+void freeAVLfil (AVL a) {
+	if (a != NULL) {
+		freeAVLfil (a -> left);
+		freeAVLfil (a -> right);
+		freeGestaoFilial (a->gestaoFilial);
+	}
+}
+
 char* getTag (AVL a) {
 	return (a->tag);
 }
@@ -78,18 +164,18 @@ AVL getDir (AVL a) {
 	return (a->right);
 }
 
-void freeAVL (AVL a, int flag) {
+void freeAVL_andTag (AVL a) {
 
 	if (a != NULL) {
-		freeAVL (a -> left, flag);
-		freeAVL (a -> right, flag);
+		freeAVL_andTag (a -> left);
+		freeAVL_andTag (a -> right);
 		free (a -> tag);
 		free(a);
 	}
 
 }
 
-AVL rotateRight (AVL a) {
+static AVL rotateRight (AVL a) {
 	AVL b = a -> left;
 	a -> left = b -> right;
 	b -> right = a;
@@ -97,7 +183,7 @@ AVL rotateRight (AVL a) {
 	return b;
 }
 
-AVL rotateLeft (AVL b) {
+static AVL rotateLeft (AVL b) {
 	AVL a = b -> right;
 	b -> right = a -> left;
 	a -> left = b;
@@ -105,7 +191,7 @@ AVL rotateLeft (AVL b) {
 	return a;
 }
 
-AVL fixRight (AVL a){
+static AVL fixRight (AVL a){
 
 	AVL b, c;
 	b = a -> right;
@@ -137,7 +223,7 @@ AVL fixRight (AVL a){
 	return a;
 }
 
-AVL fixLeft (AVL a){
+static AVL fixLeft (AVL a){
 
 	AVL b, c;
 	b = a -> left;
@@ -166,7 +252,7 @@ AVL fixLeft (AVL a){
 	return a;
 }
 
-AVL initAVL (AVL a, REGISTO novo, FATURA f, GESTAO_FILIAL nova_gestao, char *arg, int *g, int flag) {
+static AVL initAVL (AVL a, REGISTO novo, FATURA f, GESTAO_FILIAL nova_gestao, char *arg, int *g, int flag) {
 
 	a = (AVL) malloc(sizeof(struct avl));
 	
@@ -191,7 +277,7 @@ AVL initAVL (AVL a, REGISTO novo, FATURA f, GESTAO_FILIAL nova_gestao, char *arg
 	return a;
 }
 
-AVL updateAVLRec (AVL a, REGISTO novo, FATURA f,  GESTAO_FILIAL nova_gestao, char *arg, int *g, int flag) {
+static AVL updateAVLRec (AVL a, REGISTO novo, FATURA f,  GESTAO_FILIAL nova_gestao, char *arg, int *g, int flag) {
 	
 	if (a == NULL) a = initAVL(a, novo, f, nova_gestao, arg, g, flag);
 	else {
@@ -258,3 +344,5 @@ AVL updateAVL (AVL a, REGISTO novo, FATURA f, GESTAO_FILIAL nova_gestao, char *a
 	
 	return a;
 }
+
+/*----------------------------------------------------------------------*/

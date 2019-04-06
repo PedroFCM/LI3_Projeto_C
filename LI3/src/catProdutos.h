@@ -48,16 +48,6 @@ int verify_product (char *product);
 
 CAT_PRODUTOS readNvalidate_products (char* filename, CAT_PRODUTOS prod, GLOBAL set);
 
-/** @brief Função quem imprime uma lista entre duas posições.
- *
- *  @param s lista.
- *  @param low limite inferior.
- *  @param high limite superior
- *  @return void.
- */
-
-void printListBetween (LISTA_PROD s, int low, int high);
-
 
 /** @brief Função que que retorna o tamanho atual de uma lista.
  *
@@ -75,15 +65,6 @@ int getCurrentSize (LISTA_PROD s);
  */
 
 void freeList (LISTA_PROD s);
-
-
-/** @brief Função que imprime a lista.
- *
- *  @param s lista argumento.
- *  @return void.
- */
-
-void printList (LISTA_PROD s);
 
 
 /** @brief Função que duplica o tamanho de uma lista.
@@ -123,16 +104,6 @@ int isEmptyLista (LISTA_PROD s);
 LISTA_PROD initLista (LISTA_PROD s, int tamanho_inicial);
 
 
-/** @brief Função que gera e apresenta as páginas que mostram a lista.
- *
- *  @param s Lista de produtos.
- *  @param dados_carregados uma flag que indica se os dados já foram carregados no programa.
- *  @return void.
- */
-
-void pages (LISTA_PROD s, int dados_carregados);
-
-
 /** @brief Função que gera a lista de produtos iniciada por uma dada letra.
  *
  *  @param produtos AVL de produtos argumento.
@@ -142,5 +113,15 @@ void pages (LISTA_PROD s, int dados_carregados);
  */
 
 LISTA_PROD geraListaLetra (AVL produtos, LISTA_PROD s, char letra);
+
+
+/** @brief Função que retorna a pos do ultimo elemento de uma lista de produtos.
+ *
+ *  @param s lista de produtos onde guardar.
+ *  @return A lista gerada.
+ */
+
+int getSPList (LISTA_PROD s);
+char* getElementList(LISTA_PROD s, int pos);
 
 #endif

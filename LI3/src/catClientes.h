@@ -41,4 +41,6 @@ int verify_client (char *client);
 
 CAT_CLIENTES readNvalidate_clients (char *filename, CAT_CLIENTES clients, GLOBAL set);
 
+/*----------------------------------------------------------------------*/
+
 #endif
