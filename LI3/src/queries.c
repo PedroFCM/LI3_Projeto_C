@@ -327,36 +327,6 @@ void query8(FAT_FILIAL fat, int min, int max)
 	printf("Nº Vendas: %d euro(s) | Total Faturado: %f euro(s)\n", *total_vendas, *faturacao);
 }
 
-/*-----------------------------------------------------------------------*/
-/*
-void query9 (AVL vendas, char* produto, int filial){
-
-	Stack clientesP = NULL;
-	Stack clientesN = NULL;
-	
-	clientesP = initStack(clientesP, 10000);
-	clientesN = initStack(clientesN, 10000);
-
-	compraramNaFilial(vendas, produto, filial, clientesP, clientesN);
-
-	if (getSP(clientesP) > 0) {
-		
-		printf("\nClientes do tipo P: (%d resultados)\n", getSP(clientesP));
-		printStack(clientesP);
-	
-	} else printf("\nTIPO P VAZIO\n");
-	
-	if (getSP(clientesN) > 0) {
-	
-		printf("\nClientes do tipo N: (%d resultados)\n", getSP(clientesN));
-		printStack(clientesN);
-	
-	} else printf("\nTIPO N VAZIO\n");
-
-	freeStack(clientesP);
-	freeStack(clientesN);
-}
-*/
 /*------------------------QUERY 9 TESTING------------------------*/
 
 int matrizAzeros (float **f, int flag) {
@@ -461,36 +431,40 @@ void query10(FILIAL filial, char* cliente, int mes)
 
 /*-----------------------------------------------------------------------------------*/
 
-void recursive_query11(AVL vendas, HEAD_TABLE h) {
+void geraTabelaQuantidades (AVL filial, HEAD_TABLE h, int flag) {
 
-	if (vendas != NULL) {
+	if (filial != NULL) {
 
-		update(h, getCodProd(vendas), 
-				  getFilial(vendas), 
-				  getQuantidade(vendas));
-		
-		recursive_query11(getEsq(vendas),  h);
-		recursive_query11(getDir(vendas), h);
+		updateQuantidadesProduto(getList(getGestaoFilial(filial)), h, flag);
+
+		geraTabelaQuantidades(getEsq(filial), h, flag);
+		geraTabelaQuantidades(getDir(filial), h, flag);
 	}
 }
 
-void query11 (AVL vendas, int n) {
+void query11 (FILIAL filial, int n) {
 	
 	HEAD_TABLE h = NULL;
 
 	h = initTable(h, 200000);
 	
-	recursive_query11(vendas, h);
+	printf("A gerar a HashTable...\n");
+	geraTabelaQuantidades(getAVLfilial(filial, 1) , h, 1);
+	geraTabelaQuantidades(getAVLfilial(filial, 2) , h, 2);
+	geraTabelaQuantidades(getAVLfilial(filial, 3) , h, 3);
+	printf("> HashTable gerada.\n");
 
-	juntaQuantFilial(h);
-
+/*	juntaQuantFilial(h);
+*/
+	printf("A fazer quicksort da hashtable...\n");
 	quicksort(h, 0, getSize(h) - 1);
-
+	printf("> Sort feito.\n");
 	printf("\nOs %d produtos mais comprados são: \n\n", n);
 
 	printNfirstTableReverse(h, n);
 
 	free_hashtable(h);
+
 }
 
 /*-----------------------------------------------------------------------------------*/

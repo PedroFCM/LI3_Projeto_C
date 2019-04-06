@@ -569,6 +569,35 @@ void juntaQuantFilial (HEAD_TABLE h) {
 	}
 }
 
+
+int sumatorioMatrizInt(int **matriz){
+
+	int res;
+	int i,j;
+	res = i= j = 0;
+	
+	for(i = 0; i < 2; i++)
+		for(j = 0; j < 12; j++) 
+			res += matriz[i][j];
+
+	return res;
+
+}
+
+void updateQuantidadesProduto(ELEM l, HEAD_TABLE h, int flag){
+
+	ELEM *pt = &l;
+	int r = 0;
+
+	while (*pt != NULL && r != 1) {
+
+		update (h, getProdutoFilial(*pt), flag, sumatorioMatrizInt(getNumVendasElem(*pt)), 1);
+
+		pt = &((*pt) -> next);
+	}
+	
+}
+
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/

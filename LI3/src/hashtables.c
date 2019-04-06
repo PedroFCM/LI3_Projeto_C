@@ -102,7 +102,7 @@ int find_quad_probe (HEAD_TABLE h, char* key) {
 
 	for (count = h->hsize; count > 0 && h->content[p].status!=DELETED && 
 		h->content[p].status!=FREE && strcmp(key, h->content[p].entry)!=0; count--) {
-		p = (p+d*d*d*d) % h->hsize; d++;
+		p = (p+d*d*d) % h->hsize; d++;
 	}
 
 	if (count == 0) p = -1;
@@ -110,20 +110,21 @@ int find_quad_probe (HEAD_TABLE h, char* key) {
 	return p;
 }
 
-void update (HEAD_TABLE h, char *key, int filial, int new_quant) {
+void update (HEAD_TABLE h, char *key, int filial, int new_quant, int nClientes) {
 
 	int p = find_quad_probe (h, key);
 
 	if (p < 0) return;
 	else if (h->content[p].entry!=NULL && !strcmp(h->content[p].entry, key)) {
 		h->content[p].total_quant[filial-1] += new_quant;
-		h->content[p].total_client[filial-1]++;
-		h->content[p].final = 0;
+		h->content[p].total_client[filial-1] += nClientes;
+		h -> content[p].final += new_quant;		
 		h->content[p].status = USED;
 	} else {
 		h -> content[p].entry = strdup(key);
 		h -> content[p].total_quant[filial-1] = new_quant;
-		h -> content[p].total_client[filial-1]++;
+		h -> content[p].total_client[filial-1] = 1;
+		h -> content[p].final = new_quant;
 		h -> content[p].status = USED;
 	}
 }

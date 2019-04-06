@@ -449,7 +449,7 @@ void loadMenu () {
 								break;
 							}
 						}
-						query11(sells, n);
+						query11(fil, n);
 						printf(GRN "\n\t[VOLTAR AO MENU INICIAL (Pressionar X + ENTER)]\n" RESET);
 					}
 					break;

@@ -80,9 +80,13 @@ void query10(FILIAL filial, char* cliente, int mes);
 void recursive_query10(AVL filial, AVL* prodMaisComprad, char* cliente, int mes);
 
 /*-----------------------------------------------------------------------*/
-
+/*
 void recursive_query11(AVL vendas, HEAD_TABLE h);
 void query11 (AVL vendas, int n);
+*/
+
+void geraTabelaQuantidades (AVL filial, HEAD_TABLE h, int flag);
+void query11 (FILIAL filial, int n);
 
 /*-----------------------------------------------------------------------*/
 

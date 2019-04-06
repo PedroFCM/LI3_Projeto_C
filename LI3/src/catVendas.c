@@ -87,14 +87,22 @@ int verify_sell (CAT_VENDAS vendas, CAT_PRODUTOS prod, CAT_CLIENTES client,
 		/*CRIA NOVO REGISTO CASO A VENDA SEJA VÁLIDA*/
 		if (r == 1) { 
 
-			setCodProd(reg, campos[1]);
+			reg -> codProd = strdup(campos[1]);
+			reg -> preco = price;
+			reg -> quantidade = sold;
+			reg -> tipo = campos[4][0];
+			reg -> codCli = strdup(campos[5]);
+			reg -> mes = month;
+			reg -> filial = filial;
+
+/*			setCodProd(reg, campos[1]);
 			setPreco(reg, price);
 			setQuantidade(reg, sold);
 			setTipo(reg, campos[4][0]);
 			setCodCliente(reg, campos[5]);
 			setMes(reg, month);
 			setFilial(reg, filial);
-		}
+*/		}
 	}
 
 	free(campos);
@@ -125,7 +133,6 @@ CAT_VENDAS readNvalidate_sells (char* filename, CAT_VENDAS sells, GLOBAL set,
 		if (verify_sell(sells, prod, cli, set, buffer, novo_registo)) {
 			
 			sells = updateAVL(sells, novo_registo, NULL, NULL, buffer, 0);
-
 			set -> val_sells++;
 		
 		} else free(novo_registo);

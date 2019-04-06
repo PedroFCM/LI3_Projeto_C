@@ -118,7 +118,7 @@ int find_quad_probe (HEAD_TABLE h, char* key);
  *  @return void.
  */
 
-void update (HEAD_TABLE h, char *key, int filial, int new_quant);
+void update (HEAD_TABLE h, char *key, int filial, int new_quant, int nClientes);
 
 
 /** @brief Função que procura key numa hashtable.

@@ -176,4 +176,12 @@ void juntaQuantFilial (HEAD_TABLE h);
 
 char* getProdutoFilial(ELEM filial);
 
+/*-----------------------------------------------------------------------*/
+
+int sumatorioMatrizInt(int **matriz);
+
+/*-----------------------------------------------------------------------*/
+
+void updateQuantidadesProduto(ELEM l, HEAD_TABLE h, int flag);
+
 #endif
