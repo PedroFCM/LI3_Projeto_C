@@ -451,7 +451,8 @@ void loadMenu () {
 						printf("\nInsira o código do produto: ");
 						while (1) {
 							if (scanf("%s", codprod)) {
-								break;
+								if (verify_product(codprod))
+									break;
 							}
 						}
 						int filial;
