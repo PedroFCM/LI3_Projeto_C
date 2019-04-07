@@ -128,7 +128,7 @@ void write_recursive (AVL a, FILE *fp) {
 
 void write_inorder_avl_on_file (char *filepath, AVL a, GLOBAL set) {
 
-	FILE *fp = fopen(filepath, "w");
+	FILE *fp = fopen(filepath, "w+");
 
 	write_recursive (a, fp);
 

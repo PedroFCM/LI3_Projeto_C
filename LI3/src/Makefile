@@ -17,5 +17,8 @@ doc:
 removedoc:
 	rm -r doc/
 
+remvalidtext:
+	rm validData/*.txt
+
 clean:
 	rm main *.o
