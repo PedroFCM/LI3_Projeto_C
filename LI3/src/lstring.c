@@ -44,6 +44,19 @@ struct node {
 
 /*----------------------------------------------------------------------*/
 
+int sizeLString (LString l) {
+	
+	int size = 0;
+	LString *pt = &l;
+
+	while ((*pt) != NULL) {
+		pt = &((*pt) -> next);
+		size++;	
+	}
+
+	return size;
+}
+
 void printLString (LString l, int flag) {
 
 	LString *pt = &l;

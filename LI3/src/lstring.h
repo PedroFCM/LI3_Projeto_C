@@ -22,6 +22,15 @@ typedef struct node *LString;
 
 /*----------------------------------------------------------------------*/
 
+/** @brief Função que calcula o tamanho de uma lstring.
+ *
+ *  @param l LString.
+ *  @return tamanho (int) de uma lstring.
+ */
+
+int sizeLString (LString l);
+
+
 /** @brief Função que insere um produto e o tipo de venda.
  *
  *  @param l LString.

@@ -432,14 +432,14 @@ void query9 (FILIAL fil, char *codProd, int filial) {
 	comprasN = geraClientesFilial(getAVLfilial(fil, filial), codProd, comprasN, 'N');
 	comprasP = geraClientesFilial(getAVLfilial(fil, filial), codProd, comprasP, 'P');
 
-	printf("\n=> Clientes (Com promoção):\n");
+	printf("\n=> Clientes (Com promoção): (%d cliente(s))\n", sizeLString(comprasP));
 
 	if (comprasP == NULL)
 		printf("Nenhum cliente encontrado do tipo P.\n");
 
 	printLString(comprasP, 3);
 
-	printf("\n=> Clientes (Sem promoção):\n");
+	printf("\n=> Clientes (Sem promoção): (%d cliente(s))\n", sizeLString(comprasN));
 
 	if (comprasN == NULL)
 		printf("Nenhum cliente encontrado do tipo N.\n");
