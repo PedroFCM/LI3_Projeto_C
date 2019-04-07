@@ -9,7 +9,7 @@
 *	@bug Bugs de entrada de argumentos (Não muito relevantes).
 *	
 */
-
+ 
 /*MACRO para suprimir warnings de strdup da library <string.h>*/
 #define _GNU_SOURCE
 
