@@ -188,28 +188,6 @@ void query3 (FAT_FILIAL fat, int mes, char *produto, int opcao)
 }
 
 /*-----------------------------------------------------------------------*/
-/*
-void query4(FAT_FILIAL fat, AVL produtos, int opcao)
-{
-	AVL* produtoFilial1 = malloc(sizeof(AVL));
-	AVL* produtoFilial2 = malloc(sizeof(AVL));
-	AVL* produtoFilial3 = malloc(sizeof(AVL));
-	
-	*produtoFilial1 = NULL;
-	*produtoFilial2 = NULL;
-	*produtoFilial3 = NULL;
-
-	prodNinguemComprou(fat, produtos, produtoFilial1, produtoFilial2, produtoFilial3, opcao);
-
-	printf("Produtos não comprados nas 3 filiais: %d Produto(s).\n", 
-			inorder_avl_just_tag(*produtoFilial1));
-	
-	freeAVL(*produtoFilial1, 0);
-	freeAVL(*produtoFilial2, 0);
-	freeAVL(*produtoFilial3, 0);
-
-}
-*/
 
 void query4(FAT_FILIAL fat, AVL produtos, int opcao)
 {
