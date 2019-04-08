@@ -64,20 +64,19 @@ A principal preocupação da aplicação tende com o desempenho a nível de temp
 
 \quad Nos catálogos de produtos e clientes, a AVL apresenta-se ordenada por um elemento lá denominado por "tag" que representa o produto (ou cliente) que pertence à AVL, como se vê na Figura \ref{fig1}. No módulo vendas, a sua AVL apresenta-se ordenada da mesma forma apresentando ainda um campo REGISTO que guarda os campos da string venda lida do ficheiro (e validada), como se vê na Figura \ref{fig2}.
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.2]{Avl_Prod_Cli.png}
+  \caption{Imagem da Estrutura da AVL Clientes e Produtos.}
+  \label{fig2}
+\end{figure}
+
 \begin{figure}[h!]
   \centering
   \includegraphics[scale=0.20]{Avl_Venda.png}
   \caption{Imagem da Estrutura da AVL Vendas.}
   \label{fig1}
 \end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.15]{Avl_Prod_Cli.png}
-  \caption{Imagem da Estrutura da AVL Clientes e Produtos.}
-  \label{fig2}
-\end{figure}
-
 
 %TENTAR METER O TEXTO DEPOIS DA IMAGEM 
 
@@ -108,7 +107,7 @@ Este módulo, pelo contrário, já conhece clientes e as suas compras/produtos a
   \label{fig4}
 \end{figure}
 
-Como esta estrutura, ou melhor, parte dela se assemelha à descrita anteriormente, também apresenta eficiência na procura dos dados. Indo a exemplos concretos, as query 6 e 7 que não implicam um varrimento total das estruturas e tiram proveito da organização das matrizes para verificar numa as que se encontram a zeros (indicação de produto não adquirido) e por outro lado a criação das tabelas de compras realizadas por um dado cliente numa filial.
+Como esta estrutura, ou melhor, parte dela se assemelha à descrita anteriormente, também apresenta eficiência na procura dos dados. Indo a exemplos concretos, as query 6 e 7 que não implicam um varrimento total das estruturas e tiram proveito da organização das matrizes para verificar numa as que se encontram a zeros, isto é, a linha (repesentada pelo tipo N ou P) que se encontra a zeros (indicação de produto não adquirido) e por outro lado a criação das tabelas de compras realizadas por um dado cliente numa filial.
 
 \section{Outras Estruturas}
 
@@ -193,8 +192,6 @@ Na décima segunda query era pretendido que dado um código de cliente, determin
 
 \chapter{A Nossa Solução}
 \label{sec:solucao}
-\quad Como ainda estamos a iniciar a nossa aprendizagem na área de programação foi-nos proposto a execução do projeto pela realização de seis tarefas.
-Desta forma, fomos capazes de abordar os problemas por etapas, focando-nos numa tarefa de cada vez.
 
 \section*{Query 1}
 A nossa resolução da query foi validar os ficheiros de produtos, clientes e vendas conforme os requisitos do SGV. Aqui damos a conhecer ao utilizador quantas vendas, produtos e clientes foram validados, o número de caracteres da linha mais longa,…
@@ -206,7 +203,7 @@ Para esta query decidimos criar uma estrutura simples, semelhante a uma Stack, c
 
 %\bigskip
 \section*{Query 3}
-Nesta querycriamos duas matrizes, a partir do produto e mês fornecido pelo utilizador, com o objetivo de guardar o número total de vendas numa e noutra o total faturado. As matrizes foram desenhadas para distinguir as 3 filiais e ainda os modos (N e P).
+Nesta query criamos duas matrizes, a partir do produto e mês fornecido pelo utilizador, com o objetivo de guardar o número total de vendas numa e noutra o total faturado. As matrizes foram desenhadas para distinguir as 3 filiais e ainda os modos (N e P).
 
 
 %\bigskip
@@ -236,7 +233,7 @@ Nesta query percorremos a estrutura Filial e vamos acrescentando a uma das duas 
 
 %\bigskip
 \section*{Query 10}
-Nesta query, percorremos a estrutura Filial, somamos as quantidades compradas por o cliente dado e acrescentamos esse produto comprado pelo cliente à lista. Visto que pedia uma lista ordenada decrescentemente, usamos uma AVL e depois uma travessia posOrder (para termos os elementos de forma decrescente, poia a AVL está ordenada crescentemente).
+Nesta query, percorremos a estrutura Filial, somamos as quantidades compradas por o cliente dado e acrescentamos esse produto comprado pelo cliente à lista. Visto que pedia uma lista ordenada decrescentemente, usamos uma AVL e depois uma travessia posOrder (para termos os elementos de forma decrescente, pois a AVL está ordenada crescentemente).
 
 %\bigskip
 \section*{Query 11}
