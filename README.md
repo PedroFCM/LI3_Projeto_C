@@ -2,6 +2,8 @@
 
 Project main repository.
 
+Disclaimer: LI3 stands for Informatic (Software) Labs III
+
 Group: João Azevedo | Paulo Araújo | Pedro Machado 
 	
 University of Minho, Software Engeneering.
