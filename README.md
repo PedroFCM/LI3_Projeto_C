@@ -2,13 +2,12 @@
 
 Project main repository.
 
-Disclaimer: LI3 stands for Informatic (Software) Labs III
+Disclaimer: LI3 stands for Informatic (Software) Labs III.
+We had 2 projects, this one was in C.
 
 Group: João Azevedo | Paulo Araújo | Pedro Machado 
 	
 University of Minho, Software Engeneering.
-
-C project.
 
 Usefull git commands:
 
