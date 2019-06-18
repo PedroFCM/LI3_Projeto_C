@@ -1,21 +1,14 @@
 # LI3_Projeto_2019
 
-Project main repository.
+Software Labs III project in C.
 
-Disclaimer: LI3 stands for Informatic (Software) Labs III.
-We had 2 projects, this one was in C.
+Group members: João Azevedo | Paulo Araújo | Pedro Machado
 
-Group: João Azevedo | Paulo Araújo | Pedro Machado 
-	
-University of Minho, Software Engeneering.
+Description:
 
-Usefull git commands:
+* Manage data from an enterprise and present the results from a series of queries about these data;
+* First time working with more complex structures such as AVL's, HashTables (and different types of collision solving methods), ...;
+* First attempt to work with the MVC pattern and concepts separation;
+* Organize the progect in several API's.
 
-git status <br />
-git add . <br />
-git push <br />
-git pull <br />
-git branch branchname <br />
-git checkout branchname <br />
-git branch -d branchname <br />
-git merge branchname <br />
+University of Minho, Software Engeneering [2º year].
