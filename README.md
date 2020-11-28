@@ -11,4 +11,4 @@ Description:
 * First attempt to work with the MVC pattern and concepts separation;
 * Organize the progect in several API's.
 
-University of Minho, Software Engeneering [2º year].
+University of Minho, Software Engineering [2º year].
